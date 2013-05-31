@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <application xmlns="http://ns.adobe.com/air/application/3.5">
 <!-- 	<id>com.feathersui.examples.ComponentsExplorer</id> -->
-	<id>cz.rollingmobile.rossmann</id>
+	<id>cz.zc.hotmusic</id>
 	<filename>Hotmusic</filename>
 	<name>hotmusic</name>
-	<versionNumber>0.0.1</versionNumber>
+	<versionNumber>0.0.3</versionNumber>
 	<description>Hot Music</description>
 	<copyright>2013 Michal Kolesar</copyright>
 
