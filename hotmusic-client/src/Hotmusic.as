@@ -1,6 +1,7 @@
 package
 {
 	import cz.hotmusic.Main;
+	import cz.hotmusic.model.Model;
 	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
@@ -49,6 +50,8 @@ package
 		private function onAddedToStage(event:Event):void
 		{
 			splash.removeEventListener(Event.ENTER_FRAME, onAddedToStage);
+			
+			Model.getInstance().resetModel();
 			
 			//Init Starling
 			Starling.handleLostContext = true;

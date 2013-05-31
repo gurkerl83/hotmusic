@@ -1,5 +1,6 @@
 package cz.hotmusic
 {
+	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.MainListRenderer;
 	
 	import feathers.controls.Button;
@@ -18,20 +19,7 @@ package cz.hotmusic
 	import starling.events.Event;
 	import starling.textures.Texture;
 	
-	[Event(name="complete",type="starling.events.Event")]
-	[Event(name="showButton",type="starling.events.Event")]
-	[Event(name="showButtonGroup",type="starling.events.Event")]
-	[Event(name="showCallout",type="starling.events.Event")]
-	[Event(name="showGroupedList",type="starling.events.Event")]
-	[Event(name="showList",type="starling.events.Event")]
-	[Event(name="showPageIndicator",type="starling.events.Event")]
-	[Event(name="showPickerList",type="starling.events.Event")]
-	[Event(name="showProgressBar",type="starling.events.Event")]
-	[Event(name="showScrollText",type="starling.events.Event")]
-	[Event(name="showSlider",type="starling.events.Event")]
-	[Event(name="showTabBar",type="starling.events.Event")]
-	[Event(name="showTextInput",type="starling.events.Event")]
-	[Event(name="showToggles",type="starling.events.Event")]
+	[Event(name="showDetail",type="starling.events.Event")]
 	
 	public class MainListScreen extends Screen
 	{
@@ -116,6 +104,16 @@ package cz.hotmusic
 		
 		private function list_changeHandler(event:Event):void
 		{
+			if (_list.selectedItem == null)
+				return;
+			
+			Model.getInstance().selectedSong.name = _list.selectedItem.song;
+			Model.getInstance().selectedSong.album.value = _list.selectedItem.album ? _list.selectedItem.album : "no album";
+			Model.getInstance().selectedSong.added = _list.selectedItem.added;
+			Model.getInstance().selectedSong.artist.value = _list.selectedItem.artist;
+			Model.getInstance().selectedSong.genre.value = _list.selectedItem.genre ? _list.selectedItem.genre : "no genre";
+			
+			dispatchEventWith("showDetail");
 //			const eventType:String = this._list.selectedItem.event as String;
 //			this.dispatchEventWith(eventType);
 		}

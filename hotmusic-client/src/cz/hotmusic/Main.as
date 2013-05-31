@@ -11,6 +11,7 @@ package cz.hotmusic
 	public class Main extends Sprite
 	{
 		private static const MAIN_LIST:String = "mainList";
+		private static const DETAIL_SCREEN:String = "detailScreen";
 		
 		public function Main()
 		{
@@ -31,7 +32,12 @@ package cz.hotmusic
 			
 			this._navigator.addScreen(MAIN_LIST, new ScreenNavigatorItem(MainListScreen,
 				{
-					showButton: "blabla"
+					showDetail: DETAIL_SCREEN
+				}));
+			
+			this._navigator.addScreen(DETAIL_SCREEN, new ScreenNavigatorItem(DetailScreen,
+				{
+					complete: MAIN_LIST
 				}));
 			
 			this._navigator.showScreen(MAIN_LIST);
