@@ -24,6 +24,8 @@
  */
 package feathers.themes
 {
+	import cz.hotmusic.renderer.MainListRenderer;
+	
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
 	import feathers.controls.Callout;
@@ -66,11 +68,11 @@ package feathers.themes
 	import feathers.system.DeviceCapabilities;
 	import feathers.textures.Scale3Textures;
 	import feathers.textures.Scale9Textures;
-
+	
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
-
+	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -399,6 +401,8 @@ package feathers.themes
 			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
+			this.setInitializerForClass(MainListRenderer, itemRendererInitializer);
+			this.setInitializerForClass(MainListRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, insetMiddleItemRendererInitializer, GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, insetFirstItemRendererInitializer, GroupedList.ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER);

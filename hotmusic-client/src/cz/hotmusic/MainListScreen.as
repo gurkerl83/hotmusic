@@ -1,9 +1,12 @@
 package cz.hotmusic
 {
+	import cz.hotmusic.renderer.MainListRenderer;
+	
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.Screen;
+	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.skins.StandardIcons;
 	
@@ -209,6 +212,9 @@ package cz.hotmusic
 			
 			// LIST
 			this._list = new List();
+			this._list.itemRendererType = MainListRenderer;
+			this._list.itemRendererType = DefaultListItemRenderer;
+			this._list.itemRendererType = MainListRenderer;
 			this._list.dataProvider = new ListCollection(
 				[
 					{ song: "What if", artist: "Coldplay", added: "TODAY", hotstatus: "3", event: SHOW_DETAIL },
@@ -274,10 +280,13 @@ package cz.hotmusic
 					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
 					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
 					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
+					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL }
 				]);
 			this._list.itemRendererProperties.labelField = "song";
-			this._list.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
+//			this._list.itemRendererProperties.iconSourceFunction = accessorySourceFunction;
+//			this._list.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
+			this._list.itemRendererProperties.accessoryLabelField = "added";
+			
 			this._list.addEventListener(Event.CHANGE, list_changeHandler);
 		}
 		
