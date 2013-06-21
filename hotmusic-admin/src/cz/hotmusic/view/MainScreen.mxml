@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<!-- HEADER -->
+	<s:HGroup width="100%">
+		<s:Image source="assets/logo.png"/>
+		<s:VGroup>
+			<s:Label text="Daniel Jay Lett"/>
+			<s:Label text="admin"/>
+		</s:VGroup>
+		<s:Image source="assets/power.png"/>
+		<s:Label text="For the next update:"/>
+		<s:Label text="47:55:14"/>
+	</s:HGroup>
+	
+	<s:HGroup width="100%">
+		<!-- LEFT MENU -->
+		<s:VGroup>
+			
+		</s:VGroup>
+		
+		<!-- RIGHT CONTENT -->
+		<s:VGroup>
+			
+		</s:VGroup>
+	</s:HGroup>
+</s:NavigatorContent>
