@@ -216,7 +216,7 @@ package cz.hotmusic
 			this._list.dataProvider = new ListCollection(
 				[
 					{ song: "What if", artist: "Coldplay", added: "TODAY", hotstatus: "3", event: SHOW_DETAIL },
-					{ song: "The Adventures Of Rain D...", artist: "Red Hot Chilli Peppers", added: "YESTERDAY", hotstatus: "2", event: SHOW_DETAIL },
+					{ song: "The Adventures Of Rain Dance Maggie", artist: "Red Hot Chilli Peppers", album:"I'm with you", genre:"rock / pop / classical", added: "YESTERDAY", hotstatus: "2", event: SHOW_DETAIL },
 					{ song: "Everything At Once", artist: "MGMT", added: "YESTERDAY", hotstatus: "1", event: SHOW_DETAIL },
 					{ song: "Jump Around", artist: "House of Pain", added: "2 DAYS AGO", hotstatus: "0", event: SHOW_DETAIL },
 					{ song: "Heartbeats", artist: "Jose Gonzales", added: "23.5.2013", hotstatus: "0", event: SHOW_DETAIL },

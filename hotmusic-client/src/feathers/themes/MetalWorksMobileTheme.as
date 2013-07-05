@@ -24,6 +24,7 @@
  */
 package feathers.themes
 {
+	import cz.hotmusic.FontAssets;
 	import cz.hotmusic.renderer.MainListRenderer;
 	
 	import feathers.controls.Button;
@@ -71,6 +72,7 @@ package feathers.themes
 	
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
+	import flash.text.Font;
 	import flash.text.TextFormat;
 	
 	import starling.core.Starling;
@@ -91,7 +93,8 @@ package feathers.themes
 		[Embed(source="/../assets/images/metalworks.xml",mimeType="application/octet-stream")]
 		protected static const ATLAS_XML:Class;
 
-		protected static const LIGHT_TEXT_COLOR:uint = 0xe5e5e5;
+//		protected static const LIGHT_TEXT_COLOR:uint = 0xe5e5e5;
+		protected static const LIGHT_TEXT_COLOR:uint = 0xC8C8C8;
 		protected static const DARK_TEXT_COLOR:uint = 0x1a1a1a;
 		protected static const SELECTED_TEXT_COLOR:uint = 0xff9900;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x333333;
@@ -109,6 +112,9 @@ package feathers.themes
 		protected static const TAB_SCALE9_GRID:Rectangle = new Rectangle(19, 19, 50, 50);
 		protected static const SCROLL_BAR_THUMB_REGION1:int = 5;
 		protected static const SCROLL_BAR_THUMB_REGION2:int = 14;
+		
+		private var MyriadProRegularFont:Font = new FontAssets.MyriadProRegular();
+		private var MyriadProBoldFont:Font = new FontAssets.MyriadProBold();
 
 		public static const COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER:String = "feathers-mobile-picker-list-item-renderer";
 
@@ -499,7 +505,12 @@ package feathers.themes
 
 		protected function labelInitializer(label:Label):void
 		{
-			label.textRendererProperties.textFormat = this.smallLightTextFormat;
+//			label.textRendererProperties.textFormat = this.smallLightTextFormat;
+			if (label.textRendererFactory == null && label.textRendererProperties.textFormat == null)
+			{
+				label.textRendererProperties.textFormat = new TextFormat("MyriadProRegular", 22, 0xc8c8c8);
+				label.textRendererProperties.embedFonts = true;
+			}
 		}
 
 		protected function itemRendererAccessoryLabelInitializer(renderer:TextFieldTextRenderer):void
