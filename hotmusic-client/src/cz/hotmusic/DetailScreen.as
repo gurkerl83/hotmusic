@@ -23,10 +23,14 @@ package cz.hotmusic
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
+	import starling.display.Button;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.text.TextField;
 	import starling.textures.Texture;
 	
@@ -40,8 +44,10 @@ package cz.hotmusic
 		}
 		
 		private var _header:Header;
-		private var _backButton:Button;
+		private var _backButton:starling.display.Button;
 		private var _scrollContainer:ScrollContainer;
+		private var beginX:int;
+		private var beginY:int;
 		
 		private var _songLabel:Label;
 		private var _songValue:Label;
@@ -57,15 +63,15 @@ package cz.hotmusic
 		private var _statusImage3:Image;
 		private var _rateLabel:Label;
 		private var _rateUpValue:Label;
-		private var _rateUpIcon:Image;
+		private var _rateUpButton:starling.display.Button;
 		private var _rateDownValue:Label;
-		private var _rateDownIcon:Image;
+		private var _rateDownButton:starling.display.Button;
 		private var _shareLabel:Label;
-		private var _shareTwitterIcon:Image;
-		private var _shareFacebookIcon:Image;
-		private var _shareGooglePlusIcon:Image;
-		private var _shareEmailIcon:Image;
-		private var _shareSmsIcon:Image;
+		private var _shareTwitterButton:starling.display.Button;
+		private var _shareFacebookButton:starling.display.Button;
+		private var _shareGooglePlusButton:starling.display.Button;
+		private var _shareEmailButton:starling.display.Button;
+		private var _shareSmsButton:starling.display.Button;
 
 		private var _itunesIcon:Image;
 		private var _itunesLabel:Label;
@@ -116,12 +122,11 @@ package cz.hotmusic
 			_scrollContainer = new ScrollContainer();
 			this.addChild(_scrollContainer);
 
-			_backButton = new Button();
-			_backButton.label = "back";
+			_backButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Back()));
 			_backButton.addEventListener(Event.TRIGGERED, backButton_triggeredHandler);
 			
 			this._header = new Header();
-			this._header.title = "song detail";
+//			this._header.title = "song detail";
 			this._header.leftItems = new <DisplayObject>
 				[
 					this._backButton
@@ -191,18 +196,20 @@ package cz.hotmusic
 
 			_rateLabel = new Label();
 			_rateLabel.text = "Rate now:";
-			_rateUpIcon = new Image(Texture.fromBitmap(new FontAssets.RateUp()));
+			_rateUpButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.RateUp()));
+			_rateUpButton.addEventListener(TouchEvent.TOUCH, onRateUp);
 			_rateUpValue = new Label();
 			_rateUpValue.text = Model.getInstance().selectedSong.rateUp.toString();
 			_rateUpValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
-			_rateDownIcon = new Image(Texture.fromBitmap(new FontAssets.RateDown()));
+			_rateDownButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.RateDown()));
+			_rateDownButton.addEventListener(TouchEvent.TOUCH, onRateDown);
 			_rateDownValue = new Label();
 			_rateDownValue.text = Model.getInstance().selectedSong.rateDown.toString();
 			_rateDownValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_scrollContainer.addChild(_rateLabel);
-			_scrollContainer.addChild(_rateUpIcon);
+			_scrollContainer.addChild(_rateUpButton);
 			_scrollContainer.addChild(_rateUpValue);
-			_scrollContainer.addChild(_rateDownIcon);
+			_scrollContainer.addChild(_rateDownButton);
 			_scrollContainer.addChild(_rateDownValue);
 			
 			_line6 = new Quad(1,1,0x333235);
@@ -210,17 +217,17 @@ package cz.hotmusic
 
 			_shareLabel = new Label();
 			_shareLabel.text = "Share:";
-			_shareTwitterIcon = new Image(Texture.fromBitmap(new FontAssets.Twitter()));
-			_shareFacebookIcon = new Image(Texture.fromBitmap(new FontAssets.Facebook()));
-			_shareGooglePlusIcon = new Image(Texture.fromBitmap(new FontAssets.GooglePlus()));
-			_shareEmailIcon = new Image(Texture.fromBitmap(new FontAssets.Email()));
-			_shareSmsIcon = new Image(Texture.fromBitmap(new FontAssets.Sms()));
+			_shareTwitterButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Twitter()));
+			_shareFacebookButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Facebook()));
+			_shareGooglePlusButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.GooglePlus()));
+			_shareEmailButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Email()));
+			_shareSmsButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Sms()));
 			_scrollContainer.addChild(_shareLabel);
-			_scrollContainer.addChild(_shareTwitterIcon);
-			_scrollContainer.addChild(_shareFacebookIcon);
-			_scrollContainer.addChild(_shareGooglePlusIcon);
-			_scrollContainer.addChild(_shareEmailIcon);
-			_scrollContainer.addChild(_shareSmsIcon);
+			_scrollContainer.addChild(_shareTwitterButton);
+			_scrollContainer.addChild(_shareFacebookButton);
+			_scrollContainer.addChild(_shareGooglePlusButton);
+			_scrollContainer.addChild(_shareEmailButton);
+			_scrollContainer.addChild(_shareSmsButton);
 			
 			// ---------------------------------------------------------
 			
@@ -396,49 +403,49 @@ package cz.hotmusic
 			_line5.height = _lineHeight;
 			_line5.width = actualWidth - 2*_leftPadding;;
 			
-			_rateUpIcon.x = _space;
-			_rateUpIcon.y = _line5.y + _lineHeight + _linePadding*4;
+			_rateUpButton.x = _space;
+			_rateUpButton.y = _line5.y + _lineHeight + _linePadding*4;
 			_rateUpValue.validate();
-			_rateUpValue.x = _rateUpIcon.x + _rateUpIcon.width + 40;
-			_rateUpValue.y = _rateUpIcon.y + _rateUpIcon.height/2 - _rateUpValue.height/2;
+			_rateUpValue.x = _rateUpButton.x + _rateUpButton.width + 40;
+			_rateUpValue.y = _rateUpButton.y + _rateUpButton.height/2 - _rateUpValue.height/2;
 			
-			_rateDownIcon.x = _rateUpValue.x + _rateUpValue.width + 140;
-			_rateDownIcon.y = _line5.y + _lineHeight + _linePadding*4;
+			_rateDownButton.x = _rateUpValue.x + _rateUpValue.width + 140;
+			_rateDownButton.y = _line5.y + _lineHeight + _linePadding*4;
 			_rateDownValue.validate();
-			_rateDownValue.x = _rateDownIcon.x + _rateDownIcon.width + 40;
-			_rateDownValue.y = _rateDownIcon.y + _rateDownIcon.height/2 - _rateDownValue.height/2;
+			_rateDownValue.x = _rateDownButton.x + _rateDownButton.width + 40;
+			_rateDownValue.y = _rateDownButton.y + _rateDownButton.height/2 - _rateDownValue.height/2;
 			
 			
 			_rateLabel.validate();
 			_rateLabel.x = _leftPadding;
-			_rateLabel.y = _rateUpIcon.height/2 - _rateLabel.height/2 + _rateUpIcon.y;
+			_rateLabel.y = _rateUpButton.height/2 - _rateLabel.height/2 + _rateUpButton.y;
 			_rateLabel.validate();
 			
 			_line6.x = _leftPadding;
-			_line6.y = _rateUpIcon.y + _rateUpIcon.height + _linePadding*4;
+			_line6.y = _rateUpButton.y + _rateUpButton.height + _linePadding*4;
 			_line6.height = _lineHeight;
 			_line6.width = actualWidth - 2*_leftPadding;;
 			
-			_shareTwitterIcon.x = _space;
-			_shareTwitterIcon.y = _line6.y + _lineHeight + _linePadding*4;
-			_shareFacebookIcon.x = _shareTwitterIcon.x + _shareTwitterIcon.width + 40;
-			_shareFacebookIcon.y = _line6.y + _lineHeight + _linePadding*4;
-			_shareGooglePlusIcon.x = _shareFacebookIcon.x + _shareFacebookIcon.width + 40;
-			_shareGooglePlusIcon.y = _line6.y + _lineHeight + _linePadding*4;
-			_shareEmailIcon.x = _shareGooglePlusIcon.x + _shareGooglePlusIcon.width + 40;
-			_shareEmailIcon.y = _line6.y + _lineHeight + _linePadding*4;
-			_shareSmsIcon.x = _shareEmailIcon.x + _shareEmailIcon.width + 40;
-			_shareSmsIcon.y = _line6.y + _lineHeight + _linePadding*4;
+			_shareTwitterButton.x = _space;
+			_shareTwitterButton.y = _line6.y + _lineHeight + _linePadding*4;
+			_shareFacebookButton.x = _shareTwitterButton.x + _shareTwitterButton.width + 40;
+			_shareFacebookButton.y = _line6.y + _lineHeight + _linePadding*4;
+			_shareGooglePlusButton.x = _shareFacebookButton.x + _shareFacebookButton.width + 40;
+			_shareGooglePlusButton.y = _line6.y + _lineHeight + _linePadding*4;
+			_shareEmailButton.x = _shareGooglePlusButton.x + _shareGooglePlusButton.width + 40;
+			_shareEmailButton.y = _line6.y + _lineHeight + _linePadding*4;
+			_shareSmsButton.x = _shareEmailButton.x + _shareEmailButton.width + 40;
+			_shareSmsButton.y = _line6.y + _lineHeight + _linePadding*4;
 			
 			_shareLabel.validate();
 			 _shareLabel.x = _leftPadding;
-			 _shareLabel.y =  _shareTwitterIcon.height/2 - _shareLabel.height/2 + _shareTwitterIcon.y;
+			 _shareLabel.y =  _shareTwitterButton.height/2 - _shareLabel.height/2 + _shareTwitterButton.y;
 			_shareLabel.validate();
 			
 			
 			//-------------------------------------------------
 
-			_line7.y = _shareTwitterIcon.y + _shareTwitterIcon.height + _linePadding*4;
+			_line7.y = _shareTwitterButton.y + _shareTwitterButton.height + _linePadding*4;
 			_line7.height = _lineHeight*2;
 			_line7.width = actualWidth;
 			
@@ -523,6 +530,37 @@ package cz.hotmusic
 		private function backButton_triggeredHandler(event:Event):void 
 		{
 			dispatchEventWith(Event.COMPLETE);
+		}
+		
+		private function onRateUp(event:TouchEvent):void
+		{
+			var t:Touch = event.touches.pop(); 
+
+			
+			if (t.phase == TouchPhase.BEGAN)
+			{
+				beginX = t.globalX; 
+				beginY = t.globalY;
+			}
+			if (t.phase != TouchPhase.ENDED)
+				return;
+			
+			if (t.globalX != beginX || t.globalY != beginY )
+				return;
+			
+			trace("onRateUp()");
+			Model.getInstance().selectedSong.rateUp++;
+			_rateUpValue.text = Model.getInstance().selectedSong.rateUp.toString();
+		}
+		private function onRateDown(event:TouchEvent):void
+		{
+			if (event.touches.pop().phase != TouchPhase.ENDED)
+				return;
+			trace("onRateDown()");
+			trace(event.touches.pop().phase);// == TouchPhase.BEGAN
+			Model.getInstance().selectedSong.rateDown++;
+			_rateDownValue.text = Model.getInstance().selectedSong.rateDown.toString();
+			
 		}
 	}
 }

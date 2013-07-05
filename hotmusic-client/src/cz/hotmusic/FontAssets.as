@@ -16,6 +16,10 @@ package cz.hotmusic
 		public static const RateUp:Class;
 		[Embed(source="assets/icon/ratedown.png")]
 		public static const RateDown:Class;
+		[Embed(source="assets/icon/rateup.png")]
+		public static const RateUpDown:Class;
+		[Embed(source="assets/icon/ratedown.png")]
+		public static const RateDownDown:Class;
 		[Embed(source="assets/icon/twitter.png")]
 		public static const Twitter:Class;
 		[Embed(source="assets/icon/facebook.png")]
@@ -42,6 +46,9 @@ package cz.hotmusic
 
 		[Embed(source="assets/icon/right.png")]
 		public static const Right:Class;
+
+		[Embed(source="assets/icon/back.png")]
+		public static const Back:Class;
 		
 		public function FontAssets()
 		{

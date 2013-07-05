@@ -964,7 +964,7 @@ package feathers.themes
 			header.paddingTop = header.paddingRight = header.paddingBottom =
 				header.paddingLeft = 14 * this.scale;
 
-			const backgroundSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, 0x1a1a1a);
+			const backgroundSkin:Quad = new Quad(88 * this.scale, 88 * this.scale, 0x000004);
 			header.backgroundSkin = backgroundSkin;
 			header.titleProperties.textFormat = this.headerTextFormat;
 		}
