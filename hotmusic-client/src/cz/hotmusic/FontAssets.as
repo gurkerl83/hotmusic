@@ -12,6 +12,8 @@ package cz.hotmusic
 		
 		[Embed(source="assets/icon/status.png")]
 		public static const HotStatus:Class;
+		[Embed(source="assets/icon/oranzovanota.png")]
+		public static const HotStatusSmall:Class;
 		[Embed(source="assets/icon/rateup.png")]
 		public static const RateUp:Class;
 		[Embed(source="assets/icon/ratedown.png")]
@@ -46,9 +48,19 @@ package cz.hotmusic
 
 		[Embed(source="assets/icon/right.png")]
 		public static const Right:Class;
-
 		[Embed(source="assets/icon/back.png")]
 		public static const Back:Class;
+		[Embed(source="assets/icon/carky.png")]
+		public static const Carky:Class;
+		[Embed(source="assets/icon/trychtyr.png")]
+		public static const Trychtyr:Class;
+		[Embed(source="assets/icon/hotmusic.png")]
+		public static const HotMusic:Class;
+
+		[Embed(source="assets/icon/stinlevy.png")]
+		public static const ShadowLeft:Class;
+		[Embed(source="assets/icon/stinpravy.png")]
+		public static const ShadowRight:Class;
 		
 		public function FontAssets()
 		{

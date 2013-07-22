@@ -649,8 +649,8 @@ package feathers.themes
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
 			renderer.defaultLabelProperties.textFormat = this.largeLightTextFormat;
-			renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
-			renderer.defaultSelectedLabelProperties.textFormat = this.largeDarkTextFormat;
+			renderer.downLabelProperties.textFormat = this.largeLightTextFormat;
+			renderer.defaultSelectedLabelProperties.textFormat = this.largeLightTextFormat;
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;

@@ -1,16 +1,26 @@
 package cz.hotmusic.renderer
 {
+	import cz.hotmusic.FontAssets;
+	
 	import feathers.controls.Label;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextRenderer;
 	
+	import flash.desktop.Icon;
+	import flash.display.Bitmap;
+	
 	import starling.display.DisplayObject;
+	import starling.display.Image;
+	import starling.textures.Texture;
 
 	public class MainListRenderer extends DefaultListItemRenderer
 	{
 		
-		protected var messageTextRenderer:Label;
+		protected var artistTextRenderer:Label;
+		protected var hotIcon1:Image;
+		protected var hotIcon2:Image;
+		protected var hotIcon3:Image;
 		
 		public function MainListRenderer()
 		{
@@ -19,19 +29,55 @@ package cz.hotmusic.renderer
 //			this.horizontalAlign = HORIZONTAL_ALIGN_LEFT;
 		}
 		
+		protected function createHotIcons():void
+		{
+			var hst:Texture = Texture.fromBitmap(new FontAssets.HotStatusSmall());
+			hotIcon1 = new Image(hst);
+			hotIcon2 = new Image(hst);
+			hotIcon3 = new Image(hst);
+			this.addChild(DisplayObject(hotIcon1));
+			this.addChild(DisplayObject(hotIcon2));
+			this.addChild(DisplayObject(hotIcon3));
+		}
+		
 		protected function createMessage():void
 		{
-			if(this.messageTextRenderer)
+			if(this.artistTextRenderer)
 			{
-				this.removeChild(DisplayObject(this.messageTextRenderer), true);
-				this.messageTextRenderer = null;
+				this.removeChild(DisplayObject(this.artistTextRenderer), true);
+				this.artistTextRenderer = null;
 			}
 			
 //			const factory:Function = FeathersControl.defaultTextRendererFactory;
 //			this.messageTextRenderer = ITextRenderer(factory());
 //			this.messageTextRenderer.nameList.add(this.labelName);
-			this.messageTextRenderer = new Label();
-			this.addChild(DisplayObject(this.messageTextRenderer));
+			this.artistTextRenderer = new Label();
+			this.addChild(DisplayObject(this.artistTextRenderer));
+		}
+		
+		private function showHotIcons(value:Number):void
+		{
+			if (value == 1) {
+				hotIcon1.visible = true;
+				hotIcon2.visible = false;
+				hotIcon3.visible = false;
+			}
+			else if (value == 2) {
+				hotIcon1.visible = true;
+				hotIcon2.visible = true;
+				hotIcon3.visible = false;
+			}
+			else if (value == 3) {
+				hotIcon1.visible = true;
+				hotIcon2.visible = true;
+				hotIcon3.visible = true;
+			}
+			else {
+				hotIcon1.visible = false;
+				hotIcon2.visible = false;
+				hotIcon3.visible = false;
+			}
+				
 		}
 		
 		/* OVERRIDE */
@@ -39,9 +85,13 @@ package cz.hotmusic.renderer
 		{
 			super.data = value;
 			
-			if(messageTextRenderer && value) {
-				messageTextRenderer.text = value.artist;
+			if(artistTextRenderer && value) {
+				artistTextRenderer.text = value.artist;
 				this.invalidate(INVALIDATION_FLAG_DATA);
+			}
+			if (value && value.hotstatus)
+			{
+				showHotIcons(value.hotstatus);
 			}
 		}
 		
@@ -56,11 +106,19 @@ package cz.hotmusic.renderer
 		{
 			super.layoutContent();
 			
-			if(messageTextRenderer) {
+			if(artistTextRenderer) {
 				labelTextRenderer.y = labelTextRenderer.y - 15;
-				messageTextRenderer.y = labelTextRenderer.y + labelTextRenderer.height;
-				messageTextRenderer.x = labelTextRenderer.x; 
+				artistTextRenderer.y = labelTextRenderer.y + labelTextRenderer.height;
+				artistTextRenderer.x = labelTextRenderer.x; 
 			}
+			accessoryLabel.y = accessoryLabel.y - 15;
+			
+			hotIcon1.x = actualWidth - paddingRight - hotIcon1.width;  
+			hotIcon1.y = accessoryLabel.y + accessoryLabel.height + 10;
+			hotIcon2.x = actualWidth - paddingRight - 2*hotIcon1.width;  
+			hotIcon2.y = accessoryLabel.y + accessoryLabel.height + 10;
+			hotIcon3.x = actualWidth - paddingRight - 3*hotIcon1.width;  
+			hotIcon3.y = accessoryLabel.y + accessoryLabel.height + 10;
 		}
 		
 		override protected function initialize():void
@@ -68,6 +126,7 @@ package cz.hotmusic.renderer
 			super.initialize();
 			
 			this.createMessage();
+			this.createHotIcons();
 		}
 		
 	}

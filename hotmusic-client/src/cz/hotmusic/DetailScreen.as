@@ -278,7 +278,7 @@ package cz.hotmusic
 			var beatportbm:Bitmap = new FontAssets.Beatport();
 			_beatportIcon = new Image(Texture.fromBitmap(beatportbm));
 			_beatportLabel = new Label();
-			_beatportLabel.text = "Buy on Google Play Music";
+			_beatportLabel.text = "Buy on Beatport";
 			_beatportLabel.textRendererFactory = TextHelper.getInstance().detailLinks;
 			_beatportRight = new Image(Texture.fromBitmap(rightbm));
 			_scrollContainer.addChild(_beatportIcon);
@@ -291,7 +291,7 @@ package cz.hotmusic
 			var soundcloudbm:Bitmap = new FontAssets.SoundCloud();
 			_soundcloudIcon = new Image(Texture.fromBitmap(soundcloudbm));
 			_soundcloudLabel = new Label();
-			_soundcloudLabel.text = "Buy on Google Play Music";
+			_soundcloudLabel.text = "Listen on Soundcloud";
 			_soundcloudLabel.textRendererFactory = TextHelper.getInstance().detailLinks;
 			_soundcloudRight = new Image(Texture.fromBitmap(rightbm));
 			_scrollContainer.addChild(_soundcloudIcon);
@@ -304,7 +304,7 @@ package cz.hotmusic
 			var youtubebm:Bitmap = new FontAssets.YouTube();
 			_youtubeIcon = new Image(Texture.fromBitmap(youtubebm));
 			_youtubeLabel = new Label();
-			_youtubeLabel.text = "Buy on Google Play Music";
+			_youtubeLabel.text = "Watch on YouTube";
 			_youtubeLabel.textRendererFactory = TextHelper.getInstance().detailLinks;
 			_youtubeRight = new Image(Texture.fromBitmap(rightbm));
 			_scrollContainer.addChild(_youtubeIcon);

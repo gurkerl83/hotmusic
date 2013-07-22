@@ -3,18 +3,20 @@ package cz.hotmusic
 	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.MainListRenderer;
 	
-	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.Screen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.skins.StandardIcons;
 	
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
+	import starling.display.Button;
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -38,11 +40,14 @@ package cz.hotmusic
 		private var _leftActive:Boolean;
 		private var _leftList:List;
 		private var _leftHeader:Header;
-		private var _filterButton:Button;
+		private var _filterButton:feathers.controls.Button;
 		
 		private var _rightActive:Boolean;
 		private var _rightList:List;
 		private var _rightHeader:Header;
+		private var _logo:Image;
+		private var _leftShadow:Image;
+		private var _rightShadow:Image;
 		
 		private var _space:int = 100;
 		
@@ -65,6 +70,8 @@ package cz.hotmusic
 			
 			this.addChild(this._header);
 			this.addChild(this._list);
+			this.addChild(this._leftShadow);
+			this.addChild(this._rightShadow);
 		}
 		
 		override protected function draw():void
@@ -72,10 +79,20 @@ package cz.hotmusic
 			this._header.width = this.actualWidth;
 			this._header.validate();
 			
+			_logo.x = this._header.width/2 - _logo.width/2;
+			_logo.y = this._header.height/2 - _logo.height/2;
+			
 			this._list.y = this._header.height;
 			this._list.width = this.actualWidth;
 			this._list.height = this.actualHeight - this._list.y;
+			
+			_leftShadow.x = - _leftShadow.width;
+			_rightShadow.x = actualWidth;
+			_leftShadow.height = actualHeight;
+			_rightShadow.height = actualHeight;
 
+			// LEFT
+			
 			this._leftHeader.width = actualWidth - _space;
 			_leftHeader.validate();
 			
@@ -83,6 +100,8 @@ package cz.hotmusic
 			this._leftList.width = this.actualWidth - _space;
 			this._leftList.height = this.actualHeight - this._leftList.y;
 
+			// RIGHT
+			
 			this._rightHeader.width = actualWidth - _space;
 			this._rightHeader.x = _space;
 			_rightHeader.validate();
@@ -99,7 +118,8 @@ package cz.hotmusic
 		
 		private function accessorySourceFunction(item:Object):Texture
 		{
-			return StandardIcons.listDrillDownAccessoryTexture;
+//			return StandardIcons.listDrillDownAccessoryTexture;
+			return null;
 		}
 		
 		private function list_changeHandler(event:Event):void
@@ -150,6 +170,8 @@ package cz.hotmusic
 		private function myTween_onUpdate():void
 		{
 			_list.x = _header.x;
+			_leftShadow.x = _header.x - _leftShadow.width;
+			_rightShadow.x = _header.x + _header.width;
 		}
 		
 		private function rightButton_triggeredHandler(event:Event):void
@@ -188,16 +210,20 @@ package cz.hotmusic
 		private function initMainList():void
 		{
 			// HEADER
-			this._leftButton = new Button();
-			this._leftButton.label = "left";
+			this._leftButton = new Button(Texture.fromBitmap(new FontAssets.Carky()));
+//			this._leftButton.label = "left";
 			this._leftButton.addEventListener(Event.TRIGGERED, leftButton_triggeredHandler);
 			
-			this._rightButton = new Button();
-			this._rightButton.label = "right";
+			this._rightButton = new Button(Texture.fromBitmap(new FontAssets.Trychtyr()));
+//			this._rightButton.label = "right";
 			this._rightButton.addEventListener(Event.TRIGGERED, rightButton_triggeredHandler);
 			
 			this._header = new Header();
-			this._header.title = "hotmusic";
+//			this._header.title = "hotmusic";
+			_logo = Image.fromBitmap(new FontAssets.HotMusic());
+			this._header.addChild(_logo);
+			
+			
 			this._header.leftItems = new <DisplayObject>
 				[
 					this._leftButton
@@ -286,16 +312,19 @@ package cz.hotmusic
 			this._list.itemRendererProperties.accessoryLabelField = "added";
 			
 			this._list.addEventListener(Event.CHANGE, list_changeHandler);
+			
+			this._leftShadow = new Image(Texture.fromBitmap(new FontAssets.ShadowLeft()));
+			this._rightShadow = new Image(Texture.fromBitmap(new FontAssets.ShadowRight()));
 		}
 		
 		private function initLeftMenu():void
 		{
-			this._filterButton = new Button();
-			this._filterButton.label = "filter";
+			this._filterButton = new feathers.controls.Button();
+			this._filterButton.label = "Filter";
 			this._filterButton.addEventListener(Event.TRIGGERED, filterButton_triggeredHandler);
 			
 			this._leftHeader = new Header();
-			this._leftHeader.title = "genres";
+			this._leftHeader.title = "Genres";
 			this._leftHeader.rightItems = new <DisplayObject>
 				[
 					this._filterButton
@@ -304,6 +333,7 @@ package cz.hotmusic
 			
 			// LIST
 			this._leftList = new List();
+//			this._leftList.allowMultipleSelection = true;
 			this._leftList.dataProvider = new ListCollection(
 				[
 					{ genre: "All genres", event: SHOW_DETAIL },
