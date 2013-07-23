@@ -10,8 +10,14 @@ package cz.hotmusic
 	import feathers.controls.Screen;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.data.ListCollection;
+	import feathers.display.Scale9Image;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.StandardIcons;
+	import feathers.textures.Scale3Textures;
+	import feathers.textures.Scale9Textures;
+	import feathers.themes.MetalWorksMobileTheme;
+	
+	import flash.geom.Rectangle;
 	
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
@@ -36,6 +42,8 @@ package cz.hotmusic
 		
 		private var _leftButton:Button;
 		private var _rightButton:Button;
+		private var _addArtistButton:Button;
+		private var _feedbackButton:Button;
 		private var _header:Header;
 		private var _list:List;
 		
@@ -50,6 +58,7 @@ package cz.hotmusic
 		private var _logo:Image;
 		private var _leftShadow:Image;
 		private var _rightShadow:Image;
+		private var _bottomBg:Scale9Image;
 		
 		private var _space:int = 100;
 		
@@ -61,6 +70,7 @@ package cz.hotmusic
 			initMainList();
 			initLeftMenu();
 			initRightMenu();
+			initBottomMenu();
 //			
 //			this.addChild(this._leftHeader);
 //			this.addChild(this._leftList);
@@ -74,6 +84,9 @@ package cz.hotmusic
 			this.addChild(this._list);
 			this.addChild(this._leftShadow);
 			this.addChild(this._rightShadow);
+			this.addChild(this._bottomBg);
+			this.addChild(this._addArtistButton);
+			this.addChild(this._feedbackButton);
 		}
 		
 		override protected function draw():void
@@ -113,6 +126,14 @@ package cz.hotmusic
 			this._rightList.x = _space;
 			this._rightList.height = this.actualHeight - this._rightList.y;
 			
+			// BOTTOM
+			
+			this._bottomBg.width = actualWidth;
+			this._bottomBg.y = actualHeight - _bottomBg.height;
+			_addArtistButton.x = actualWidth/3 - _addArtistButton.width/2;
+			_addArtistButton.y = _bottomBg.y + _bottomBg.height/2 - _addArtistButton.height/2;
+			_feedbackButton.x = 2*actualWidth/3 - _feedbackButton.width/2;
+			_feedbackButton.y = _bottomBg.y + _bottomBg.height/2 - _feedbackButton.height/2;
 			
 //			myQuad.width = actualWidth;
 //			myQuad.height = actualHeight;
@@ -181,6 +202,11 @@ package cz.hotmusic
 			_list.x = _header.x;
 			_leftShadow.x = _header.x - _leftShadow.width;
 			_rightShadow.x = _header.x + _header.width;
+			
+			// bottom menu
+			_bottomBg.x = _header.x;
+			_addArtistButton.x = _header.x + actualWidth/3 - _addArtistButton.width/2;
+			_feedbackButton.x = _header.x + 2*actualWidth/3 - _feedbackButton.width/2;
 		}
 		
 		private function rightButton_triggeredHandler(event:Event):void
@@ -322,6 +348,14 @@ package cz.hotmusic
 			this._rightList.itemRendererProperties.labelField = "sortby";
 			this._rightList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
 			this._rightList.addEventListener(Event.CHANGE, list_changeHandler);
+		}
+		
+		private function initBottomMenu():void
+		{
+			const INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 62);
+			_bottomBg = new Scale9Image(new Scale9Textures(MetalWorksMobileTheme.atlas.getTexture("list-inset-item-single-selected-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID)); //new Quad(300, 70, 0);
+			_addArtistButton = new Button(Texture.fromBitmap(new FontAssets.AddArtist()));
+			_feedbackButton = new Button(Texture.fromBitmap(new FontAssets.AddFeedback()));
 		}
 	}
 }

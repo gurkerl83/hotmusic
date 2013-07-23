@@ -184,7 +184,7 @@ package feathers.themes
 		protected var smallLightTextFormat:TextFormat;
 		protected var smallDisabledTextFormat:TextFormat;
 
-		protected var atlas:TextureAtlas;
+		public static var atlas:TextureAtlas;
 		protected var atlasBitmapData:BitmapData;
 		protected var primaryBackgroundTexture:Texture;
 		protected var backgroundSkinTextures:Scale9Textures;
@@ -243,10 +243,10 @@ package feathers.themes
 					this.primaryBackground = null;
 				}
 			}
-			if(this.atlas)
+			if(atlas)
 			{
-				this.atlas.dispose();
-				this.atlas = null;
+				atlas.dispose();
+				atlas = null;
 			}
 			if(this.atlasBitmapData)
 			{
@@ -315,7 +315,7 @@ package feathers.themes
 				Callout.stagePaddingLeft = 16 * this.scale;
 
 			const atlasBitmapData:BitmapData = (new ATLAS_IMAGE()).bitmapData;
-			this.atlas = new TextureAtlas(Texture.fromBitmapData(atlasBitmapData, false), XML(new ATLAS_XML()));
+			atlas = new TextureAtlas(Texture.fromBitmapData(atlasBitmapData, false), XML(new ATLAS_XML()));
 			if(Starling.handleLostContext)
 			{
 				this.atlasBitmapData = atlasBitmapData;
@@ -325,66 +325,66 @@ package feathers.themes
 				atlasBitmapData.dispose();
 			}
 
-			this.primaryBackgroundTexture = this.atlas.getTexture("primary-background");
+			this.primaryBackgroundTexture = atlas.getTexture("primary-background");
 
-			const backgroundSkinTexture:Texture = this.atlas.getTexture("background-skin");
-			const backgroundDownSkinTexture:Texture = this.atlas.getTexture("background-down-skin");
-			const backgroundDisabledSkinTexture:Texture = this.atlas.getTexture("background-disabled-skin");
-			const backgroundFocusedSkinTexture:Texture = this.atlas.getTexture("background-focused-skin");
+			const backgroundSkinTexture:Texture = atlas.getTexture("background-skin");
+			const backgroundDownSkinTexture:Texture = atlas.getTexture("background-down-skin");
+			const backgroundDisabledSkinTexture:Texture = atlas.getTexture("background-disabled-skin");
+			const backgroundFocusedSkinTexture:Texture = atlas.getTexture("background-focused-skin");
 
 			this.backgroundSkinTextures = new Scale9Textures(backgroundSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundDisabledSkinTextures = new Scale9Textures(backgroundDisabledSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundFocusedSkinTextures = new Scale9Textures(backgroundFocusedSkinTexture, DEFAULT_SCALE9_GRID);
 
-			this.buttonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-up-skin"), BUTTON_SCALE9_GRID);
-			this.buttonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-down-skin"), BUTTON_SCALE9_GRID);
-			this.buttonDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-disabled-skin"), BUTTON_SCALE9_GRID);
-			this.buttonSelectedUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-up-skin"), BUTTON_SCALE9_GRID);
-			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(this.atlas.getTexture("button-selected-disabled-skin"), BUTTON_SCALE9_GRID);
+			this.buttonUpSkinTextures = new Scale9Textures(atlas.getTexture("button-up-skin"), BUTTON_SCALE9_GRID);
+			this.buttonDownSkinTextures = new Scale9Textures(atlas.getTexture("button-down-skin"), BUTTON_SCALE9_GRID);
+			this.buttonDisabledSkinTextures = new Scale9Textures(atlas.getTexture("button-disabled-skin"), BUTTON_SCALE9_GRID);
+			this.buttonSelectedUpSkinTextures = new Scale9Textures(atlas.getTexture("button-selected-up-skin"), BUTTON_SCALE9_GRID);
+			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(atlas.getTexture("button-selected-disabled-skin"), BUTTON_SCALE9_GRID);
 
-			this.tabDownSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-down-skin"), TAB_SCALE9_GRID);
-			this.tabSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("tab-selected-skin"), TAB_SCALE9_GRID);
+			this.tabDownSkinTextures = new Scale9Textures(atlas.getTexture("tab-down-skin"), TAB_SCALE9_GRID);
+			this.tabSelectedSkinTextures = new Scale9Textures(atlas.getTexture("tab-selected-skin"), TAB_SCALE9_GRID);
 
-			this.pickerListButtonIconTexture = this.atlas.getTexture("picker-list-icon");
-			this.pickerListItemSelectedIconTexture = this.atlas.getTexture("picker-list-item-selected-icon");
+			this.pickerListButtonIconTexture = atlas.getTexture("picker-list-icon");
+			this.pickerListItemSelectedIconTexture = atlas.getTexture("picker-list-item-selected-icon");
 
 			this.radioUpIconTexture = backgroundSkinTexture;
 			this.radioDownIconTexture = backgroundDownSkinTexture;
 			this.radioDisabledIconTexture = backgroundDisabledSkinTexture;
-			this.radioSelectedUpIconTexture = this.atlas.getTexture("radio-selected-up-icon");
-			this.radioSelectedDownIconTexture = this.atlas.getTexture("radio-selected-down-icon");
-			this.radioSelectedDisabledIconTexture = this.atlas.getTexture("radio-selected-disabled-icon");
+			this.radioSelectedUpIconTexture = atlas.getTexture("radio-selected-up-icon");
+			this.radioSelectedDownIconTexture = atlas.getTexture("radio-selected-down-icon");
+			this.radioSelectedDisabledIconTexture = atlas.getTexture("radio-selected-disabled-icon");
 
 			this.checkUpIconTexture = backgroundSkinTexture;
 			this.checkDownIconTexture = backgroundDownSkinTexture;
 			this.checkDisabledIconTexture = backgroundDisabledSkinTexture;
-			this.checkSelectedUpIconTexture = this.atlas.getTexture("check-selected-up-icon");
-			this.checkSelectedDownIconTexture = this.atlas.getTexture("check-selected-down-icon");
-			this.checkSelectedDisabledIconTexture = this.atlas.getTexture("check-selected-disabled-icon");
+			this.checkSelectedUpIconTexture = atlas.getTexture("check-selected-up-icon");
+			this.checkSelectedDownIconTexture = atlas.getTexture("check-selected-down-icon");
+			this.checkSelectedDisabledIconTexture = atlas.getTexture("check-selected-disabled-icon");
 
-			this.pageIndicatorSelectedSkinTexture = this.atlas.getTexture("page-indicator-selected-skin");
-			this.pageIndicatorNormalSkinTexture = this.atlas.getTexture("page-indicator-normal-skin");
+			this.pageIndicatorSelectedSkinTexture = atlas.getTexture("page-indicator-selected-skin");
+			this.pageIndicatorNormalSkinTexture = atlas.getTexture("page-indicator-normal-skin");
 
-			this.itemRendererUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
-			this.itemRendererSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
-			this.insetItemRendererMiddleUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-middle-up-skin"), INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID);
-			this.insetItemRendererMiddleSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-middle-selected-skin"), INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID);
-			this.insetItemRendererFirstUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-first-up-skin"), INSET_ITEM_RENDERER_FIRST_SCALE9_GRID);
-			this.insetItemRendererFirstSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-first-selected-skin"), INSET_ITEM_RENDERER_FIRST_SCALE9_GRID);
-			this.insetItemRendererLastUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-last-up-skin"), INSET_ITEM_RENDERER_LAST_SCALE9_GRID);
-			this.insetItemRendererLastSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-last-selected-skin"), INSET_ITEM_RENDERER_LAST_SCALE9_GRID);
-			this.insetItemRendererSingleUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-single-up-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID);
-			this.insetItemRendererSingleSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-single-selected-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID);
+			this.itemRendererUpSkinTextures = new Scale9Textures(atlas.getTexture("list-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
+			this.itemRendererSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
+			this.insetItemRendererMiddleUpSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-middle-up-skin"), INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID);
+			this.insetItemRendererMiddleSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-middle-selected-skin"), INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID);
+			this.insetItemRendererFirstUpSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-first-up-skin"), INSET_ITEM_RENDERER_FIRST_SCALE9_GRID);
+			this.insetItemRendererFirstSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-first-selected-skin"), INSET_ITEM_RENDERER_FIRST_SCALE9_GRID);
+			this.insetItemRendererLastUpSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-last-up-skin"), INSET_ITEM_RENDERER_LAST_SCALE9_GRID);
+			this.insetItemRendererLastSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-last-selected-skin"), INSET_ITEM_RENDERER_LAST_SCALE9_GRID);
+			this.insetItemRendererSingleUpSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-single-up-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID);
+			this.insetItemRendererSingleSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-single-selected-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID);
 
-			this.calloutTopArrowSkinTexture = this.atlas.getTexture("callout-arrow-top-skin");
-			this.calloutRightArrowSkinTexture = this.atlas.getTexture("callout-arrow-right-skin");
-			this.calloutBottomArrowSkinTexture = this.atlas.getTexture("callout-arrow-bottom-skin");
-			this.calloutLeftArrowSkinTexture = this.atlas.getTexture("callout-arrow-left-skin");
+			this.calloutTopArrowSkinTexture = atlas.getTexture("callout-arrow-top-skin");
+			this.calloutRightArrowSkinTexture = atlas.getTexture("callout-arrow-right-skin");
+			this.calloutBottomArrowSkinTexture = atlas.getTexture("callout-arrow-bottom-skin");
+			this.calloutLeftArrowSkinTexture = atlas.getTexture("callout-arrow-left-skin");
 
-			this.horizontalScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("horizontal-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_HORIZONTAL);
-			this.verticalScrollBarThumbSkinTextures = new Scale3Textures(this.atlas.getTexture("vertical-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_VERTICAL);
+			this.horizontalScrollBarThumbSkinTextures = new Scale3Textures(atlas.getTexture("horizontal-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_HORIZONTAL);
+			this.verticalScrollBarThumbSkinTextures = new Scale3Textures(atlas.getTexture("vertical-scroll-bar-thumb-skin"), SCROLL_BAR_THUMB_REGION1, SCROLL_BAR_THUMB_REGION2, Scale3Textures.DIRECTION_VERTICAL);
 
-			StandardIcons.listDrillDownAccessoryTexture = this.atlas.getTexture("list-accessory-drill-down-icon");
+			StandardIcons.listDrillDownAccessoryTexture = atlas.getTexture("list-accessory-drill-down-icon");
 
 			if(this.root.stage)
 			{

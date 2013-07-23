@@ -62,6 +62,10 @@ package cz.hotmusic
 		public static const BadgeGray:Class;
 		[Embed(source="assets/icon/oranzovekolecko.png")]
 		public static const BadgeYellow:Class;
+		[Embed(source="assets/icon/tuzka.png")]
+		public static const AddFeedback:Class;
+		[Embed(source="assets/icon/bilanota.png")]
+		public static const AddArtist:Class;
 
 		[Embed(source="assets/icon/stinlevy.png")]
 		public static const ShadowLeft:Class;
