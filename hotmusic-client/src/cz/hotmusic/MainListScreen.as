@@ -1,6 +1,8 @@
 package cz.hotmusic
 {
+	import cz.hotmusic.model.DataHelper;
 	import cz.hotmusic.model.Model;
+	import cz.hotmusic.renderer.LeftListRenderer;
 	import cz.hotmusic.renderer.MainListRenderer;
 	
 	import feathers.controls.Header;
@@ -137,6 +139,13 @@ package cz.hotmusic
 //			const eventType:String = this._list.selectedItem.event as String;
 //			this.dispatchEventWith(eventType);
 		}
+
+		private function leftlist_changeHandler(event:Event):void
+		{
+			if (_list.selectedItem == null)
+				return;
+						
+		}
 		
 		
 		private function leftButton_triggeredHandler(event:Event):void
@@ -204,7 +213,19 @@ package cz.hotmusic
 
 		private function filterButton_triggeredHandler(event:Event):void
 		{
-			this.dispatchEventWith("filterButton");
+//			this.dispatchEventWith("filterButton");
+			
+			filterGenreBy = _leftList.selectedItem.genre;
+			var filteredArr:Array;
+			filteredArr = DataHelper.getInstance().songs.filter(filterGenre); 
+			this._list.dataProvider = new ListCollection(filteredArr);
+		}
+		private var filterGenreBy:String;
+		private function filterGenre(item:Object, index:int, arr:Array):Boolean
+		{
+			if (filterGenreBy == item.genre || filterGenreBy == "All genres")
+				return true;
+			return false;
 		}
 		
 		private function initMainList():void
@@ -236,76 +257,10 @@ package cz.hotmusic
 			
 			// LIST
 			this._list = new List();
+//			this._list.itemRendererType = MainListRenderer;
+//			this._list.itemRendererType = DefaultListItemRenderer;
 			this._list.itemRendererType = MainListRenderer;
-			this._list.itemRendererType = DefaultListItemRenderer;
-			this._list.itemRendererType = MainListRenderer;
-			this._list.dataProvider = new ListCollection(
-				[
-					{ song: "What if", artist: "Coldplay", added: "TODAY", hotstatus: "3", event: SHOW_DETAIL },
-					{ song: "The Adventures Of Rain Dance Maggie", artist: "Red Hot Chilli Peppers", album:"I'm with you", genre:"rock / pop / classical", added: "YESTERDAY", hotstatus: "2", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "YESTERDAY", hotstatus: "1", event: SHOW_DETAIL },
-					{ song: "Jump Around", artist: "House of Pain", added: "2 DAYS AGO", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Heartbeats", artist: "Jose Gonzales", added: "23.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Roads", artist: "Portishead", added: "21.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Everything At Once", artist: "MGMT", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL },
-					{ song: "Tear Drop", artist: "Massive Attack", added: "7.5.2013", hotstatus: "0", event: SHOW_DETAIL }
-				]);
+			this._list.dataProvider = new ListCollection(DataHelper.getInstance().songs);
 			this._list.itemRendererProperties.labelField = "song";
 //			this._list.itemRendererProperties.iconSourceFunction = accessorySourceFunction;
 //			this._list.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
@@ -334,53 +289,12 @@ package cz.hotmusic
 			// LIST
 			this._leftList = new List();
 //			this._leftList.allowMultipleSelection = true;
-			this._leftList.dataProvider = new ListCollection(
-				[
-					{ genre: "All genres", event: SHOW_DETAIL },
-					{ genre: "RnB and Soul", event: SHOW_DETAIL },
-					{ genre: "hip hop, rap", event: SHOW_DETAIL },
-					{ genre: "rock", event: SHOW_DETAIL },
-					{ genre: "reggae", event: SHOW_DETAIL },
-					{ genre: "indian (Indie, bollywood)", event: SHOW_DETAIL },
-					{ genre: "house/trance", event: SHOW_DETAIL },
-					{ genre: "DnB", event: SHOW_DETAIL },
-					{ genre: "Dance (hardcore, garage...)", event: SHOW_DETAIL },
-					{ genre: "Techno", event: SHOW_DETAIL },
-					{ genre: "dubstep", event: SHOW_DETAIL },
-					{ genre: "RnB and Soul", event: SHOW_DETAIL },
-					{ genre: "hip hop, rap", event: SHOW_DETAIL },
-					{ genre: "rock", event: SHOW_DETAIL },
-					{ genre: "reggae", event: SHOW_DETAIL },
-					{ genre: "indian (Indie, bollywood)", event: SHOW_DETAIL },
-					{ genre: "house/trance", event: SHOW_DETAIL },
-					{ genre: "DnB", event: SHOW_DETAIL },
-					{ genre: "Dance (hardcore, garage...)", event: SHOW_DETAIL },
-					{ genre: "Techno", event: SHOW_DETAIL },
-					{ genre: "dubstep", event: SHOW_DETAIL },
-					{ genre: "RnB and Soul", event: SHOW_DETAIL },
-					{ genre: "hip hop, rap", event: SHOW_DETAIL },
-					{ genre: "rock", event: SHOW_DETAIL },
-					{ genre: "reggae", event: SHOW_DETAIL },
-					{ genre: "indian (Indie, bollywood)", event: SHOW_DETAIL },
-					{ genre: "house/trance", event: SHOW_DETAIL },
-					{ genre: "DnB", event: SHOW_DETAIL },
-					{ genre: "Dance (hardcore, garage...)", event: SHOW_DETAIL },
-					{ genre: "Techno", event: SHOW_DETAIL },
-					{ genre: "dubstep", event: SHOW_DETAIL },
-					{ genre: "RnB and Soul", event: SHOW_DETAIL },
-					{ genre: "hip hop, rap", event: SHOW_DETAIL },
-					{ genre: "rock", event: SHOW_DETAIL },
-					{ genre: "reggae", event: SHOW_DETAIL },
-					{ genre: "indian (Indie, bollywood)", event: SHOW_DETAIL },
-					{ genre: "house/trance", event: SHOW_DETAIL },
-					{ genre: "DnB", event: SHOW_DETAIL },
-					{ genre: "Dance (hardcore, garage...)", event: SHOW_DETAIL },
-					{ genre: "Techno", event: SHOW_DETAIL },
-					{ genre: "dubstep", event: SHOW_DETAIL },
-				]);
+			this._leftList.itemRendererType = LeftListRenderer;
+			this._leftList.dataProvider = new ListCollection(DataHelper.getInstance().genres);
+				
 			this._leftList.itemRendererProperties.labelField = "genre";
 			this._leftList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
-			this._leftList.addEventListener(Event.CHANGE, list_changeHandler);
+			this._leftList.addEventListener(Event.CHANGE, leftlist_changeHandler);
 		}
 		
 		private function initRightMenu():void

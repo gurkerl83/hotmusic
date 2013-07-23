@@ -56,6 +56,12 @@ package cz.hotmusic
 		public static const Trychtyr:Class;
 		[Embed(source="assets/icon/hotmusic.png")]
 		public static const HotMusic:Class;
+		[Embed(source="assets/icon/fajfka.png")]
+		public static const Pipe:Class;
+		[Embed(source="assets/icon/sedekolecko.png")]
+		public static const BadgeGray:Class;
+		[Embed(source="assets/icon/oranzovekolecko.png")]
+		public static const BadgeYellow:Class;
 
 		[Embed(source="assets/icon/stinlevy.png")]
 		public static const ShadowLeft:Class;

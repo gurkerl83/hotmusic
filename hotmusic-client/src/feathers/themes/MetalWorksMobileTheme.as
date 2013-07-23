@@ -25,6 +25,7 @@
 package feathers.themes
 {
 	import cz.hotmusic.FontAssets;
+	import cz.hotmusic.renderer.LeftListRenderer;
 	import cz.hotmusic.renderer.MainListRenderer;
 	
 	import feathers.controls.Button;
@@ -74,6 +75,7 @@ package feathers.themes
 	import flash.geom.Rectangle;
 	import flash.text.Font;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -95,6 +97,7 @@ package feathers.themes
 
 //		protected static const LIGHT_TEXT_COLOR:uint = 0xe5e5e5;
 		protected static const LIGHT_TEXT_COLOR:uint = 0xC8C8C8;
+		protected static const ORANGE_TEXT_COLOR:uint = 0xF19300;
 		protected static const DARK_TEXT_COLOR:uint = 0x1a1a1a;
 		protected static const SELECTED_TEXT_COLOR:uint = 0xff9900;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x333333;
@@ -174,6 +177,7 @@ package feathers.themes
 
 		protected var largeDarkTextFormat:TextFormat;
 		protected var largeLightTextFormat:TextFormat;
+		protected var largeOrangeTextFormat:TextFormat;
 		protected var largeDisabledTextFormat:TextFormat;
 
 		protected var smallDarkTextFormat:TextFormat;
@@ -285,7 +289,7 @@ package feathers.themes
 
 			const fontNames:String = "Helvetica Neue,Helvetica,Roboto,Arial,_sans";
 
-			this.headerTextFormat = new TextFormat(fontNames, Math.round(36 * this.scale), LIGHT_TEXT_COLOR, true);
+			this.headerTextFormat = new TextFormat(fontNames, Math.round(36 * this.scale), ORANGE_TEXT_COLOR, true);
 
 			this.smallUIDarkTextFormat = new TextFormat(fontNames, 24 * this.scale, DARK_TEXT_COLOR, true);
 			this.smallUILightTextFormat = new TextFormat(fontNames, 24 * this.scale, LIGHT_TEXT_COLOR, true);
@@ -303,6 +307,7 @@ package feathers.themes
 
 			this.largeDarkTextFormat = new TextFormat(fontNames, 30 * this.scale, DARK_TEXT_COLOR);
 			this.largeLightTextFormat = new TextFormat(fontNames, 30 * this.scale, LIGHT_TEXT_COLOR);
+			this.largeOrangeTextFormat = new TextFormat(fontNames, 30 * this.scale, ORANGE_TEXT_COLOR);
 			this.largeDisabledTextFormat = new TextFormat(fontNames, 30 * this.scale, DISABLED_TEXT_COLOR);
 
 			PopUpManager.overlayFactory = popUpOverlayFactory;
@@ -392,6 +397,7 @@ package feathers.themes
 
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 			this.setInitializerForClass(Label, labelInitializer);
+			this.setInitializerForClass(Label, labelBadgeInitializer, "badgeLabel");
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(Button, buttonInitializer);
@@ -409,6 +415,8 @@ package feathers.themes
 			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(MainListRenderer, itemRendererInitializer);
 			this.setInitializerForClass(MainListRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
+			this.setInitializerForClass(LeftListRenderer, itemRendererInitializer);
+			this.setInitializerForClass(LeftListRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, insetMiddleItemRendererInitializer, GroupedList.ALTERNATE_CHILD_NAME_INSET_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, insetFirstItemRendererInitializer, GroupedList.ALTERNATE_CHILD_NAME_INSET_FIRST_ITEM_RENDERER);
@@ -509,6 +517,18 @@ package feathers.themes
 			if (label.textRendererFactory == null && label.textRendererProperties.textFormat == null)
 			{
 				label.textRendererProperties.textFormat = new TextFormat("MyriadProRegular", 22, 0xc8c8c8);
+				label.textRendererProperties.embedFonts = true;
+			}
+		}
+
+		protected function labelBadgeInitializer(label:Label):void
+		{
+//			label.textRendererProperties.textFormat = this.smallLightTextFormat;
+			if (label.textRendererFactory == null && label.textRendererProperties.textFormat == null)
+			{
+				var tf:TextFormat = new TextFormat("MyriadProBold", 27, 0x000004);
+				tf.letterSpacing = -3;
+				label.textRendererProperties.textFormat = tf; 
 				label.textRendererProperties.embedFonts = true;
 			}
 		}
@@ -649,8 +669,14 @@ package feathers.themes
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
 			renderer.defaultLabelProperties.textFormat = this.largeLightTextFormat;
-			renderer.downLabelProperties.textFormat = this.largeLightTextFormat;
-			renderer.defaultSelectedLabelProperties.textFormat = this.largeLightTextFormat;
+			if (renderer is LeftListRenderer) {
+				renderer.defaultSelectedLabelProperties.textFormat = this.largeOrangeTextFormat;
+				renderer.downLabelProperties.textFormat = this.largeOrangeTextFormat;
+			}
+			else {
+				renderer.defaultSelectedLabelProperties.textFormat = this.largeLightTextFormat;
+				renderer.downLabelProperties.textFormat = this.largeLightTextFormat;
+			}
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
