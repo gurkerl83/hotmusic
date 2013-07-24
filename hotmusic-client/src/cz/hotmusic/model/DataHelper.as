@@ -1,5 +1,10 @@
 package cz.hotmusic.model
 {
+	import cz.hotmusic.FontAssets;
+	
+	import starling.display.Image;
+	import starling.textures.Texture;
+
 	public class DataHelper
 	{
 		public function DataHelper()
@@ -18,10 +23,12 @@ package cz.hotmusic.model
 		
 		public var songs:Array;
 		public var genres:Array;
+		public var sorts:Array;
 		
 		private function init():void {
 			createSongs();
 			createGenres();
+			createSorts();
 		}
 		
 		private function createSongs():void
@@ -115,6 +122,41 @@ package cz.hotmusic.model
 					genre.count = songsCountByGenre(genre.genre);
 				}
 			}
+		}
+		
+		private function createSorts():void 
+		{
+			sorts =	[
+				{ 
+					header: "Interprets sorting",
+					children: [
+						{ sortby: "A-Z"},
+						{ sortby: "Z-A"},
+						{ sortby: "newest first"},
+						{ sortby: "oldest first"}
+					]
+				},{
+					header: "Genres Sorting",
+					children: [
+						{ sortby: "A-Z"},
+						{ sortby: "Z-A"}
+					]	
+				},{
+					header: "Sort by status",
+					children: [
+						{ sortby: "View All", rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.HotAll())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.HotAllSelected()))},
+						{ sortby: "Hottest", rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.Hottest())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.HottestSelected()))},
+						{ sortby: "Hot", rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.Hot())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.HotSelected()))},
+						{ sortby: "Warm", rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.Warm())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.WarmSelected()))}
+					]
+				},{
+					header: "Sort by rating",
+					children: [
+						{leftNormalImg: new Image(Texture.fromBitmap(new FontAssets.RateUp())), leftSelectedImg: new Image(Texture.fromBitmap(new FontAssets.RateUpSelected())), sortby: "Best first"},
+						{leftNormalImg: new Image(Texture.fromBitmap(new FontAssets.RateDown())), leftSelectedImg: new Image(Texture.fromBitmap(new FontAssets.RateDownSelected())), sortby: "Worst first"}
+					]
+				}
+			];
 		}
 		
 		private function songsCountByGenre(genre:String):int

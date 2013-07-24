@@ -2,6 +2,7 @@
 <!-- Created with TexturePacker http://texturepacker.com-->
 <!-- $TexturePacker:SmartUpdate:b165abc972796faa9c8e172b29070b83$ -->
 <TextureAtlas imagePath="metalworks.png">
+    <SubTexture name="textinput-skin" x="267" y="105" width="69" height="49"/>
     <SubTexture name="background-disabled-skin" x="323" y="59" width="32" height="32"/>
     <SubTexture name="background-down-skin" x="467" y="40" width="32" height="32"/>
     <SubTexture name="background-focused-skin" x="431" y="39" width="32" height="32"/>

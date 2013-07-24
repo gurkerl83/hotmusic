@@ -14,10 +14,14 @@ package cz.hotmusic
 		public static const HotStatus:Class;
 		[Embed(source="assets/icon/oranzovanota.png")]
 		public static const HotStatusSmall:Class;
-		[Embed(source="assets/icon/rateup.png")]
+		[Embed(source="assets/icon/bilypalecnahoru.png")]
 		public static const RateUp:Class;
-		[Embed(source="assets/icon/ratedown.png")]
+		[Embed(source="assets/icon/bilypalecdolu.png")]
 		public static const RateDown:Class;
+		[Embed(source="assets/icon/oranzovypalecnahoru.png")]
+		public static const RateUpSelected:Class;
+		[Embed(source="assets/icon/oranzovypalecdolu.png")]
+		public static const RateDownSelected:Class;
 		[Embed(source="assets/icon/rateup.png")]
 		public static const RateUpDown:Class;
 		[Embed(source="assets/icon/ratedown.png")]
@@ -66,6 +70,22 @@ package cz.hotmusic
 		public static const AddFeedback:Class;
 		[Embed(source="assets/icon/bilanota.png")]
 		public static const AddArtist:Class;
+		[Embed(source="assets/icon/bilanotactyrikrat.png")]
+		public static const HotAll:Class;
+		[Embed(source="assets/icon/bilanotatrikrat.png")]
+		public static const Hottest:Class;
+		[Embed(source="assets/icon/bilanotadvakrat.png")]
+		public static const Hot:Class;
+		[Embed(source="assets/icon/bilanotasamotna.png")]
+		public static const Warm:Class;
+		[Embed(source="assets/icon/oranzovanotactyrikrat.png")]
+		public static const HotAllSelected:Class;
+		[Embed(source="assets/icon/oranzovanotatrikrat.png")]
+		public static const HottestSelected:Class;
+		[Embed(source="assets/icon/oranzovanodvakrat.png")]
+		public static const HotSelected:Class;
+		[Embed(source="assets/icon/oranzovanotasamotna.png")]
+		public static const WarmSelected:Class;
 
 		[Embed(source="assets/icon/stinlevy.png")]
 		public static const ShadowLeft:Class;

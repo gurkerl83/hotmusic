@@ -4,11 +4,15 @@ package cz.hotmusic
 	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.LeftListRenderer;
 	import cz.hotmusic.renderer.MainListRenderer;
+	import cz.hotmusic.renderer.RightListRenderer;
 	
+	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.Screen;
+	import feathers.controls.TextInput;
 	import feathers.controls.renderers.DefaultListItemRenderer;
+	import feathers.data.HierarchicalCollection;
 	import feathers.data.ListCollection;
 	import feathers.display.Scale9Image;
 	import feathers.events.FeathersEventType;
@@ -53,12 +57,14 @@ package cz.hotmusic
 		private var _filterButton:feathers.controls.Button;
 		
 		private var _rightActive:Boolean;
-		private var _rightList:List;
+		private var _rightList:GroupedList;
 		private var _rightHeader:Header;
 		private var _logo:Image;
 		private var _leftShadow:Image;
 		private var _rightShadow:Image;
 		private var _bottomBg:Scale9Image;
+		private var _searchTI:TextInput;
+		private var _line:Quad;
 		
 		private var _space:int = 100;
 		
@@ -77,8 +83,13 @@ package cz.hotmusic
 //			
 //			this.addChild(myQuad);
 //
-//			this.addChild(this._rightHeader);
-//			this.addChild(this._rightList);
+			addChild(_leftList);
+			addChild(_leftHeader);
+			
+			addChild(_searchTI);
+			addChild(_line);
+			this.addChild(this._rightHeader);
+			this.addChild(this._rightList);
 			
 			this.addChild(this._header);
 			this.addChild(this._list);
@@ -121,7 +132,17 @@ package cz.hotmusic
 			this._rightHeader.x = _space;
 			_rightHeader.validate();
 			
-			this._rightList.y = this._header.height;
+			var sgap:int = 24;
+			_searchTI.x = _space + sgap;
+			_searchTI.y = _header.height + sgap;
+			_searchTI.width = actualWidth - _space - 2*sgap;
+			_searchTI.validate();
+			
+			
+			_line.y = _searchTI.y + _searchTI.height + sgap;
+			_line.width = actualWidth;
+			
+			this._rightList.y = _line.y;
 			this._rightList.width = this.actualWidth - _space;
 			this._rightList.x = _space;
 			this._rightList.height = this.actualHeight - this._rightList.y;
@@ -176,15 +197,21 @@ package cz.hotmusic
 //			if (!_leftActive && getChildAt(0) == _leftHeader)
 			if (!_leftActive)
 			{
-				removeChild(_rightHeader);
-				removeChild(_rightList);
-				addChildAt(_leftList, 0);
-				addChildAt(_leftHeader, 0);
-//				swapChildren(_leftHeader, _rightHeader);
-//				swapChildren(_leftList, _rightList);
+				_searchTI.visible = false;
+				_line.visible = false;
+				_rightHeader.visible = false;
+				_rightList.visible = false;
+				_leftList.visible = true;
+				_leftHeader.visible = true;
+//				removeChild(_rightHeader);
+//				removeChild(_rightList);
+//				addChildAt(_leftList, 0);
+//				addChildAt(_leftHeader, 0);
 			} else {
-				removeChild(_leftHeader);
-				removeChild(_leftList);
+				_leftHeader.visible = false;
+				_leftList.visible = false;
+//				removeChild(_leftHeader);
+//				removeChild(_leftList);
 			}
 			validate();
 			
@@ -216,15 +243,27 @@ package cz.hotmusic
 //			if (!_rightActive && getChildAt(0) == _rightHeader)
 			if (!_rightActive)
 			{
-				removeChild(_leftHeader);
-				removeChild(_leftList);
-				addChildAt(_rightList, 0);
-				addChildAt(_rightHeader, 0);
-//				swapChildren(_leftHeader, _rightHeader);
-//				swapChildren(_leftList, _rightList);
+				_leftHeader.visible = false;
+				_leftList.visible = false;
+				_searchTI.visible = true;
+				_line.visible = true;
+				_rightList.visible = true;
+				_rightHeader.visible = true;
+//				removeChild(_leftHeader);
+//				removeChild(_leftList);
+//				addChildAt(_searchTI, 0);
+//				addChildAt(_line, 0);
+//				addChildAt(_rightList, 0);
+//				addChildAt(_rightHeader, 0);
 			} else {
-				removeChild(_rightHeader);
-				removeChild(_rightList);
+				_searchTI.visible = false;
+				_line.visible = false;
+				_rightList.visible = false;
+				_rightHeader.visible = false;
+//				removeChild(_rightHeader);
+//				removeChild(_rightList);
+//				removeChild(_searchTI);
+//				removeChild(_line);
 			}
 			validate();
 			
@@ -328,23 +367,18 @@ package cz.hotmusic
 			this._rightHeader = new Header();
 			this._rightHeader.title = "Filter";
 			
+			// Search
+			_searchTI = new TextInput();
+			_searchTI.text = "Search artist, song or whatever...";
+			
+			_line = new Quad(1,1,0x444444);
+			
 			// LIST
-			this._rightList = new List();
-			this._rightList.dataProvider = new ListCollection(
-				[
-					{ sortby: "A-Z", event: SHOW_DETAIL },
-					{ sortby: "Z-A", event: SHOW_DETAIL },
-					{ sortby: "newest first", event: SHOW_DETAIL },
-					{ sortby: "oldest first", event: SHOW_DETAIL },
-					{ sortby: "View All", event: SHOW_DETAIL },
-					{ sortby: "Hottest", event: SHOW_DETAIL },
-					{ sortby: "Hot", event: SHOW_DETAIL },
-					{ sortby: "Warm", event: SHOW_DETAIL },
-					{ sortby: "Best first", event: SHOW_DETAIL },
-					{ sortby: "Worst first", event: SHOW_DETAIL },
-					{ sortby: "Date from", event: SHOW_DETAIL },
-					{ sortby: "Date to", event: SHOW_DETAIL },
-				]);
+			this._rightList = new GroupedList();
+			this._rightList.itemRendererType = RightListRenderer;
+			this._rightList.dataProvider = new HierarchicalCollection(DataHelper.getInstance().sorts);
+			this._rightList.nameList.add(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
+				
 			this._rightList.itemRendererProperties.labelField = "sortby";
 			this._rightList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
 			this._rightList.addEventListener(Event.CHANGE, list_changeHandler);
