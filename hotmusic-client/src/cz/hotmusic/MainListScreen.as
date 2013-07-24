@@ -360,6 +360,7 @@ package cz.hotmusic
 			this._leftList.itemRendererProperties.labelField = "genre";
 			this._leftList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
 			this._leftList.addEventListener(Event.CHANGE, leftlist_changeHandler);
+			_leftList.visible = false;
 		}
 		
 		private function initRightMenu():void
@@ -382,6 +383,10 @@ package cz.hotmusic
 			this._rightList.itemRendererProperties.labelField = "sortby";
 			this._rightList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
 			this._rightList.addEventListener(Event.CHANGE, list_changeHandler);
+			
+			_searchTI.visible = false;
+			_line.visible = false;
+			_rightList.visible = false;
 		}
 		
 		private function initBottomMenu():void
