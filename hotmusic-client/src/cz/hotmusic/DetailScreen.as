@@ -105,7 +105,7 @@ package cz.hotmusic
 		private var _line11:Quad;
 		private var _line12:Quad;
 		private var _line13:Quad;
-		private var _backgroundQuad:Quad;
+//		private var _backgroundQuad:Quad;
 //		public var songData:Song;
 		
 		private var _space:int = 150;
@@ -116,8 +116,8 @@ package cz.hotmusic
 		
 		override protected function initialize():void
 		{
-			_backgroundQuad = new Quad(1,1,0x1A171B);
-			this.addChild(_backgroundQuad);
+//			_backgroundQuad = new Quad(1,1,0x1A171B);
+//			this.addChild(_backgroundQuad);
 			
 			_scrollContainer = new ScrollContainer();
 			this.addChild(_scrollContainer);
@@ -321,8 +321,8 @@ package cz.hotmusic
 			this._header.width = this.actualWidth;
 			this._header.validate();
 			
-			_backgroundQuad.width = actualWidth;
-			_backgroundQuad.height = actualHeight;
+//			_backgroundQuad.width = actualWidth;
+//			_backgroundQuad.height = actualHeight;
 			
 			_scrollContainer.width = actualWidth;
 			_scrollContainer.height = actualHeight - _header.height;

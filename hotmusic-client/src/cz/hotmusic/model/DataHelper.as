@@ -1,6 +1,8 @@
 package cz.hotmusic.model
 {
 	import cz.hotmusic.FontAssets;
+	import cz.hotmusic.helper.SortHelper;
+	import cz.zc.mylib.helper.DateHelper;
 	
 	import starling.display.Image;
 	import starling.textures.Texture;
@@ -33,68 +35,69 @@ package cz.hotmusic.model
 		
 		private function createSongs():void
 		{
+			var now:Date = new Date();
 			songs = [
-				{ song: "What if", artist: "Coldplay", genre: "RnB and Soul", added: "TODAY", hotstatus: "3"},
-				{ song: "The Adventures Of Rain Dance Maggie", genre: "RnB and Soul", artist: "Red Hot Chilli Peppers", album:"I'm with you", genre:"rock / pop / classical", added: "YESTERDAY", hotstatus: "2"},
-				{ song: "Everything At Once", artist: "MGMT", genre: "RnB and Soul", added: "YESTERDAY", hotstatus: "1"},
-				{ song: "Jump Around", artist: "House of Pain", genre: "hip hop, rap", added: "2 DAYS AGO", hotstatus: "0"},
-				{ song: "Heartbeats", artist: "Jose Gonzales",  genre: "RnB and Soul",added: "23.5.2013", hotstatus: "0"},
-				{ song: "Roads", artist: "Portishead", genre: "RnB and Soul", added: "21.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT", genre: "RnB and Soul", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: "7.5.2013", hotstatus: "0"},
-				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: "7.5.2013", hotstatus: "0"},
+				{ song: "What if", artist: "Coldplay", genre: "RnB and Soul", added: now, hotstatus: 3, rateup:14, ratedown:2},
+				{ song: "The Adventures Of Rain Dance Maggie", genre: "RnB and Soul", artist: "Red Hot Chilli Peppers", album:"I'm with you", genre:"rock / pop / classical", added: new Date(now.fullYear, now.month,now.date-1), hotstatus: 2, rateup:84, ratedown:4},
+				{ song: "Riders on the storm", artist: "Snoop", genre: "hip hop, rap", added: new Date(now.fullYear, now.month,now.date-1), hotstatus: 1, rateup:3, ratedown:1},
+				{ song: "Jump Around", artist: "House of Pain", genre: "hip hop, rap", added: new Date(now.fullYear, now.month,now.date-2), hotstatus: 0, rateup:121, ratedown:4},
+				{ song: "Heartbeats", artist: "Jose Gonzales",  genre: "RnB and Soul",added: new Date(now.fullYear, now.month,now.date-3), hotstatus: 0, rateup:13, ratedown:21},
+				{ song: "Roads", artist: "Portishead", genre: "RnB and Soul", added: new Date(now.fullYear, now.month,now.date-4), hotstatus: 0, rateup:6, ratedown:6},
+				{ song: "Everything At Once", artist: "MGMT", genre: "RnB and Soul", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:33},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Tear Drop", artist: "Massive Attack", genre: "rock", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
+				{ song: "Everything At Once", artist: "MGMT",genre: "dubstep", added: new Date(2013, 5,7), hotstatus: 0, rateup:33, ratedown:3},
 			];
 		}
 		
@@ -130,30 +133,30 @@ package cz.hotmusic.model
 				{ 
 					header: "Interprets sorting",
 					children: [
-						{ sortby: "A-Z"},
-						{ sortby: "Z-A"},
-						{ sortby: "newest first"},
-						{ sortby: "oldest first"}
+						{ sortby: "A-Z", sortbykey: SortHelper.INTERPRET_AZ},
+						{ sortby: "Z-A", sortbykey: SortHelper.INTERPRET_ZA},
+						{ sortby: "newest first", sortbykey: SortHelper.INTERPRET_NEWEST},
+						{ sortby: "oldest first", sortbykey: SortHelper.INTERPRET_OLDEST}
 					]
 				},{
 					header: "Genres Sorting",
 					children: [
-						{ sortby: "A-Z"},
-						{ sortby: "Z-A"}
+						{ sortby: "A-Z", sortbykey: SortHelper.GENRES_AZ},
+						{ sortby: "Z-A", sortbykey: SortHelper.GENRES_ZA}
 					]	
 				},{
 					header: "Sort by status",
 					children: [
-						{ sortby: "View All", rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.HotAll())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.HotAllSelected()))},
-						{ sortby: "Hottest", rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.Hottest())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.HottestSelected()))},
-						{ sortby: "Hot", rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.Hot())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.HotSelected()))},
-						{ sortby: "Warm", rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.Warm())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.WarmSelected()))}
+						{ sortby: "View All", sortbykey: SortHelper.STATUS_ALL, rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.HotAll())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.HotAllSelected()))},
+						{ sortby: "Hottest", sortbykey: SortHelper.STATUS_HOTTEST, rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.Hottest())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.HottestSelected()))},
+						{ sortby: "Hot", sortbykey: SortHelper.STATUS_HOT, rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.Hot())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.HotSelected()))},
+						{ sortby: "Warm", sortbykey: SortHelper.STATUS_WARM, rightNormalImg: new Image(Texture.fromBitmap(new FontAssets.Warm())), rightSelectedImg: new Image(Texture.fromBitmap(new FontAssets.WarmSelected()))}
 					]
 				},{
 					header: "Sort by rating",
 					children: [
-						{leftNormalImg: new Image(Texture.fromBitmap(new FontAssets.RateUp())), leftSelectedImg: new Image(Texture.fromBitmap(new FontAssets.RateUpSelected())), sortby: "Best first"},
-						{leftNormalImg: new Image(Texture.fromBitmap(new FontAssets.RateDown())), leftSelectedImg: new Image(Texture.fromBitmap(new FontAssets.RateDownSelected())), sortby: "Worst first"}
+						{leftNormalImg: new Image(Texture.fromBitmap(new FontAssets.RateUp())), leftSelectedImg: new Image(Texture.fromBitmap(new FontAssets.RateUpSelected())), sortby: "Best first", sortbykey: SortHelper.RATING_BEST},
+						{leftNormalImg: new Image(Texture.fromBitmap(new FontAssets.RateDown())), leftSelectedImg: new Image(Texture.fromBitmap(new FontAssets.RateDownSelected())), sortby: "Worst first", sortbykey: SortHelper.RATING_WORST}
 					]
 				}
 			];

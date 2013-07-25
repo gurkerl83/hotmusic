@@ -976,11 +976,22 @@ package feathers.themes
 			input.minWidth = input.minHeight = 49 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
 			input.paddingTop = input.paddingBottom = 6 * this.scale;
-			input.paddingLeft = input.paddingRight = 50 * this.scale;
+			input.paddingLeft = 50 * this.scale;
+			input.paddingRight = 12 * this.scale; 
+			
 			input.textEditorProperties.fontFamily = "Arial";
 			input.textEditorProperties.embedFonts = true;
-			input.textEditorProperties.fontSize = 26 * this.scale;
+			input.textEditorProperties.fontSize = 30 * this.scale;
 			input.textEditorProperties.color = 0x000004;
+//			input.promptProperties.textFormat = new TextFormat( "MyriadProRegular", 30, 0x000004 );
+//			input.promptProperties.embedFonts = true;
+			
+//			input.promptProperties.fontFamily = "Arial";
+//			input.promptProperties.embedFonts = true;
+//			input.promptProperties.fontSize = 30 * this.scale;
+//			input.promptProperties.color = 0x7a7a7a;
+			input.promptProperties.textFormat = new TextFormat( "MyriadProRegular", 30, 0x7a7a7a );
+			input.promptProperties.embedFonts = true;
 		}
 
 		protected function pageIndicatorInitializer(pageIndicator:PageIndicator):void

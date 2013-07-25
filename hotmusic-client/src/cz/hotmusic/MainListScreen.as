@@ -1,15 +1,20 @@
 package cz.hotmusic
 {
+	import cz.hotmusic.helper.SortHelper;
 	import cz.hotmusic.model.DataHelper;
 	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.LeftListRenderer;
 	import cz.hotmusic.renderer.MainListRenderer;
 	import cz.hotmusic.renderer.RightListRenderer;
+	import cz.zc.mylib.helper.DateHelper;
 	
+	import feathers.controls.Button;
 	import feathers.controls.GroupedList;
 	import feathers.controls.Header;
 	import feathers.controls.List;
 	import feathers.controls.Screen;
+	import feathers.controls.ScrollContainer;
+	import feathers.controls.Scroller;
 	import feathers.controls.TextInput;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.data.HierarchicalCollection;
@@ -21,6 +26,7 @@ package cz.hotmusic
 	import feathers.textures.Scale9Textures;
 	import feathers.themes.MetalWorksMobileTheme;
 	
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import starling.animation.Transitions;
@@ -44,31 +50,34 @@ package cz.hotmusic
 			super();
 		}
 		
-		private var _leftButton:Button;
-		private var _rightButton:Button;
-		private var _addArtistButton:Button;
-		private var _feedbackButton:Button;
+		private var _leftButton:starling.display.Button;
+		private var _rightButton:starling.display.Button;
+		private var _addArtistButton:starling.display.Button;
+		private var _feedbackButton:starling.display.Button;
 		private var _header:Header;
 		private var _list:List;
 		
 		private var _leftActive:Boolean;
 		private var _leftList:List;
 		private var _leftHeader:Header;
-		private var _filterButton:feathers.controls.Button;
+		private var _filterLeftButton:feathers.controls.Button;
 		
 		private var _rightActive:Boolean;
 		private var _rightList:GroupedList;
 		private var _rightHeader:Header;
+		private var _filterRightButton:feathers.controls.Button;
 		private var _logo:Image;
 		private var _leftShadow:Image;
 		private var _rightShadow:Image;
 		private var _bottomBg:Scale9Image;
 		private var _searchTI:TextInput;
 		private var _line:Quad;
+		private var _endLine:Quad;
+		private var _scrollContainer:ScrollContainer;
 		
 		private var _space:int = 100;
 		
-		private var myQuad:Quad = new Quad(actualWidth, actualHeight);
+		private var myQuad:Quad;
 		
 		override protected function initialize():void
 		{
@@ -77,11 +86,6 @@ package cz.hotmusic
 			initLeftMenu();
 			initRightMenu();
 			initBottomMenu();
-//			
-//			this.addChild(this._leftHeader);
-//			this.addChild(this._leftList);
-//			
-//			this.addChild(myQuad);
 //
 			addChild(_leftList);
 			addChild(_leftHeader);
@@ -89,8 +93,13 @@ package cz.hotmusic
 			addChild(_searchTI);
 			addChild(_line);
 			this.addChild(this._rightHeader);
-			this.addChild(this._rightList);
+			_scrollContainer.addChild(_rightList);
+			_scrollContainer.addChild(_filterRightButton);
+			_scrollContainer.addChild(_endLine);
+			this.addChild(_scrollContainer);
 			
+			
+			this.addChild(this.myQuad);
 			this.addChild(this._header);
 			this.addChild(this._list);
 			this.addChild(this._leftShadow);
@@ -102,6 +111,9 @@ package cz.hotmusic
 		
 		override protected function draw():void
 		{
+			myQuad.width = actualWidth;
+			myQuad.height = actualHeight;
+			
 			this._header.width = this.actualWidth;
 			this._header.validate();
 			
@@ -110,7 +122,7 @@ package cz.hotmusic
 			
 			this._list.y = this._header.height;
 			this._list.width = this.actualWidth;
-			this._list.height = this.actualHeight - this._list.y;
+			this._list.height = this.actualHeight - this._list.y - _bottomBg.height;
 			
 			_leftShadow.x = - _leftShadow.width;
 			_rightShadow.x = actualWidth;
@@ -139,13 +151,23 @@ package cz.hotmusic
 			_searchTI.validate();
 			
 			
+			_line.x = _space;
 			_line.y = _searchTI.y + _searchTI.height + sgap;
-			_line.width = actualWidth;
+			_line.width = actualWidth - _space;
 			
-			this._rightList.y = _line.y;
+			_scrollContainer.width = actualWidth;
+			_scrollContainer.height = actualHeight - _header.height - 2*sgap - _searchTI.height - 1;
+			_scrollContainer.y = _header.height + 2*sgap + _searchTI.height + 1;
+			_scrollContainer.validate();
+			
 			this._rightList.width = this.actualWidth - _space;
 			this._rightList.x = _space;
-			this._rightList.height = this.actualHeight - this._rightList.y;
+			
+			_filterRightButton.width *= 2;
+			_filterRightButton.y = _rightList.height + sgap;
+			_filterRightButton.x = _space + (actualWidth - _space)/2 - _filterRightButton.width/2 ;
+			
+			_endLine.y = _filterRightButton.y + _filterRightButton.height + sgap;
 			
 			// BOTTOM
 			
@@ -155,9 +177,6 @@ package cz.hotmusic
 			_addArtistButton.y = _bottomBg.y + _bottomBg.height/2 - _addArtistButton.height/2;
 			_feedbackButton.x = 2*actualWidth/3 - _feedbackButton.width/2;
 			_feedbackButton.y = _bottomBg.y + _bottomBg.height/2 - _feedbackButton.height/2;
-			
-//			myQuad.width = actualWidth;
-//			myQuad.height = actualHeight;
 		}
 		
 		private function accessorySourceFunction(item:Object):Texture
@@ -176,17 +195,16 @@ package cz.hotmusic
 			Model.getInstance().selectedSong.added = _list.selectedItem.added;
 			Model.getInstance().selectedSong.artist.value = _list.selectedItem.artist;
 			Model.getInstance().selectedSong.genre.value = _list.selectedItem.genre ? _list.selectedItem.genre : "no genre";
+			Model.getInstance().selectedSong.rateUp = _list.selectedItem.rateup;
+			Model.getInstance().selectedSong.rateDown = _list.selectedItem.ratedown;
 			
 			dispatchEventWith("showDetail");
-//			const eventType:String = this._list.selectedItem.event as String;
-//			this.dispatchEventWith(eventType);
 		}
 
 		private function leftlist_changeHandler(event:Event):void
 		{
 			if (_list.selectedItem == null)
 				return;
-						
 		}
 		
 		
@@ -194,38 +212,29 @@ package cz.hotmusic
 		{
 			this.dispatchEventWith("leftMenu");
 
-//			if (!_leftActive && getChildAt(0) == _leftHeader)
 			if (!_leftActive)
 			{
 				_searchTI.visible = false;
 				_line.visible = false;
 				_rightHeader.visible = false;
-				_rightList.visible = false;
+				_scrollContainer.visible = false;
 				_leftList.visible = true;
 				_leftHeader.visible = true;
-//				removeChild(_rightHeader);
-//				removeChild(_rightList);
-//				addChildAt(_leftList, 0);
-//				addChildAt(_leftHeader, 0);
-			} else {
-				_leftHeader.visible = false;
-				_leftList.visible = false;
-//				removeChild(_leftHeader);
-//				removeChild(_leftList);
 			}
 			validate();
 			
 			var targetX:int = _leftActive ? 0 : actualWidth - _space;
-			_leftActive = !_leftActive;
 			
-			var myTween:Tween = new Tween(_header, 0.25, Transitions.EASE_OUT);
+			var myTween:Tween = new Tween(_header, 0.4, Transitions.EASE_OUT);
 			myTween.animate("x", targetX);
 			myTween.onUpdate = myTween_onUpdate;
+			myTween.onComplete = myTweenLeft_onComplete;
 			Starling.juggler.add(myTween);
 		}
 		
 		private function myTween_onUpdate():void
 		{
+			myQuad.x = _header.x;
 			_list.x = _header.x;
 			_leftShadow.x = _header.x - _leftShadow.width;
 			_rightShadow.x = _header.x + _header.width;
@@ -240,43 +249,46 @@ package cz.hotmusic
 		{
 			this.dispatchEventWith("rightMenu");
 			
-//			if (!_rightActive && getChildAt(0) == _rightHeader)
 			if (!_rightActive)
 			{
 				_leftHeader.visible = false;
 				_leftList.visible = false;
 				_searchTI.visible = true;
 				_line.visible = true;
-				_rightList.visible = true;
+				_scrollContainer.visible = true;
 				_rightHeader.visible = true;
-//				removeChild(_leftHeader);
-//				removeChild(_leftList);
-//				addChildAt(_searchTI, 0);
-//				addChildAt(_line, 0);
-//				addChildAt(_rightList, 0);
-//				addChildAt(_rightHeader, 0);
-			} else {
-				_searchTI.visible = false;
-				_line.visible = false;
-				_rightList.visible = false;
-				_rightHeader.visible = false;
-//				removeChild(_rightHeader);
-//				removeChild(_rightList);
-//				removeChild(_searchTI);
-//				removeChild(_line);
 			}
 			validate();
 			
 			var targetX:int = _rightActive ? 0 : - (actualWidth - _space);
-			_rightActive = !_rightActive;
 			
-			var myTween:Tween = new Tween(_header, 0.25, Transitions.EASE_OUT);
+			var myTween:Tween = new Tween(_header, 0.4, Transitions.EASE_OUT);
 			myTween.animate("x", targetX);
 			myTween.onUpdate = myTween_onUpdate;
+			myTween.onComplete = myTweenRight_onComplete;
 			Starling.juggler.add(myTween);
 		}
+		
+		private function myTweenRight_onComplete():void
+		{
+			if (_rightActive) {
+				_searchTI.visible = false;
+				_line.visible = false;
+				_scrollContainer.visible = false;
+				_rightHeader.visible = false;
+			}
+			_rightActive = !_rightActive;	
+		}
+		private function myTweenLeft_onComplete():void
+		{
+			if (_leftActive) {
+				_leftHeader.visible = false;
+				_leftList.visible = false;
+			}
+			_leftActive = !_leftActive;	
+		}
 
-		private function filterButton_triggeredHandler(event:Event):void
+		private function filterLeftButton_triggeredHandler(event:Event):void
 		{
 //			this.dispatchEventWith("filterButton");
 			
@@ -295,17 +307,15 @@ package cz.hotmusic
 		
 		private function initMainList():void
 		{
+			myQuad = new Quad(1, 1, 0x1A171B);
 			// HEADER
-			this._leftButton = new Button(Texture.fromBitmap(new FontAssets.Carky()));
-//			this._leftButton.label = "left";
+			this._leftButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Carky()));
 			this._leftButton.addEventListener(Event.TRIGGERED, leftButton_triggeredHandler);
 			
-			this._rightButton = new Button(Texture.fromBitmap(new FontAssets.Trychtyr()));
-//			this._rightButton.label = "right";
+			this._rightButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Trychtyr()));
 			this._rightButton.addEventListener(Event.TRIGGERED, rightButton_triggeredHandler);
 			
 			this._header = new Header();
-//			this._header.title = "hotmusic";
 			_logo = Image.fromBitmap(new FontAssets.HotMusic());
 			this._header.addChild(_logo);
 			
@@ -322,14 +332,13 @@ package cz.hotmusic
 			
 			// LIST
 			this._list = new List();
-//			this._list.itemRendererType = MainListRenderer;
-//			this._list.itemRendererType = DefaultListItemRenderer;
 			this._list.itemRendererType = MainListRenderer;
 			this._list.dataProvider = new ListCollection(DataHelper.getInstance().songs);
 			this._list.itemRendererProperties.labelField = "song";
-//			this._list.itemRendererProperties.iconSourceFunction = accessorySourceFunction;
-//			this._list.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
-			this._list.itemRendererProperties.accessoryLabelField = "added";
+			this._list.itemRendererProperties.accessoryLabelFunction = function(item:Object):String
+			{
+				return DateHelper.dateToText(item.added);
+			}
 			
 			this._list.addEventListener(Event.CHANGE, list_changeHandler);
 			
@@ -339,15 +348,15 @@ package cz.hotmusic
 		
 		private function initLeftMenu():void
 		{
-			this._filterButton = new feathers.controls.Button();
-			this._filterButton.label = "Filter";
-			this._filterButton.addEventListener(Event.TRIGGERED, filterButton_triggeredHandler);
+			this._filterLeftButton = new feathers.controls.Button();
+			this._filterLeftButton.label = "Filter";
+			this._filterLeftButton.addEventListener(Event.TRIGGERED, filterLeftButton_triggeredHandler);
 			
 			this._leftHeader = new Header();
 			this._leftHeader.title = "Genres";
 			this._leftHeader.rightItems = new <DisplayObject>
 				[
-					this._filterButton
+					this._filterLeftButton
 				];
 			
 			
@@ -370,31 +379,67 @@ package cz.hotmusic
 			
 			// Search
 			_searchTI = new TextInput();
-			_searchTI.text = "Search artist, song or whatever...";
+			_searchTI.prompt = "Search artist, song or whatever...";
 			
 			_line = new Quad(1,1,0x444444);
 			
+			_scrollContainer = new ScrollContainer();
+			
 			// LIST
 			this._rightList = new GroupedList();
+			this._rightList.verticalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
 			this._rightList.itemRendererType = RightListRenderer;
 			this._rightList.dataProvider = new HierarchicalCollection(DataHelper.getInstance().sorts);
 			this._rightList.nameList.add(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
-				
 			this._rightList.itemRendererProperties.labelField = "sortby";
 			this._rightList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
 			this._rightList.addEventListener(Event.CHANGE, list_changeHandler);
 			
+			// BUTTON
+			
+			_filterRightButton = new feathers.controls.Button();
+			_filterRightButton.label = "Filter";
+			_filterRightButton.addEventListener(Event.TRIGGERED, filterRightButton_triggeredHandler);
+			
+			_endLine = new Quad(1,1,0x1A171B);
+			
 			_searchTI.visible = false;
 			_line.visible = false;
-			_rightList.visible = false;
+			_scrollContainer.visible = false;
+		}
+		
+		private function filterRightButton_triggeredHandler(event:Event):void
+		{
+			// SEARCH FILTER
+			filterByWhatever = _searchTI.text;
+			var filteredArr:Array;
+			filteredArr = DataHelper.getInstance().songs.filter(filterWhatever); 
+			
+			// SORT FILTER
+			if (_rightList.selectedItem)
+				filteredArr = SortHelper.getInstance().sort(filteredArr, _rightList.selectedItem.sortbykey);
+			
+			this._list.dataProvider = new ListCollection(filteredArr);
+		}
+		
+		private var filterByWhatever:String;
+		private function filterWhatever(item:Object, index:int, arr:Array):Boolean
+		{
+			if (String(item.genre).toLowerCase().indexOf(filterByWhatever.toLowerCase()) > -1 ||
+				String(item.artist).toLowerCase().indexOf(filterByWhatever.toLowerCase()) > -1 ||
+				String(item.song).toLowerCase().indexOf(filterByWhatever.toLowerCase()) > -1 ||
+				filterByWhatever == null || filterByWhatever.length <= 0
+			)
+				return true;
+			return false;
 		}
 		
 		private function initBottomMenu():void
 		{
 			const INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 62);
 			_bottomBg = new Scale9Image(new Scale9Textures(MetalWorksMobileTheme.atlas.getTexture("list-inset-item-single-selected-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID)); //new Quad(300, 70, 0);
-			_addArtistButton = new Button(Texture.fromBitmap(new FontAssets.AddArtist()));
-			_feedbackButton = new Button(Texture.fromBitmap(new FontAssets.AddFeedback()));
+			_addArtistButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddArtist()));
+			_feedbackButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddFeedback()));
 		}
 	}
 }

@@ -4,7 +4,7 @@
 	<id>cz.zc.hotmusic</id>
 	<filename>Hotmusic</filename>
 	<name>hotmusic</name>
-	<versionNumber>0.0.6</versionNumber>
+	<versionNumber>0.0.7</versionNumber>
 	<description>Hot Music</description>
 	<copyright>2013 Michal Kolesar</copyright>
 
@@ -18,18 +18,18 @@
 
 	<supportedLanguages>en</supportedLanguages>
 
-<!-- 	<icon> -->
-<!-- 		<image29x29>icon29.png</image29x29> -->
-<!-- 		<image48x48>icon48.png</image48x48> -->
-<!-- 		<image50x50>icon50.png</image50x50> -->
-<!-- 		<image57x57>icon57.png</image57x57> -->
-<!-- 		<image58x58>icon58.png</image58x58> -->
-<!-- 		<image72x72>icon72.png</image72x72> -->
-<!-- 		<image100x100>icon100.png</image100x100> -->
-<!-- 		<image114x114>icon114.png</image114x114> -->
-<!-- 		<image128x128>icon128.png</image128x128> -->
-<!-- 		<image144x144>icon144.png</image144x144> -->
-<!-- 	</icon> -->
+	<icon>
+		<image29x29>assets/icon29.png</image29x29>
+		<image48x48>assets/icon48.png</image48x48>
+		<image50x50>assets/icon50.png</image50x50>
+		<image57x57>assets/icon57.png</image57x57>
+		<image58x58>assets/icon58.png</image58x58>
+		<image72x72>assets/icon72.png</image72x72>
+		<image100x100>assets/icon100.png</image100x100>
+		<image114x114>assets/icon114.png</image114x114>
+		<image128x128>assets/icon128.png</image128x128>
+		<image144x144>assets/icon144.png</image144x144>
+	</icon>
 	<android>
 		<colorDepth>16bit</colorDepth>
 		<manifestAdditions><![CDATA[

@@ -1,6 +1,7 @@
 package cz.hotmusic.renderer
 {
 	import cz.hotmusic.FontAssets;
+	import cz.zc.mylib.helper.DateHelper;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -90,7 +91,7 @@ package cz.hotmusic.renderer
 				artistTextRenderer.text = value.artist;
 				this.invalidate(INVALIDATION_FLAG_DATA);
 			}
-			if (value && value.hotstatus)
+			if (value && value.hotstatus != null)
 			{
 				showHotIcons(value.hotstatus);
 			}
