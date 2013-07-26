@@ -26,6 +26,8 @@ package cz.hotmusic
 	import feathers.textures.Scale9Textures;
 	import feathers.themes.MetalWorksMobileTheme;
 	
+	import flash.display.InteractiveObject;
+	import flash.display.Stage;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.ReturnKeyLabel;
@@ -389,10 +391,7 @@ package cz.hotmusic
 			_searchTI = new TextInput();
 			_searchTI.prompt = "Search artist, song or whatever...";
 			_searchTI.textEditorProperties.returnKeyLabel = ReturnKeyLabel.DONE;
-			_searchTI.addEventListener(FeathersEventType.ENTER, function (e:FeathersEventType):void
-			{
-				Starling.current.nativeStage.focus = null;
-			});
+			_searchTI.addEventListener(FeathersEventType.ENTER, enterHandler);
 			
 			_line = new Quad(1,1,0x444444);
 			
@@ -454,6 +453,15 @@ package cz.hotmusic
 			_bottomBg = new Scale9Image(new Scale9Textures(MetalWorksMobileTheme.atlas.getTexture("list-inset-item-single-selected-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID)); //new Quad(300, 70, 0);
 			_addArtistButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddArtist()));
 			_feedbackButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddFeedback()));
+		}
+		
+		private function enterHandler (event:Event):void
+		{
+			var nativeStage:Stage = Starling.current.nativeStage;
+//			var focus:InteractiveObject = mystage.focus;
+//			_searchTI.prompt = "enterHandler " + (mystage.focus != null) ? "focus: "+mystage.focus : "focus is null";
+			nativeStage.focus = null;
+			//				Starling.current.nativeStage.focus = null;
 		}
 	}
 }

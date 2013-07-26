@@ -542,8 +542,10 @@ package cz.hotmusic
 			dispatchEventWith(Event.COMPLETE);
 		}
 		
+		private var touchTolerance:int = 20;
 		private function onRateUp(event:TouchEvent):void
 		{
+			
 			var t:Touch = event.touches.pop(); 
 
 			
@@ -555,21 +557,39 @@ package cz.hotmusic
 			if (t.phase != TouchPhase.ENDED)
 				return;
 			
-			if (t.globalX != beginX || t.globalY != beginY )
+			if (Math.abs(t.globalX - beginX) > touchTolerance || Math.abs(t.globalY - beginY) > touchTolerance )
 				return;
 			
 			trace("onRateUp()");
-			song.rateUp++;
-			_rateUpValue.text = song.rateUp.toString();
+			if (_rateUpButton.enabled) {
+				song.rateUp++;
+				_rateUpValue.text = song.rateUp.toString();
+				_rateDownButton.enabled = false;
+				_rateUpButton.enabled = false;
+			}
 		}
 		private function onRateDown(event:TouchEvent):void
 		{
-			if (event.touches.pop().phase != TouchPhase.ENDED)
+			var t:Touch = event.touches.pop(); 
+			
+			if (t.phase == TouchPhase.BEGAN)
+			{
+				beginX = t.globalX; 
+				beginY = t.globalY;
+			}
+			if (t.phase != TouchPhase.ENDED)
 				return;
+			
+			if (Math.abs(t.globalX - beginX) > touchTolerance || Math.abs(t.globalY - beginY) > touchTolerance )
+				return;
+			
 			trace("onRateDown()");
-			trace(event.touches.pop().phase);// == TouchPhase.BEGAN
-			song.rateDown++;
-			_rateDownValue.text = song.rateDown.toString();
+			if (_rateDownButton.enabled) {
+				song.rateDown++;
+				_rateDownValue.text = song.rateDown.toString();
+				_rateDownButton.enabled = false;
+				_rateUpButton.enabled = false;
+			}
 			
 		}
 	}
