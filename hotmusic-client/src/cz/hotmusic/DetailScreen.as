@@ -256,6 +256,11 @@ package cz.hotmusic
 				navigateToURL(new URLRequest('https://plus.google.com/'), '_blank');
 			});
 			_shareEmailButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Email()));
+			_shareEmailButton.addEventListener(Event.TRIGGERED, function onEmail(event:Event):void {
+				var subjmail:String = "hotmusic testing message";
+				var msgmail:String = "I recommend song "+song.name+" from "+ song.artist.value;
+				navigateToURL(new URLRequest('mailto:aaa@bbb.cc?subject='+encodeURIComponent(subjmail)+'&body='+encodeURIComponent(msgmail)), '_blank');
+			});
 			_shareSmsButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Sms()));
 			_scrollContainer.addChild(_shareLabel);
 			_scrollContainer.addChild(_shareTwitterButton);
