@@ -4,7 +4,7 @@
 	<id>cz.zc.hotmusic</id>
 	<filename>Hotmusic</filename>
 	<name>hotmusic</name>
-	<versionNumber>0.0.8</versionNumber>
+	<versionNumber>0.0.9</versionNumber>
 	<description>Hot Music</description>
 	<copyright>2013 Michal Kolesar</copyright>
 
@@ -52,4 +52,7 @@
 		</InfoAdditions>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
 	</iPhone>
+<extensions>
+        <extensionID>com.sticksports.nativeExtensions.Social</extensionID>
+    </extensions>
 </application>

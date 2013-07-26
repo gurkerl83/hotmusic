@@ -1,5 +1,8 @@
 package cz.hotmusic
 {
+	import com.sticksports.nativeExtensions.social.Social;
+	import com.sticksports.nativeExtensions.social.SocialService;
+	
 	import cz.hotmusic.helper.TextHelper;
 	import cz.hotmusic.model.Model;
 	import cz.hotmusic.model.Song;
@@ -16,6 +19,8 @@ package cz.hotmusic
 	import feathers.skins.StandardIcons;
 	
 	import flash.display.Bitmap;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.text.TextFormat;
 	
 	import org.osmf.elements.ImageElement;
@@ -225,8 +230,31 @@ package cz.hotmusic
 			_shareLabel = new Label();
 			_shareLabel.text = "Share:";
 			_shareTwitterButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Twitter()));
+			_shareTwitterButton.addEventListener(Event.TRIGGERED, function onTwitter(event:Event):void {
+				var msgt:String = "#hotmusic testing message: I recommend song "+song.name+" from "+ song.artist.value;
+				if (Social.isSupported && Social.isAvailableForService(SocialService.twitter)) {
+					var st:Social = new Social(SocialService.twitter);
+					st.setMessage(msgt);
+					st.launch();
+				} 
+				else
+					navigateToURL(new URLRequest('http://twitter.com/home?status='+encodeURIComponent(msgt)),'_blank');
+			});
 			_shareFacebookButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Facebook()));
+			_shareFacebookButton.addEventListener(Event.TRIGGERED, function onFacebook(event:Event):void {
+				var msgf:String = "#hotmusic testing message: I recommend song "+song.name+" from "+ song.artist.value;
+				if (Social.isSupported && Social.isAvailableForService(SocialService.facebook)) {
+					var sf:Social = new Social(SocialService.facebook);
+					sf.setMessage(msgf);
+					sf.launch();
+				} 
+				else
+					navigateToURL(new URLRequest('http://facebook.com/?'), '_blank');
+			});
 			_shareGooglePlusButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.GooglePlus()));
+			_shareGooglePlusButton.addEventListener(Event.TRIGGERED, function onGooglePlus(event:Event):void {
+				navigateToURL(new URLRequest('https://plus.google.com/'), '_blank');
+			});
 			_shareEmailButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Email()));
 			_shareSmsButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Sms()));
 			_scrollContainer.addChild(_shareLabel);
