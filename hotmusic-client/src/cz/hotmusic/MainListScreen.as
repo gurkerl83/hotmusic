@@ -299,7 +299,9 @@ package cz.hotmusic
 		private function filterLeftButton_triggeredHandler(event:Event):void
 		{
 //			this.dispatchEventWith("filterButton");
-			
+			if (_leftList.selectedItem == null)
+				return;
+				
 			filterGenreBy = _leftList.selectedItem.genre;
 			var filteredArr:Array;
 			filteredArr = DataHelper.getInstance().songs.filter(filterGenre); 

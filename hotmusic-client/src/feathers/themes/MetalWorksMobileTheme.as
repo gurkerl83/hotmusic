@@ -581,11 +581,11 @@ package feathers.themes
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.textFormat = this.smallUIDarkTextFormat;
+			button.defaultLabelProperties.textFormat = this.largeUIDarkTextFormat;
 			button.defaultLabelProperties.embedFonts = true;
-			button.disabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
+			button.disabledLabelProperties.textFormat = this.largeUIDisabledTextFormat;
 			button.disabledLabelProperties.embedFonts = true;
-			button.selectedDisabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
+			button.selectedDisabledLabelProperties.textFormat = this.largeUIDisabledTextFormat;
 			button.selectedDisabledLabelProperties.embedFonts = true;
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
