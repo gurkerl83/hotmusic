@@ -25,7 +25,7 @@
     <SubTexture name="list-inset-item-first-up-skin" x="191" y="355" width="28" height="88"/>
     <SubTexture name="list-inset-item-last-selected-skin" x="187" y="263" width="28" height="88"/>
     <SubTexture name="list-inset-item-last-up-skin" x="159" y="355" width="28" height="88"/>
-    <SubTexture name="list-inset-item-middle-selected-skin" x="251" y="263" width="16" height="88"/>
+    <SubTexture name="list-inset-item-middle-selected-skin" x="243" y="355" width="16" height="88"/>
     <SubTexture name="list-inset-item-middle-up-skin" x="243" y="355" width="16" height="88"/>
     <SubTexture name="list-inset-item-single-selected-skin" x="127" y="355" width="28" height="88"/>
     <SubTexture name="list-inset-item-single-up-skin" x="95" y="355" width="28" height="88"/>

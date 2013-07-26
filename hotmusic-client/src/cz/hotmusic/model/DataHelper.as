@@ -155,8 +155,8 @@ package cz.hotmusic.model
 				},{
 					header: "Sort by rating",
 					children: [
-						{leftNormalImg: new Image(Texture.fromBitmap(new FontAssets.RateUp())), leftSelectedImg: new Image(Texture.fromBitmap(new FontAssets.RateUpSelected())), sortby: "Best first", sortbykey: SortHelper.RATING_BEST},
-						{leftNormalImg: new Image(Texture.fromBitmap(new FontAssets.RateDown())), leftSelectedImg: new Image(Texture.fromBitmap(new FontAssets.RateDownSelected())), sortby: "Worst first", sortbykey: SortHelper.RATING_WORST}
+						{leftNormalImg: new Image(Texture.fromBitmap(new FontAssets.RateUpSmall())), leftSelectedImg: new Image(Texture.fromBitmap(new FontAssets.RateUpSmallSelected())), sortby: "Best first", sortbykey: SortHelper.RATING_BEST},
+						{leftNormalImg: new Image(Texture.fromBitmap(new FontAssets.RateDownSmall())), leftSelectedImg: new Image(Texture.fromBitmap(new FontAssets.RateDownSmallSelected())), sortby: "Worst first", sortbykey: SortHelper.RATING_WORST}
 					]
 				}
 			];

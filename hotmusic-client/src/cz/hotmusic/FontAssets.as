@@ -15,17 +15,17 @@ package cz.hotmusic
 		[Embed(source="assets/icon/oranzovanota.png")]
 		public static const HotStatusSmall:Class;
 		[Embed(source="assets/icon/bilypalecnahoru.png")]
-		public static const RateUp:Class;
+		public static const RateUpSmall:Class;
 		[Embed(source="assets/icon/bilypalecdolu.png")]
-		public static const RateDown:Class;
+		public static const RateDownSmall:Class;
 		[Embed(source="assets/icon/oranzovypalecnahoru.png")]
-		public static const RateUpSelected:Class;
+		public static const RateUpSmallSelected:Class;
 		[Embed(source="assets/icon/oranzovypalecdolu.png")]
-		public static const RateDownSelected:Class;
-		[Embed(source="assets/icon/rateup.png")]
-		public static const RateUpDown:Class;
-		[Embed(source="assets/icon/ratedown.png")]
-		public static const RateDownDown:Class;
+		public static const RateDownSmallSelected:Class;
+		[Embed(source="assets/icon/rateup2.png")]
+		public static const RateUp:Class;
+		[Embed(source="assets/icon/ratedown2.png")]
+		public static const RateDown:Class;
 		[Embed(source="assets/icon/twitter.png")]
 		public static const Twitter:Class;
 		[Embed(source="assets/icon/facebook.png")]
@@ -52,11 +52,11 @@ package cz.hotmusic
 
 		[Embed(source="assets/icon/right.png")]
 		public static const Right:Class;
-		[Embed(source="assets/icon/back.png")]
+		[Embed(source="assets/icon/bilasipka.png")]
 		public static const Back:Class;
-		[Embed(source="assets/icon/carky.png")]
+		[Embed(source="assets/icon/carky2.png")]
 		public static const Carky:Class;
-		[Embed(source="assets/icon/trychtyr.png")]
+		[Embed(source="assets/icon/trychtyr2.png")]
 		public static const Trychtyr:Class;
 		[Embed(source="assets/icon/hotmusic.png")]
 		public static const HotMusic:Class;

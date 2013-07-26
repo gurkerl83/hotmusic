@@ -28,6 +28,7 @@ package cz.hotmusic
 	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.text.ReturnKeyLabel;
 	
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
@@ -114,6 +115,7 @@ package cz.hotmusic
 			myQuad.width = actualWidth;
 			myQuad.height = actualHeight;
 			
+			this._header.paddingTop = this._header.paddingBottom = this._header.paddingLeft = this._header.paddingRight = 0;
 			this._header.width = this.actualWidth;
 			this._header.validate();
 			
@@ -131,8 +133,11 @@ package cz.hotmusic
 
 			// LEFT
 			
+			this._leftHeader.paddingRight = 50;
+			this._leftHeader.paddingLeft = 50;
 			this._leftHeader.width = actualWidth - _space;
 			_leftHeader.validate();
+			_filterLeftButton.width *= 2;
 			
 			this._leftList.y = this._header.height;
 			this._leftList.width = this.actualWidth - _space;
@@ -197,6 +202,7 @@ package cz.hotmusic
 			Model.getInstance().selectedSong.genre.value = _list.selectedItem.genre ? _list.selectedItem.genre : "no genre";
 			Model.getInstance().selectedSong.rateUp = _list.selectedItem.rateup;
 			Model.getInstance().selectedSong.rateDown = _list.selectedItem.ratedown;
+			Model.getInstance().selectedSong.hotstatus = _list.selectedItem.hotstatus;
 			
 			dispatchEventWith("showDetail");
 		}
@@ -296,6 +302,7 @@ package cz.hotmusic
 			var filteredArr:Array;
 			filteredArr = DataHelper.getInstance().songs.filter(filterGenre); 
 			this._list.dataProvider = new ListCollection(filteredArr);
+			leftButton_triggeredHandler(null);
 		}
 		private var filterGenreBy:String;
 		private function filterGenre(item:Object, index:int, arr:Array):Boolean
@@ -354,6 +361,7 @@ package cz.hotmusic
 			
 			this._leftHeader = new Header();
 			this._leftHeader.title = "Genres";
+			this._leftHeader.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
 			this._leftHeader.rightItems = new <DisplayObject>
 				[
 					this._filterLeftButton
@@ -380,6 +388,11 @@ package cz.hotmusic
 			// Search
 			_searchTI = new TextInput();
 			_searchTI.prompt = "Search artist, song or whatever...";
+			_searchTI.textEditorProperties.returnKeyLabel = ReturnKeyLabel.DONE;
+			_searchTI.addEventListener(FeathersEventType.ENTER, function (e:FeathersEventType):void
+			{
+				Starling.current.nativeStage.focus = null;
+			});
 			
 			_line = new Quad(1,1,0x444444);
 			
@@ -420,6 +433,7 @@ package cz.hotmusic
 				filteredArr = SortHelper.getInstance().sort(filteredArr, _rightList.selectedItem.sortbykey);
 			
 			this._list.dataProvider = new ListCollection(filteredArr);
+			rightButton_triggeredHandler(null);
 		}
 		
 		private var filterByWhatever:String;

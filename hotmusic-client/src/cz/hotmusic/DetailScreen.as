@@ -113,11 +113,15 @@ package cz.hotmusic
 		private var _linePadding:int = 10;
 		private var _lineHeight:int = 2;
 		
+		private var song:Song;
+		
 		
 		override protected function initialize():void
 		{
 //			_backgroundQuad = new Quad(1,1,0x1A171B);
 //			this.addChild(_backgroundQuad);
+			
+			song = Model.getInstance().selectedSong;
 			
 			_scrollContainer = new ScrollContainer();
 			this.addChild(_scrollContainer);
@@ -136,7 +140,7 @@ package cz.hotmusic
 			_songLabel = new Label();
 			_songLabel.text = "Song:";
 			_songValue = new Label();
-			_songValue.text = Model.getInstance().selectedSong.name;
+			_songValue.text = song.name;
 //			_songValue.textRendererProperties.textFormat = new TextFormat((new FontAssets.MyriadProBold()).fontName, 40, 0xF19300);
 			_songValue.textRendererFactory = TextHelper.getInstance().detailSongValue;
 			_scrollContainer.addChild(_songLabel);
@@ -148,7 +152,7 @@ package cz.hotmusic
 			_artistLabel = new Label();
 			_artistLabel.text = "Artist:";
 			_artistValue = new Label();
-			_artistValue.text = Model.getInstance().selectedSong.artist.value;
+			_artistValue.text = song.artist.value;
 			_artistValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_scrollContainer.addChild(_artistLabel);
 			_scrollContainer.addChild(_artistValue);
@@ -159,7 +163,7 @@ package cz.hotmusic
 			_albumLabel = new Label();
 			_albumLabel.text = "Album:";
 			_albumValue = new Label();
-			_albumValue.text = Model.getInstance().selectedSong.album.value;
+			_albumValue.text = song.album.value;
 			_albumValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_scrollContainer.addChild(_albumLabel);
 			_scrollContainer.addChild(_albumValue);
@@ -170,7 +174,7 @@ package cz.hotmusic
 			_genreLabel = new Label();
 			_genreLabel.text = "Genre:";
 			_genreValue = new Label();
-			_genreValue.text = Model.getInstance().selectedSong.genre.value;
+			_genreValue.text = song.genre.value;
 			_genreValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_scrollContainer.addChild(_genreLabel);
 			_scrollContainer.addChild(_genreValue);
@@ -185,6 +189,9 @@ package cz.hotmusic
 			_statusImage1 = new Image(Texture.fromBitmap(hsbm));
 			_statusImage2 = new Image(Texture.fromBitmap(hsbm));
 			_statusImage3 = new Image(Texture.fromBitmap(hsbm));
+			_statusImage1.visible = (song.hotstatus >= 1) ? true:false;
+			_statusImage2.visible = (song.hotstatus >= 2) ? true:false;
+			_statusImage3.visible = (song.hotstatus >= 3) ? true:false;
 			
 			_scrollContainer.addChild(_statusLabel);
 			_scrollContainer.addChild(_statusImage1);
@@ -199,12 +206,12 @@ package cz.hotmusic
 			_rateUpButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.RateUp()));
 			_rateUpButton.addEventListener(TouchEvent.TOUCH, onRateUp);
 			_rateUpValue = new Label();
-			_rateUpValue.text = Model.getInstance().selectedSong.rateUp.toString();
+			_rateUpValue.text = song.rateUp.toString();
 			_rateUpValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_rateDownButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.RateDown()));
 			_rateDownButton.addEventListener(TouchEvent.TOUCH, onRateDown);
 			_rateDownValue = new Label();
-			_rateDownValue.text = Model.getInstance().selectedSong.rateDown.toString();
+			_rateDownValue.text = song.rateDown.toString();
 			_rateDownValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_scrollContainer.addChild(_rateLabel);
 			_scrollContainer.addChild(_rateUpButton);
@@ -318,6 +325,7 @@ package cz.hotmusic
 		
 		override protected function draw():void
 		{
+			this._header.paddingTop = this._header.paddingBottom = this._header.paddingLeft = this._header.paddingRight = 0;
 			this._header.width = this.actualWidth;
 			this._header.validate();
 			
@@ -403,14 +411,15 @@ package cz.hotmusic
 			_line5.height = _lineHeight;
 			_line5.width = actualWidth - 2*_leftPadding;;
 			
-			_rateUpButton.x = _space;
-			_rateUpButton.y = _line5.y + _lineHeight + _linePadding*4;
+			var iconBlackborder:int = 14;
+			_rateUpButton.x = _space - iconBlackborder;
+			_rateUpButton.y = _line5.y + _lineHeight + _linePadding*3;
 			_rateUpValue.validate();
 			_rateUpValue.x = _rateUpButton.x + _rateUpButton.width + 40;
 			_rateUpValue.y = _rateUpButton.y + _rateUpButton.height/2 - _rateUpValue.height/2;
 			
-			_rateDownButton.x = _rateUpValue.x + _rateUpValue.width + 140;
-			_rateDownButton.y = _line5.y + _lineHeight + _linePadding*4;
+			_rateDownButton.x = _rateUpValue.x + _rateUpValue.width + 100;
+			_rateDownButton.y = _line5.y + _lineHeight + _linePadding*3;
 			_rateDownValue.validate();
 			_rateDownValue.x = _rateDownButton.x + _rateDownButton.width + 40;
 			_rateDownValue.y = _rateDownButton.y + _rateDownButton.height/2 - _rateDownValue.height/2;
@@ -422,20 +431,21 @@ package cz.hotmusic
 			_rateLabel.validate();
 			
 			_line6.x = _leftPadding;
-			_line6.y = _rateUpButton.y + _rateUpButton.height + _linePadding*4;
+			_line6.y = _rateUpButton.y + _rateUpButton.height + _linePadding*3;
 			_line6.height = _lineHeight;
 			_line6.width = actualWidth - 2*_leftPadding;;
 			
-			_shareTwitterButton.x = _space;
-			_shareTwitterButton.y = _line6.y + _lineHeight + _linePadding*4;
-			_shareFacebookButton.x = _shareTwitterButton.x + _shareTwitterButton.width + 40;
-			_shareFacebookButton.y = _line6.y + _lineHeight + _linePadding*4;
-			_shareGooglePlusButton.x = _shareFacebookButton.x + _shareFacebookButton.width + 40;
-			_shareGooglePlusButton.y = _line6.y + _lineHeight + _linePadding*4;
-			_shareEmailButton.x = _shareGooglePlusButton.x + _shareGooglePlusButton.width + 40;
-			_shareEmailButton.y = _line6.y + _lineHeight + _linePadding*4;
-			_shareSmsButton.x = _shareEmailButton.x + _shareEmailButton.width + 40;
-			_shareSmsButton.y = _line6.y + _lineHeight + _linePadding*4;
+			var iconspace:int = 14;
+			_shareTwitterButton.x = _space - iconBlackborder;
+			_shareTwitterButton.y = _line6.y + _lineHeight + _linePadding*3;
+			_shareFacebookButton.x = _shareTwitterButton.x + _shareTwitterButton.width + iconspace;
+			_shareFacebookButton.y = _line6.y + _lineHeight + _linePadding*3;
+			_shareGooglePlusButton.x = _shareFacebookButton.x + _shareFacebookButton.width + iconspace;
+			_shareGooglePlusButton.y = _line6.y + _lineHeight + _linePadding*3;
+			_shareEmailButton.x = _shareGooglePlusButton.x + _shareGooglePlusButton.width + iconspace;
+			_shareEmailButton.y = _line6.y + _lineHeight + _linePadding*3;
+			_shareSmsButton.x = _shareEmailButton.x + _shareEmailButton.width + iconspace;
+			_shareSmsButton.y = _line6.y + _lineHeight + _linePadding*3;
 			
 			_shareLabel.validate();
 			 _shareLabel.x = _leftPadding;
@@ -445,7 +455,7 @@ package cz.hotmusic
 			
 			//-------------------------------------------------
 
-			_line7.y = _shareTwitterButton.y + _shareTwitterButton.height + _linePadding*4;
+			_line7.y = _shareTwitterButton.y + _shareTwitterButton.height + _linePadding*3;
 			_line7.height = _lineHeight*2;
 			_line7.width = actualWidth;
 			
@@ -549,8 +559,8 @@ package cz.hotmusic
 				return;
 			
 			trace("onRateUp()");
-			Model.getInstance().selectedSong.rateUp++;
-			_rateUpValue.text = Model.getInstance().selectedSong.rateUp.toString();
+			song.rateUp++;
+			_rateUpValue.text = song.rateUp.toString();
 		}
 		private function onRateDown(event:TouchEvent):void
 		{
@@ -558,8 +568,8 @@ package cz.hotmusic
 				return;
 			trace("onRateDown()");
 			trace(event.touches.pop().phase);// == TouchPhase.BEGAN
-			Model.getInstance().selectedSong.rateDown++;
-			_rateDownValue.text = Model.getInstance().selectedSong.rateDown.toString();
+			song.rateDown++;
+			_rateDownValue.text = song.rateDown.toString();
 			
 		}
 	}
