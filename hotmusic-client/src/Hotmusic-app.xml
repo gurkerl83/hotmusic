@@ -4,7 +4,7 @@
 	<id>cz.zc.hotmusic</id>
 	<filename>Hotmusic</filename>
 	<name>hotmusic</name>
-	<versionNumber>0.0.10</versionNumber>
+	<versionNumber>0.0.11</versionNumber>
 	<description>Hot Music</description>
 	<copyright>2013 Michal Kolesar</copyright>
 
@@ -54,5 +54,7 @@
 	</iPhone>
 <extensions>
         <extensionID>com.sticksports.nativeExtensions.Social</extensionID>
+    <extensionID>com.distriqt.TestFlightSDK</extensionID>
+    <extensionID>com.thejustinwalsh.TestFlight</extensionID>
     </extensions>
 </application>

@@ -1,5 +1,7 @@
 package cz.hotmusic
 {
+	import com.thejustinwalsh.ane.TestFlight;
+	
 	import cz.hotmusic.helper.SortHelper;
 	import cz.hotmusic.model.DataHelper;
 	import cz.hotmusic.model.Model;
@@ -7,6 +9,7 @@ package cz.hotmusic
 	import cz.hotmusic.renderer.MainListRenderer;
 	import cz.hotmusic.renderer.RightListRenderer;
 	import cz.zc.mylib.helper.DateHelper;
+	import cz.zc.mylib.helper.LogHelper;
 	
 	import feathers.controls.Button;
 	import feathers.controls.GroupedList;
@@ -14,7 +17,9 @@ package cz.hotmusic
 	import feathers.controls.List;
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.ScrollText;
 	import feathers.controls.Scroller;
+	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.data.HierarchicalCollection;
@@ -81,6 +86,7 @@ package cz.hotmusic
 		private var _space:int = 100;
 		
 		private var myQuad:Quad;
+		private var debugPanel:ScrollText;
 		
 		override protected function initialize():void
 		{
@@ -89,6 +95,7 @@ package cz.hotmusic
 			initLeftMenu();
 			initRightMenu();
 			initBottomMenu();
+			initDebugPanel();
 //
 			addChild(_leftList);
 			addChild(_leftHeader);
@@ -110,6 +117,7 @@ package cz.hotmusic
 			this.addChild(this._bottomBg);
 			this.addChild(this._addArtistButton);
 			this.addChild(this._feedbackButton);
+			this.addChild(this.debugPanel);
 		}
 		
 		override protected function draw():void
@@ -127,6 +135,10 @@ package cz.hotmusic
 			this._list.y = this._header.height;
 			this._list.width = this.actualWidth;
 			this._list.height = this.actualHeight - this._list.y - _bottomBg.height;
+			
+			debugPanel.y = _header.height;
+			debugPanel.width = actualWidth;
+			debugPanel.height = actualHeight - _list.y - _bottomBg.height;
 			
 			_leftShadow.x = - _leftShadow.width;
 			_rightShadow.x = actualWidth;
@@ -206,6 +218,8 @@ package cz.hotmusic
 			Model.getInstance().selectedSong.rateDown = _list.selectedItem.ratedown;
 			Model.getInstance().selectedSong.hotstatus = _list.selectedItem.hotstatus;
 			
+			TestFlight.passCheckpoint("Song Selected: " + _list.selectedItem.song);
+			
 			dispatchEventWith("showDetail");
 		}
 
@@ -218,6 +232,7 @@ package cz.hotmusic
 		
 		private function leftButton_triggeredHandler(event:Event):void
 		{
+			TestFlight.passCheckpoint("Genres Button");
 			this.dispatchEventWith("leftMenu");
 
 			if (!_leftActive)
@@ -255,6 +270,7 @@ package cz.hotmusic
 		
 		private function rightButton_triggeredHandler(event:Event):void
 		{
+			TestFlight.passCheckpoint("Filter Button");
 			this.dispatchEventWith("rightMenu");
 			
 			if (!_rightActive)
@@ -286,6 +302,7 @@ package cz.hotmusic
 				_rightHeader.visible = false;
 			}
 			_rightActive = !_rightActive;	
+			TestFlight.passCheckpoint("Filters are " + _rightActive ? "open":"closed");
 		}
 		private function myTweenLeft_onComplete():void
 		{
@@ -294,6 +311,7 @@ package cz.hotmusic
 				_leftList.visible = false;
 			}
 			_leftActive = !_leftActive;	
+			TestFlight.passCheckpoint("Genres are " + _leftActive ? "open":"closed");
 		}
 
 		private function filterLeftButton_triggeredHandler(event:Event):void
@@ -303,6 +321,7 @@ package cz.hotmusic
 				return;
 				
 			filterGenreBy = _leftList.selectedItem.genre;
+			TestFlight.passCheckpoint("Genre Filter Button: by " + filterGenreBy);
 			var filteredArr:Array;
 			filteredArr = DataHelper.getInstance().songs.filter(filterGenre); 
 			this._list.dataProvider = new ListCollection(filteredArr);
@@ -428,10 +447,14 @@ package cz.hotmusic
 			filterByWhatever = _searchTI.text;
 			var filteredArr:Array;
 			filteredArr = DataHelper.getInstance().songs.filter(filterWhatever); 
-			
+			var checkpointText:String = "Filter Button (right). Search: " + filterByWhatever; 
 			// SORT FILTER
-			if (_rightList.selectedItem)
+			if (_rightList.selectedItem) {
 				filteredArr = SortHelper.getInstance().sort(filteredArr, _rightList.selectedItem.sortbykey);
+				checkpointText += ", Sort: " + _rightList.selectedItem.sortbykey;
+			}
+			
+			TestFlight.passCheckpoint(checkpointText);
 			
 			this._list.dataProvider = new ListCollection(filteredArr);
 			rightButton_triggeredHandler(null);
@@ -454,7 +477,30 @@ package cz.hotmusic
 			const INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 62);
 			_bottomBg = new Scale9Image(new Scale9Textures(MetalWorksMobileTheme.atlas.getTexture("list-inset-item-single-selected-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID)); //new Quad(300, 70, 0);
 			_addArtistButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddArtist()));
+			_addArtistButton.addEventListener(Event.TRIGGERED, function onAddArtist(event:Event):void {
+				TestFlight.passCheckpoint("AddArtist Button");
+				debugPanel.text = LogHelper.textLog;
+				debugPanel.visible = !debugPanel.visible;
+			});
 			_feedbackButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddFeedback()));
+			_feedbackButton.addEventListener(Event.TRIGGERED, function onFeedback(event:Event):void {
+				TestFlight.passCheckpoint("Feedback Button");
+//				TestFlightSDK.service.openFeedbackView();
+				try {
+					LogHelper.getInstance(this).log("TestFlight.openFeedbackView() starting");
+					TestFlight.openFeedbackView();
+					LogHelper.getInstance(this).log("TestFlight.openFeedbackView() ended");
+				} catch (err:Error) {
+					LogHelper.getInstance(this).log(err.getStackTrace());
+				}
+			});
+		}
+		
+		private function initDebugPanel():void {
+			debugPanel = new ScrollText();
+			debugPanel.visible = false;
+			debugPanel.background = true;
+			debugPanel.backgroundColor = 0;
 		}
 		
 		private function enterHandler (event:Event):void

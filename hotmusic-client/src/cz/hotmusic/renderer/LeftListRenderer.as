@@ -34,9 +34,10 @@ package cz.hotmusic.renderer
 		
 		protected function createBadge():void
 		{
-			var hst:Texture = Texture.fromBitmap(new FontAssets.BadgeGray());
+			var hst:Texture;
+			hst = Texture.fromBitmap(new FontAssets.BadgeGray());
 			badgeGray = new Image(hst);
-			var hst:Texture = Texture.fromBitmap(new FontAssets.BadgeYellow());
+			hst = Texture.fromBitmap(new FontAssets.BadgeYellow());
 			badgeYellow = new Image(hst);
 			badgeLabel = new Label();
 			badgeLabel.name = "badgeLabel";

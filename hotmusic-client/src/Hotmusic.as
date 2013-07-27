@@ -1,13 +1,18 @@
 package
 {
+	import com.thejustinwalsh.ane.TestFlight;
+	
 	import cz.hotmusic.Main;
 	import cz.hotmusic.model.Model;
+	import cz.zc.mylib.helper.LogHelper;
 	
+	import flash.desktop.NativeApplication;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.InvokeEvent;
 	import flash.geom.Rectangle;
 	
 	import starling.core.Starling;
@@ -26,6 +31,12 @@ package
 			super();
 			splash = new Splash();
 			splash.addEventListener(Event.ENTER_FRAME, onAddedToStage);
+			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, function (event:Event):void {
+				startTestFlight();
+			});
+			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, function (event:Event):void {
+				startTestFlight();
+			});
 			addChild(splash);
 			
 			if(this.stage)
@@ -36,6 +47,24 @@ package
 			this.mouseEnabled = this.mouseChildren = false;
 //			this.loaderInfo.addEventListener(Event.COMPLETE, loaderInfo_completeHandler);
 			
+		}
+		
+		private function startTestFlight():void
+		{
+			try {
+				LogHelper.getInstance(this).log("TestFlight.setDeviceIdentifier() starting");
+				TestFlight.setDeviceIdentifier();
+				LogHelper.getInstance(this).log("TestFlight.setDeviceIdentifier() ended");
+			} catch (err:Error) {
+				LogHelper.getInstance(this).log(err.getStackTrace());
+			}
+			try {
+				LogHelper.getInstance(this).log("TestFlight.takeOff() starting");
+				var takeOffRes:Boolean = TestFlight.takeOff('b16b34e9-e1bb-46d6-a0e0-afc27f2d134c');
+				LogHelper.getInstance(this).log("TestFlight.takeOff() ended with result: " + takeOffRes);
+			} catch (err:Error) {
+				LogHelper.getInstance(this).log(err.getStackTrace());
+			}
 		}
 		
 		//Call this once your first Starling view has rendered
@@ -52,6 +81,13 @@ package
 			splash.removeEventListener(Event.ENTER_FRAME, onAddedToStage);
 			
 			Model.getInstance().resetModel();
+			// distriqt
+//			TestFlightSDK.init("a95cb5c9288dceac783021d52ed24107c45e48f0BndL53Ei3PQ5uK7LWqJNT1mb6aUE0KiH/cHQIeDcT2xGDoBiDhIEnOO7HfMc8RpyECrdJKhMopbk+O9Pecv3lw==");
+//			TestFlightSDK.service.startTestFlight("b16b34e9-e1bb-46d6-a0e0-afc27f2d134c");
+			
+//			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, function (event:InvokeEvent):void {
+//				TestFlightSDK.service.startTestFlight("b16b34e9-e1bb-46d6-a0e0-afc27f2d134c");
+//			});
 			
 			//Init Starling
 			Starling.handleLostContext = true;
