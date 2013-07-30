@@ -3,10 +3,13 @@
 <!-- $TexturePacker:SmartUpdate:b165abc972796faa9c8e172b29070b83$ -->
 <TextureAtlas imagePath="metalworks.png">
     <SubTexture name="textinput-skin" x="267" y="105" width="69" height="49"/>
+    <SubTexture name="textinputblack-skin" x="356" y="97" width="15" height="75"/>
     <SubTexture name="background-disabled-skin" x="323" y="59" width="32" height="32"/>
     <SubTexture name="background-down-skin" x="467" y="40" width="32" height="32"/>
     <SubTexture name="background-focused-skin" x="431" y="39" width="32" height="32"/>
     <SubTexture name="background-skin" x="395" y="39" width="32" height="32"/>
+    <SubTexture name="button2-down-skin" x="430" y="97" width="44" height="75"/>
+    <SubTexture name="button2-up-skin" x="382" y="96" width="44" height="75"/>
     <SubTexture name="button-disabled-skin" x="259" y="447" width="60" height="60"/>
     <SubTexture name="button-down-skin" x="195" y="447" width="60" height="60"/>
     <SubTexture name="button-selected-disabled-skin" x="131" y="447" width="60" height="60"/>

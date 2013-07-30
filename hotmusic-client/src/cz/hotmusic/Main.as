@@ -10,6 +10,7 @@ package cz.hotmusic
 	
 	public class Main extends Sprite
 	{
+		private static const LOGIN_SCREEN:String = "loginScreen";
 		private static const MAIN_LIST:String = "mainList";
 		private static const DETAIL_SCREEN:String = "detailScreen";
 		
@@ -30,6 +31,11 @@ package cz.hotmusic
 			this._navigator = new ScreenNavigator();
 			this.addChild(this._navigator);
 			
+			this._navigator.addScreen(LOGIN_SCREEN, new ScreenNavigatorItem(LoginScreen,
+				{
+					login: MAIN_LIST
+				}));
+
 			this._navigator.addScreen(MAIN_LIST, new ScreenNavigatorItem(MainListScreen,
 				{
 					showDetail: DETAIL_SCREEN
@@ -39,8 +45,9 @@ package cz.hotmusic
 				{
 					complete: MAIN_LIST
 				}));
+
 			
-			this._navigator.showScreen(MAIN_LIST);
+			this._navigator.showScreen(LOGIN_SCREEN);
 			
 			this._transitionManager = new ScreenSlidingStackTransitionManager(this._navigator);
 			this._transitionManager.duration = 0.5;

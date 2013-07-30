@@ -107,9 +107,11 @@ package feathers.themes
 		protected static const ORIGINAL_DPI_IPAD_RETINA:int = 264;
 
 //		protected static const TEXTINPUT_SCALE9_GRID:Rectangle = new Rectangle(39, 0, 2, 49);
+		protected static const TEXTINPUTBLACK_SCALE9_GRID:Rectangle = new Rectangle(4, 0, 7, 75);
 		protected static const TEXTINPUT_SCALE9_GRID:Rectangle = new Rectangle(39, 0, 2, 49);
 		protected static const DEFAULT_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 22, 22);
 		protected static const BUTTON_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 50, 50);
+		protected static const BUTTON2_SCALE9_GRID:Rectangle = new Rectangle(15, 0, 15, 75);
 		protected static const ITEM_RENDERER_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 1, 82);
 		protected static const INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 1, 82);
 		protected static const INSET_ITEM_RENDERER_FIRST_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 70);
@@ -194,6 +196,7 @@ package feathers.themes
 		public static var atlas:TextureAtlas;
 		protected var atlasBitmapData:BitmapData;
 		protected var primaryBackgroundTexture:Texture;
+		protected var textinputblackSkinTextures:Scale9Textures;
 		protected var textinputSkinTextures:Scale9Textures;
 		protected var backgroundSkinTextures:Scale9Textures;
 		protected var backgroundDisabledSkinTextures:Scale9Textures;
@@ -340,19 +343,23 @@ package feathers.themes
 
 			this.primaryBackgroundTexture = atlas.getTexture("primary-background");
 
+			const textinputblackSkinTexture:Texture = atlas.getTexture("textinputblack-skin");
 			const textinputSkinTexture:Texture = atlas.getTexture("textinput-skin");
 			const backgroundSkinTexture:Texture = atlas.getTexture("background-skin");
 			const backgroundDownSkinTexture:Texture = atlas.getTexture("background-down-skin");
 			const backgroundDisabledSkinTexture:Texture = atlas.getTexture("background-disabled-skin");
 			const backgroundFocusedSkinTexture:Texture = atlas.getTexture("background-focused-skin");
 
+			this.textinputblackSkinTextures = new Scale9Textures(textinputblackSkinTexture, TEXTINPUTBLACK_SCALE9_GRID);
 			this.textinputSkinTextures = new Scale9Textures(textinputSkinTexture, TEXTINPUT_SCALE9_GRID);
 			this.backgroundSkinTextures = new Scale9Textures(backgroundSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundDisabledSkinTextures = new Scale9Textures(backgroundDisabledSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundFocusedSkinTextures = new Scale9Textures(backgroundFocusedSkinTexture, DEFAULT_SCALE9_GRID);
 
-			this.buttonUpSkinTextures = new Scale9Textures(atlas.getTexture("button-up-skin"), BUTTON_SCALE9_GRID);
-			this.buttonDownSkinTextures = new Scale9Textures(atlas.getTexture("button-down-skin"), BUTTON_SCALE9_GRID);
+			this.buttonUpSkinTextures = new Scale9Textures(atlas.getTexture("button2-up-skin"), BUTTON2_SCALE9_GRID);
+			this.buttonDownSkinTextures = new Scale9Textures(atlas.getTexture("button2-down-skin"), BUTTON2_SCALE9_GRID);
+//			this.buttonUpSkinTextures = new Scale9Textures(atlas.getTexture("button-up-skin"), BUTTON_SCALE9_GRID);
+//			this.buttonDownSkinTextures = new Scale9Textures(atlas.getTexture("button-down-skin"), BUTTON_SCALE9_GRID);
 			this.buttonDisabledSkinTextures = new Scale9Textures(atlas.getTexture("button-disabled-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedUpSkinTextures = new Scale9Textures(atlas.getTexture("button-selected-up-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(atlas.getTexture("button-selected-disabled-skin"), BUTTON_SCALE9_GRID);
@@ -413,6 +420,7 @@ package feathers.themes
 			this.setInitializerForClassAndSubclasses(Screen, screenInitializer);
 			this.setInitializerForClass(Label, labelInitializer);
 			this.setInitializerForClass(Label, labelBadgeInitializer, "badgeLabel");
+			this.setInitializerForClass(Label, labelInitializer, "header");
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
 			this.setInitializerForClass(Button, buttonInitializer);
@@ -450,6 +458,7 @@ package feathers.themes
 			this.setInitializerForClass(Slider, sliderInitializer);
 			this.setInitializerForClass(ToggleSwitch, toggleSwitchInitializer);
 			this.setInitializerForClass(TextInput, textInputInitializer);
+			this.setInitializerForClass(TextInput, textInputInitializer, "textinputblack");
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(PickerList, pickerListInitializer);
@@ -535,8 +544,13 @@ package feathers.themes
 //			label.textRendererProperties.textFormat = this.smallLightTextFormat;
 			if (label.textRendererFactory == null && label.textRendererProperties.textFormat == null)
 			{
-				label.textRendererProperties.textFormat = new TextFormat("MyriadProRegular", 22, 0xc8c8c8);
-				label.textRendererProperties.embedFonts = true;
+				if (label.name == "header") {
+					label.textRendererProperties.textFormat = this.headerTextFormat;
+					label.textRendererProperties.embedFonts = true;
+				} else {
+					label.textRendererProperties.textFormat = new TextFormat("MyriadProRegular", 22, 0xc8c8c8);
+					label.textRendererProperties.embedFonts = true;
+				}
 			}
 		}
 
@@ -958,31 +972,54 @@ package feathers.themes
 
 		protected function textInputInitializer(input:TextInput):void
 		{
-			const backgroundSkin:Scale9Image = new Scale9Image(this.textinputSkinTextures, this.scale);
+			var tist:Scale9Textures;
+			var textcolor:uint;
+			var promptcolor:uint;
+			var paddingLeft:int;
+			var height:int;
+			var fontSize:int;
+			if (input.name == "textinputblack")
+			{
+				tist = this.textinputblackSkinTextures;
+				textcolor = 0xFEFEFE;
+				promptcolor = 0xFEFEFE;
+				paddingLeft = 18;
+				height = 65;
+				fontSize = 36;
+			} else {
+				tist = this.textinputSkinTextures;
+				textcolor = 0x000004;
+				promptcolor = 0x7a7a7a;
+				paddingLeft = 50;
+				height = 49;
+				fontSize = 30;
+			}
+			
+			const backgroundSkin:Scale9Image = new Scale9Image(tist, this.scale);
 			backgroundSkin.width = 264 * this.scale;
-			backgroundSkin.height = 49 * this.scale;
+			backgroundSkin.height = height * this.scale;
 			input.backgroundSkin = backgroundSkin;
 
 			const backgroundDisabledSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
 			backgroundDisabledSkin.width = 264 * this.scale;
-			backgroundDisabledSkin.height = 49 * this.scale;
+			backgroundDisabledSkin.height = height * this.scale;
 			input.backgroundDisabledSkin = backgroundDisabledSkin;
 
-			const backgroundFocusedSkin:Scale9Image = new Scale9Image(this.textinputSkinTextures, this.scale);
+			const backgroundFocusedSkin:Scale9Image = new Scale9Image(tist, this.scale);
 			backgroundFocusedSkin.width = 264 * this.scale;
-			backgroundFocusedSkin.height = 49 * this.scale;
+			backgroundFocusedSkin.height = height * this.scale;
 			input.backgroundFocusedSkin = backgroundFocusedSkin;
 
 			input.minWidth = input.minHeight = 49 * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
 			input.paddingTop = input.paddingBottom = 6 * this.scale;
-			input.paddingLeft = 50 * this.scale;
+			input.paddingLeft = paddingLeft * this.scale;
 			input.paddingRight = 12 * this.scale; 
 			
 			input.textEditorProperties.fontFamily = "Arial";
 			input.textEditorProperties.embedFonts = true;
-			input.textEditorProperties.fontSize = 30 * this.scale;
-			input.textEditorProperties.color = 0x000004;
+			input.textEditorProperties.fontSize = fontSize * this.scale;
+			input.textEditorProperties.color = textcolor;
 //			input.promptProperties.textFormat = new TextFormat( "MyriadProRegular", 30, 0x000004 );
 //			input.promptProperties.embedFonts = true;
 			
@@ -990,7 +1027,7 @@ package feathers.themes
 //			input.promptProperties.embedFonts = true;
 //			input.promptProperties.fontSize = 30 * this.scale;
 //			input.promptProperties.color = 0x7a7a7a;
-			input.promptProperties.textFormat = new TextFormat( "MyriadProRegular", 30, 0x7a7a7a );
+			input.promptProperties.textFormat = new TextFormat( "MyriadProRegular", fontSize, promptcolor );
 			input.promptProperties.embedFonts = true;
 		}
 

@@ -2,6 +2,7 @@ package cz.hotmusic
 {
 	import com.thejustinwalsh.ane.TestFlight;
 	
+	import cz.hotmusic.components.SendDialog;
 	import cz.hotmusic.helper.SortHelper;
 	import cz.hotmusic.model.DataHelper;
 	import cz.hotmusic.model.Model;
@@ -87,6 +88,8 @@ package cz.hotmusic
 		
 		private var myQuad:Quad;
 		private var debugPanel:ScrollText;
+		private var sendDialog:SendDialog;
+		private var curtain:Quad;
 		
 		override protected function initialize():void
 		{
@@ -118,6 +121,8 @@ package cz.hotmusic
 			this.addChild(this._addArtistButton);
 			this.addChild(this._feedbackButton);
 			this.addChild(this.debugPanel);
+			this.addChild(this.curtain);
+			this.addChild(this.sendDialog);
 		}
 		
 		override protected function draw():void
@@ -196,6 +201,14 @@ package cz.hotmusic
 			_addArtistButton.y = _bottomBg.y + _bottomBg.height/2 - _addArtistButton.height/2;
 			_feedbackButton.x = 2*actualWidth/3 - _feedbackButton.width/2;
 			_feedbackButton.y = _bottomBg.y + _bottomBg.height/2 - _feedbackButton.height/2;
+			
+			sendDialog.width = actualWidth;
+			sendDialog.validate();
+//			sendDialog.height = actualHeight;
+			sendDialog.y = actualHeight - sendDialog.height;
+			
+			curtain.width = actualWidth;
+			curtain.height = actualHeight;
 		}
 		
 		private function accessorySourceFunction(item:Object):Texture
@@ -374,6 +387,8 @@ package cz.hotmusic
 			
 			this._leftShadow = new Image(Texture.fromBitmap(new FontAssets.ShadowLeft()));
 			this._rightShadow = new Image(Texture.fromBitmap(new FontAssets.ShadowRight()));
+			
+			
 		}
 		
 		private function initLeftMenu():void
@@ -479,20 +494,38 @@ package cz.hotmusic
 			_addArtistButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddArtist()));
 			_addArtistButton.addEventListener(Event.TRIGGERED, function onAddArtist(event:Event):void {
 				TestFlight.passCheckpoint("AddArtist Button");
-				debugPanel.text = LogHelper.textLog;
-				debugPanel.visible = !debugPanel.visible;
+				sendDialog.state(SendDialog.ADD_ARTIST_STATE);
+				sendDialog.validate();
+				sendDialog.visible = true;
+				curtain.visible = true;
+//				debugPanel.text = LogHelper.textLog;
+//				debugPanel.visible = !debugPanel.visible;
 			});
 			_feedbackButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddFeedback()));
 			_feedbackButton.addEventListener(Event.TRIGGERED, function onFeedback(event:Event):void {
 				TestFlight.passCheckpoint("Feedback Button");
 //				TestFlightSDK.service.openFeedbackView();
 				try {
-					LogHelper.getInstance(this).log("TestFlight.openFeedbackView() starting");
-					TestFlight.openFeedbackView();
-					LogHelper.getInstance(this).log("TestFlight.openFeedbackView() ended");
+					sendDialog.state(SendDialog.FEEDBACK_STATE);
+					sendDialog.validate();
+					sendDialog.visible = true;
+					curtain.visible = true;
+//					LogHelper.getInstance(this).log("TestFlight.openFeedbackView() starting");
+//					TestFlight.openFeedbackView();
+//					LogHelper.getInstance(this).log("TestFlight.openFeedbackView() ended");
 				} catch (err:Error) {
 					LogHelper.getInstance(this).log(err.getStackTrace());
 				}
+			});
+			
+			curtain = new Quad(1, 1, 0x000004);
+			curtain.alpha = 0.7;
+			curtain.visible = false;
+			sendDialog = new SendDialog();
+			sendDialog.visible = false;
+			sendDialog.addEventListener(Event.CLOSE, function onClose(event:Event):void {
+				sendDialog.visible = false;
+				curtain.visible = false;
 			});
 		}
 		

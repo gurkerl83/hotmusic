@@ -86,6 +86,8 @@ package cz.hotmusic
 		public static const HotSelected:Class;
 		[Embed(source="assets/icon/oranzovanotasamotna.png")]
 		public static const WarmSelected:Class;
+		[Embed(source="assets/icon/hotmusicsnotou.png")]
+		public static const Logo:Class;
 
 		[Embed(source="assets/icon/stinlevy.png")]
 		public static const ShadowLeft:Class;
