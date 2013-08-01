@@ -107,11 +107,12 @@ package feathers.themes
 		protected static const ORIGINAL_DPI_IPAD_RETINA:int = 264;
 
 //		protected static const TEXTINPUT_SCALE9_GRID:Rectangle = new Rectangle(39, 0, 2, 49);
-		protected static const TEXTINPUTBLACK_SCALE9_GRID:Rectangle = new Rectangle(4, 0, 7, 75);
+//		protected static const TEXTINPUTBLACK_SCALE9_GRID:Rectangle = new Rectangle(4, 4, 7, 71);
+		protected static const TEXTINPUTBLACK_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 70);
 		protected static const TEXTINPUT_SCALE9_GRID:Rectangle = new Rectangle(39, 0, 2, 49);
 		protected static const DEFAULT_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 22, 22);
 		protected static const BUTTON_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 50, 50);
-		protected static const BUTTON2_SCALE9_GRID:Rectangle = new Rectangle(15, 0, 15, 75);
+		protected static const BUTTON2_SCALE9_GRID:Rectangle = new Rectangle(15, 15, 4, 47);
 		protected static const ITEM_RENDERER_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 1, 82);
 		protected static const INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 1, 82);
 		protected static const INSET_ITEM_RENDERER_FIRST_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 70);
@@ -358,9 +359,10 @@ package feathers.themes
 
 			this.buttonUpSkinTextures = new Scale9Textures(atlas.getTexture("button2-up-skin"), BUTTON2_SCALE9_GRID);
 			this.buttonDownSkinTextures = new Scale9Textures(atlas.getTexture("button2-down-skin"), BUTTON2_SCALE9_GRID);
+			this.buttonDisabledSkinTextures = new Scale9Textures(atlas.getTexture("button2-disabled-skin"), BUTTON2_SCALE9_GRID);
 //			this.buttonUpSkinTextures = new Scale9Textures(atlas.getTexture("button-up-skin"), BUTTON_SCALE9_GRID);
 //			this.buttonDownSkinTextures = new Scale9Textures(atlas.getTexture("button-down-skin"), BUTTON_SCALE9_GRID);
-			this.buttonDisabledSkinTextures = new Scale9Textures(atlas.getTexture("button-disabled-skin"), BUTTON_SCALE9_GRID);
+//			this.buttonDisabledSkinTextures = new Scale9Textures(atlas.getTexture("button-disabled-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedUpSkinTextures = new Scale9Textures(atlas.getTexture("button-selected-up-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(atlas.getTexture("button-selected-disabled-skin"), BUTTON_SCALE9_GRID);
 

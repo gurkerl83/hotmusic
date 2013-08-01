@@ -1,12 +1,20 @@
 package cz.hotmusic
 {
-	import com.distriqt.extension.facebookutils.FacebookUtils;
+	import com.facebook.graph.FacebookMobile;
+	import com.facebook.graph.data.FacebookSession;
+	
+	import cz.hotmusic.helper.LoginHelper;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
 	
+	import flash.geom.Rectangle;
+	import flash.media.StageWebView;
+	import flash.net.SharedObject;
+	
+	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -43,8 +51,10 @@ package cz.hotmusic
 			
 			_loginBtn = new Button();
 			_loginBtn.addEventListener(Event.TRIGGERED, function (event:Event):void {
-				if (login(_emailTI.text, _passwordTI.text))
+				LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, false, function():void
+				{
 					dispatchEventWith("login");
+				})
 			});
 			_loginBtn.label = "Sign in";
 			
@@ -55,16 +65,14 @@ package cz.hotmusic
 			
 			_loginFBBtn = new Button();
 			_loginFBBtn.label = "Facebook login";
-			_loginFBBtn.addEventListener(Event.TRIGGERED, function (event:Event):void {
-				if (loginFB())
-					dispatchEventWith("login");
-			});
+			_loginFBBtn.addEventListener(Event.TRIGGERED, loginFBBtn_triggeredHandler);
 			
 			_createAccountBtn = new Button();
 			_createAccountBtn.label = "Create new account";
-//			_createAccountBtn.addEventListener(Event.TRIGGERED, function (event:Event):void {
+			_createAccountBtn.addEventListener(Event.TRIGGERED, function (event:Event):void {
+				LoginHelper.getInstance().createAccount(_emailTI.text, _passwordTI.text);
 //				dispatchEventWith("login");
-//			});
+			});
 			
 			addChild(_logo);
 			addChild(_emailTI);
@@ -74,6 +82,14 @@ package cz.hotmusic
 			addChild(_line);
 			addChild(_loginFBBtn);
 			addChild(_createAccountBtn);
+		}
+		
+		private function loginFBBtn_triggeredHandler(event:Event):void
+		{
+			LoginHelper.getInstance().facebook(actualWidth, actualHeight, function():void
+			{
+				dispatchEventWith("login");
+			});
 		}
 		
 		override protected function draw():void
@@ -117,20 +133,6 @@ package cz.hotmusic
 			_createAccountBtn.y = _loginFBBtn.y + _loginFBBtn.height + gap;
 			_createAccountBtn.x = padding;
 			_createAccountBtn.height = btnHeight;
-		}
-		
-		private function login(user:String, pass:String):Boolean
-		{
-			if (user == "aaa" && pass == "aaa")
-				return true;
-			return false;
-		}
-		
-		private function loginFB():Boolean
-		{
-			if (FacebookUtils.service.beginLogin("334957266639220", ["read_stream"]))
-				return true;
-			return false;
 		}
 	}
 }

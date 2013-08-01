@@ -1,6 +1,5 @@
 package
 {
-	import com.distriqt.extension.facebookutils.FacebookUtils;
 	import com.thejustinwalsh.ane.TestFlight;
 	
 	import cz.hotmusic.Main;
@@ -83,7 +82,7 @@ package
 			
 			Model.getInstance().resetModel();
 			// distriqt
-			FacebookUtils.init("a95cb5c9288dceac783021d52ed24107c45e48f0BndL53Ei3PQ5uK7LWqJNT1mb6aUE0KiH/cHQIeDcT2xGDoBiDhIEnOO7HfMc8RpyECrdJKhMopbk+O9Pecv3lw==");
+//			FacebookUtils.init("a95cb5c9288dceac783021d52ed24107c45e48f0BndL53Ei3PQ5uK7LWqJNT1mb6aUE0KiH/cHQIeDcT2xGDoBiDhIEnOO7HfMc8RpyECrdJKhMopbk+O9Pecv3lw==");
 //			TestFlightSDK.init("a95cb5c9288dceac783021d52ed24107c45e48f0BndL53Ei3PQ5uK7LWqJNT1mb6aUE0KiH/cHQIeDcT2xGDoBiDhIEnOO7HfMc8RpyECrdJKhMopbk+O9Pecv3lw==");
 //			TestFlightSDK.service.startTestFlight("b16b34e9-e1bb-46d6-a0e0-afc27f2d134c");
 			

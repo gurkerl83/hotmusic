@@ -1,5 +1,7 @@
 package cz.hotmusic
 {
+	import cz.hotmusic.helper.LoginHelper;
+	
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
@@ -46,11 +48,32 @@ package cz.hotmusic
 					complete: MAIN_LIST
 				}));
 
-			
-			this._navigator.showScreen(LOGIN_SCREEN);
+			autologin(mainScreen, loginScreen);
 			
 			this._transitionManager = new ScreenSlidingStackTransitionManager(this._navigator);
 			this._transitionManager.duration = 0.5;
+		}
+		
+		private function loginScreen():void
+		{
+			_navigator.showScreen(LOGIN_SCREEN);
+		}
+		
+		private function mainScreen():void
+		{
+			_navigator.showScreen(MAIN_LIST);
+		}
+		
+		private function autologin(successCall:Function, failCall:Function):void {
+			var lh:LoginHelper = LoginHelper.getInstance();
+			
+			if (!lh.isLoginSO()) {
+				failCall.call();
+				return;
+			}
+			
+			var loginSO:Object = lh.getLoginSO();
+			lh.login(loginSO.user, loginSO.pass, loginSO.isFB, successCall, failCall)
 		}
 	}
 }

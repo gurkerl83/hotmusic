@@ -6,7 +6,7 @@ package cz.hotmusic.helper
 		{
 		}
 		
-		public static var _instance:SortHelper;
+		private static var _instance:SortHelper;
 		public static function getInstance():SortHelper
 		{
 			if (_instance == null)
