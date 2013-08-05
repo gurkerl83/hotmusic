@@ -1,0 +1,258 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cz.hotmusic</groupId>
+    <artifactId>hotmusic-war</artifactId>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>hotmusic-war Maven Webapp</name>
+    <url>http://maven.apache.org</url>
+
+
+    <repositories>
+        <repository>
+            <id>spring-maven-external</id>
+            <name>Springframework Maven External Repository</name>
+            <url>http://maven.springframework.org/external</url>
+        </repository>
+        <repository>
+            <id>mavenrepo</id>
+            <name>Maven Repository</name>
+            <url>http://repo2.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>jbossrepo</id>
+            <name>Jboss Maven Repository</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+          <id>NexusThirdParty</id>
+          <name>Nexus third party components</name>
+          <url>http://zcode.sunji.net/nexus/content/repositories/thirdparty/</url>
+        </repository>
+        
+        
+    <repository>
+      <id>flex-mojos-repository</id>
+      <url>http://repository.sonatype.org/content/groups/flexgroup</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>flex-mojos-plugin-repository</id>
+      <url>http://repository.sonatype.org/content/groups/flexgroup</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+    <properties>
+        <cxf.version>2.5.0</cxf.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <dependencies>
+    	<dependency>
+<groupId>org.apache.geronimo.javamail</groupId>
+<artifactId>geronimo-javamail_1.4_mail</artifactId>
+<version>1.8.1</version>
+</dependency>
+<dependency>
+<groupId>org.apache.geronimo.specs</groupId>
+<artifactId>geronimo-activation_1.1_spec</artifactId>
+<version>1.1</version>
+</dependency>
+    
+    	<!-- DigestUtils MD5 -->
+    	<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.4</version>
+		</dependency>
+    	<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.6</version>
+		</dependency>
+        <!-- Jetty is needed if you're are not using the CXFServlet -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.flex</groupId>
+            <artifactId>spring-flex</artifactId>
+            <version>1.5.2.RELEASE</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.flex</groupId>
+            <artifactId>spring-flex-core</artifactId>
+            <version>1.5.2.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.163</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc-portlet</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.5.6-Final</version>
+        </dependency>
+<!--        <dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.6.3.Final</version>
+		</dependency>-->
+        <dependency>
+			     <groupId>javassist</groupId>
+			     <artifactId>javassist</artifactId>
+			     <version>3.12.1.GA</version>
+		    </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.5.8</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>5.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf</artifactId>
+            <version>2.5.2</version>
+            <type>pom</type>
+        </dependency>
+    <!--    <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.4</version>
+        </dependency>
+    -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>2.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>2.5.2</version>
+        </dependency>
+<!-- TODO: tady bude Envi client
+        <dependency>
+            <groupId>eu.transplus.ctr</groupId>
+            <artifactId>ctr-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>swf</type>
+        </dependency>
+      -->
+    </dependencies>
+    <build>
+        <finalName>hotmusic-war</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <configuration>
+                    <warFile>
+                        ${project.build.directory}/${project.build.finalName}.war
+                    </warFile>
+                    <update>true</update>
+                    <path>/hotmusic-war</path>
+                    <url>http://93.187.104.76:8080/manager</url>
+                    <username>admin</username>
+                    <password>WuKYxHPeSeHn7jhE</password>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+<!-- 
+            <plugin>
+                <groupId>org.sonatype.flexmojos</groupId>
+                <artifactId>flexmojos-maven-plugin</artifactId>
+                <version>4.0-RC2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>copy-flex-resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+                    <useFinalName>flase</useFinalName>
+                </configuration>
+            </plugin>
+-->
+        </plugins>
+    </build>
+</project>
