@@ -14,5 +14,11 @@ bin-release/
 .flexProperties
 .actionScriptProperties
 *.swf
+*.swc
+*.ane
 *.ipa
 *.apk
+*.class
+*.jar
+.classpath
+target/
