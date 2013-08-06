@@ -1,9 +1,5 @@
 package cz.hotmusic.service.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -14,7 +10,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -71,6 +66,7 @@ public class ProfileService implements IProfileService{
 			query = session.createQuery("from User where facebookId = :facebookId");
 			query.setParameter("facebookId", user.facebookId);
 		
+			@SuppressWarnings("unchecked")
 			List<User> list = query.list();
 			
 			if (list != null && list.size() > 0) {
@@ -82,6 +78,7 @@ public class ProfileService implements IProfileService{
 			query = session.createQuery("from User where email = :email");
 			query.setParameter("email", user.email);
 			
+			@SuppressWarnings("unchecked")
 			List<User> list = query.list();
 			
 			if (list != null && list.size() > 0) {
@@ -220,6 +217,144 @@ public class ProfileService implements IProfileService{
 		return false;
 	}
 
+	@Override
+	@RemotingInclude
+	@Transactional
+	public List<User> list(String sid, int page, int count) throws Throwable {
+		Assert.assertNotNull(sid);
+		sessionHelper.checkSession(sid);
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = null;
+		
+		query = session.createQuery("from User");
+		
+		if (count == 0 ) count = 10;
+		
+		query.setFirstResult(page * count);
+		query.setMaxResults(count);
+
+		@SuppressWarnings("unchecked")
+		List<User> list = query.list();
+		
+		return list;
+	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
+	public List<User> list(String sid) throws Throwable {
+		return list(sid, 0, 10);
+	}
+
+	@Override
+	@RemotingInclude
+	@Transactional
+	public List<User> autocomplete(String sid, String text) throws Throwable {
+		Assert.assertNotNull(sid);
+		Assert.assertNotNull(text);
+		
+		sessionHelper.checkSession(sid);
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = null;
+		
+		query = session.createQuery("from User where firstname like :text or surname like :text");
+		
+		query.setParameter("text", text + "%");
+		
+		query.setMaxResults(7);
+
+		@SuppressWarnings("unchecked")
+		List<User> list = query.list();
+		
+		return list;
+	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
+	public int listCount(String sid) throws Throwable {
+		Assert.assertNotNull(sid);
+		sessionHelper.checkSession(sid);
+		Session session = sessionFactory.getCurrentSession();
+		int count = ((Long)session.createQuery("select count(*) from User").uniqueResult()).intValue();;
+		return count;
+	}
+
+	@Override
+	@RemotingInclude
+	@Transactional
+	public void delete(String sid, User user) throws Throwable {
+		Assert.assertNotNull(sid);
+		Assert.assertNotNull(user);
+		Assert.assertNotNull(user.id);
+		sessionHelper.checkSession(sid);
+		Session session = sessionFactory.getCurrentSession();
+		Query query = null;
+		
+		query = session.createQuery("delete from User where id = :id");
+		query.setParameter("id", user.id);
+		query.executeUpdate();
+	}
+
+	@Override
+	@RemotingInclude
+	@Transactional
+	public void update(String sid, User user) throws Throwable {
+		Assert.assertNotNull(sid);
+		Assert.assertNotNull(user);
+		Assert.assertNotNull(user.id);
+		sessionHelper.checkSession(sid);
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from User where id = :id");
+		query.setParameter("id", user.id);
+		
+		@SuppressWarnings("unchecked")
+		List<User> list = (List<User>)query.list();
+		if (list.size() != 1)
+			throw new Exception("Can't find the user");
+		User foundUser = list.get(0);
+		foundUser.firstname = user.firstname;
+		foundUser.surname = user.surname;
+		foundUser.email = user.email;
+		foundUser.rights = user.rights;
+		
+//		session.close();
+
+		session = sessionFactory.openSession();
+		Transaction tr = session.beginTransaction();
+		tr.begin();
+		session.update(foundUser);
+		tr.commit();
+//		session.close();
+	}
+	
+	//---------------------------------------------------
+	//
+	// GETTERS and SETTERS
+	//
+	//---------------------------------------------------
+
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	@Autowired
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	public SessionHelper getSessionHelper() {
+		return sessionHelper;
+	}
+
+	@Autowired
+	public void setSessionHelper(SessionHelper sessionHelper) {
+		this.sessionHelper = sessionHelper;
+	}
+
 	public void sendMail(String to, String password)
 	{
 	      // Sender's email ID needs to be mentioned
@@ -273,121 +408,6 @@ public class ProfileService implements IProfileService{
 		}
 	}
 	
-	@Override
-	@RemotingInclude
-	@Transactional
-	public List<User> list(User user, int page, int count) throws Throwable {
-		Assert.assertNotNull(user);
-		Assert.assertNotNull(user.session);
-		sessionHelper.checkSession(user.session);
-		
-		Session session = sessionFactory.getCurrentSession();
-		Query query = null;
-		
-		query = session.createQuery("from User");
-		
-		if (count == 0 ) count = 10;
-		
-		query.setFirstResult(page * count);
-		query.setMaxResults(count);
 
-		@SuppressWarnings("unchecked")
-		List<User> list = query.list();
-		
-		return list;
-	}
 	
-	@Override
-	@RemotingInclude
-	@Transactional
-	public List<User> list(User user) throws Throwable {
-		return list(user, 0, 10);
-	}
-
-
-	@Override
-	@RemotingInclude
-	@Transactional
-	public int listCount(User user) throws Throwable {
-		Assert.assertNotNull(user);
-		Assert.assertNotNull(user.session);
-		sessionHelper.checkSession(user.session);
-		Session session = sessionFactory.getCurrentSession();
-		int count = ((Long)session.createQuery("select count(*) from User").uniqueResult()).intValue();;
-		return count;
-	}
-
-	@Override
-	@RemotingInclude
-	@Transactional
-	public void delete(User user) throws Throwable {
-		Assert.assertNotNull(user);
-		Assert.assertNotNull(user.session);
-		Assert.assertNotNull(user.id);
-		sessionHelper.checkSession(user.session);
-		Session session = sessionFactory.getCurrentSession();
-		Query query = null;
-		
-		query = session.createQuery("delete from User where id = :id");
-		query.setParameter("id", user.id);
-		query.executeUpdate();
-	}
-
-	@Override
-	@RemotingInclude
-	@Transactional
-	public void update(User user) throws Throwable {
-		Assert.assertNotNull(user);
-		Assert.assertNotNull(user.session);
-		Assert.assertNotNull(user.id);
-		sessionHelper.checkSession(user.session);
-		
-		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from User where id = :id");
-		query.setParameter("id", user.id);
-		
-		@SuppressWarnings("unchecked")
-		List<User> list = (List<User>)query.list();
-		if (list.size() != 1)
-			throw new Exception("Can't find the user");
-		User foundUser = list.get(0);
-		foundUser.firstname = user.firstname;
-		foundUser.surname = user.surname;
-		foundUser.email = user.email;
-		foundUser.rights = user.rights;
-		
-//		session.close();
-
-		session = sessionFactory.openSession();
-		Transaction tr = session.beginTransaction();
-		tr.begin();
-		session.update(foundUser);
-		tr.commit();
-//		session.close();
-	}
-	
-	//---------------------------------------------------
-	//
-	// GETTERS and SETTERS
-	//
-	//---------------------------------------------------
-
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
-	@Autowired
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
-	public SessionHelper getSessionHelper() {
-		return sessionHelper;
-	}
-
-	@Autowired
-	public void setSessionHelper(SessionHelper sessionHelper) {
-		this.sessionHelper = sessionHelper;
-	}
-
 }

@@ -8,59 +8,130 @@ temp.password = "xyz"
 parameters['user'] = temp</con:script><con:amfCall>profileService.registerUser</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="login"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>user</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
 
 def temp = new User()
-temp.email = "aa@bb.cz"
-temp.password = "xyz"
-
-parameters['user'] = temp</con:script><con:amfCall>profileService.login</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="list"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>user</con:name><con:value/></con:property><con:property><con:name>page</con:name><con:value>2</con:value></con:property><con:property><con:name>count</con:name><con:value>1</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
-
-def temp = new User()
-temp.session  = "26cd06d2-8dc4-4fbe-bfdf-e2a9d94f8a96"
-
-parameters['user'] = temp</con:script><con:amfCall>profileService.list</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="listCount"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>user</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
-
-def user = new User()
-user.session  = "26cd06d2-8dc4-4fbe-bfdf-e2a9d94f8a96"
-
-parameters['user'] = user</con:script><con:amfCall>profileService.listCount</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="delete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>user</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
-
-def user = new User()
-user.session  = "26cd06d2-8dc4-4fbe-bfdf-e2a9d94f8a96"
-user.id = "4028fb9340500b3901405019a0830003";
-
-parameters['user'] = user</con:script><con:amfCall>profileService.delete</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="update"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>user</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
-
-def user = new User()
-user.session  = "26cd06d2-8dc4-4fbe-bfdf-e2a9d94f8a96"
-user.id = "4028fb9340500b3901405012cf750002";
-user.email = "cc@xx.cz";
-
-parameters['user'] = user</con:script><con:amfCall>profileService.update</con:amfCall></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Song" searchProperties="true"><con:settings/><con:testStep type="amfrequest" name="create"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>user</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
-
-def temp = new User()
 temp.email = "bbb@xx.cz"
 temp.password = "xyz"
 
-parameters['user'] = temp</con:script><con:amfCall>songService.create</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="list"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>user</con:name><con:value/></con:property><con:property><con:name>page</con:name><con:value>2</con:value></con:property><con:property><con:name>count</con:name><con:value>1</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
-
-def temp = new User()
-temp.session  = "26cd06d2-8dc4-4fbe-bfdf-e2a9d94f8a96"
-
-parameters['user'] = temp</con:script><con:amfCall>profileService.list</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="listCount"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>user</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
+parameters['user'] = temp</con:script><con:amfCall>profileService.login</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="list"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>page</con:name><con:value>0</con:value></con:property><con:property><con:name>count</con:name><con:value>0</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>profileService.list</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="listCount"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>profileService.listCount</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="autocomplete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>text</con:name><con:value>te</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>profileService.autocomplete</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="update"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>user</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
 
 def user = new User()
-user.session  = "26cd06d2-8dc4-4fbe-bfdf-e2a9d94f8a96"
-
-parameters['user'] = user</con:script><con:amfCall>profileService.listCount</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="delete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>user</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
-
-def user = new User()
-user.session  = "26cd06d2-8dc4-4fbe-bfdf-e2a9d94f8a96"
-user.id = "4028fb9340500b3901405019a0830003";
-
-parameters['user'] = user</con:script><con:amfCall>profileService.delete</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="update"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>user</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
-
-def user = new User()
-user.session  = "26cd06d2-8dc4-4fbe-bfdf-e2a9d94f8a96"
 user.id = "4028fb9340500b3901405012cf750002";
 user.email = "cc@xx.cz";
 
-parameters['user'] = user</con:script><con:amfCall>profileService.update</con:amfCall></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/></con:soapui-project>
+parameters['user'] = user</con:script><con:amfCall>profileService.update</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="delete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>user</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.User
+
+def user = new User()
+user.id = "4028fb9340500b3901405019a0830003";
+
+parameters['user'] = user</con:script><con:amfCall>profileService.delete</con:amfCall></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Song" searchProperties="true"><con:settings/><con:testStep type="amfrequest" name="create"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>song</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Song
+import cz.hotmusic.model.Artist
+import cz.hotmusic.model.Genre
+
+def artist = new Artist();
+artist.name = "artist name 2";
+def genre = new Genre();
+genre.name = "genre name 2";
+def song = new Song()
+song.name = "song name 2"
+song.artist = artist;
+song.genre = genre;
+
+parameters['song'] = song</con:script><con:amfCall>songService.create</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="list"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>page</con:name><con:value>0</con:value></con:property><con:property><con:name>count</con:name><con:value>0</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>songService.list</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="listCount"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>songService.listCount</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="autocomplete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>text</con:name><con:value>te</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>songService.autocomplete</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="update"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>song</con:name></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Song
+
+def song = new Song()
+song.id = "4028fb934052c500014052d7ceff0005";
+song.name = "song name updated";
+
+parameters['song'] = song</con:script><con:amfCall>songService.update</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="delete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>song</con:name></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Song
+
+def song = new Song()
+song.id = "4028fb934052c500014052d7ceff0005";
+
+parameters['song'] = song</con:script><con:amfCall>songService.delete</con:amfCall></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Artist" searchProperties="true"><con:settings/><con:testStep type="amfrequest" name="create"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>artist</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Artist
+
+def artist = new Artist();
+artist.name = "artist name 3";
+
+parameters['artist'] = artist</con:script><con:amfCall>artistService.create</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="list"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>page</con:name><con:value>0</con:value></con:property><con:property><con:name>count</con:name><con:value>0</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>artistService.list</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="listCount"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>artistService.listCount</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="autocomplete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>text</con:name><con:value>ho</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>artistService.autocomplete</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="update"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>artist</con:name></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Artist
+
+def artist = new Artist()
+artist.id = "4028fb934052c5000140532b2bd10009";
+artist.name = "artist name updated 3";
+
+parameters['artist'] = artist</con:script><con:amfCall>artistService.update</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="delete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>artist</con:name></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Artist
+
+def artist = new Artist()
+artist.id = "4028fb934052c5000140532b2bd10009";
+
+parameters['artist'] = artist</con:script><con:amfCall>artistService.delete</con:amfCall></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Genre" searchProperties="true"><con:settings/><con:testStep type="amfrequest" name="create"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>genre</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Genre
+
+def genre = new Genre();
+genre.name = "genre name 3";
+
+parameters['genre'] = genre</con:script><con:amfCall>genreService.create</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="list"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>page</con:name><con:value>0</con:value></con:property><con:property><con:name>count</con:name><con:value>0</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>genreService.list</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="listCount"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>genreService.listCount</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="autocomplete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>text</con:name><con:value>ho</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>genreService.autocomplete</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="update"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>genre</con:name></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Genre
+
+def genre = new Genre()
+genre.id = "4028fb934052c5000140532b2bd10009";
+genre.name = "genre name updated 3";
+
+parameters['genre'] = genre</con:script><con:amfCall>genreService.update</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="delete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>genre</con:name></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Genre
+
+def genre = new Genre()
+genre.id = "4028fb934052c5000140532b2bd10009";
+
+parameters['genre'] = genre</con:script><con:amfCall>genreService.delete</con:amfCall></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Album" searchProperties="true"><con:settings/><con:testStep type="amfrequest" name="create"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>album</con:name><con:value/></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Song
+import cz.hotmusic.model.Artist
+import cz.hotmusic.model.Genre
+import cz.hotmusic.model.Album
+
+def artist = new Artist();
+artist.name = "artist name 4";
+def genre = new Genre();
+genre.name = "genre name 4";
+def song1 = new Song()
+song1.name = "song name 4"
+song1.artist = artist;
+song1.genre = genre;
+def song2 = new Song()
+song2.name = "song name 5"
+song2.artist = artist;
+song2.genre = genre;
+def songs = [song1, song2]
+
+def album = new Album();
+album.name = "album name 4"
+album.genre = genre
+album.artist = artist;
+album.songs = songs
+
+parameters['album'] = album</con:script><con:amfCall>albumService.create</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="list"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>page</con:name><con:value>0</con:value></con:property><con:property><con:name>count</con:name><con:value>0</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>albumService.list</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="listCount"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>albumService.listCount</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="autocomplete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>text</con:name><con:value>al</con:value></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script/><con:amfCall>albumService.autocomplete</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="update"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>album</con:name></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Song
+import cz.hotmusic.model.Artist
+import cz.hotmusic.model.Genre
+import cz.hotmusic.model.Album
+
+def artist = new Artist();
+artist.id = "4028fb934052a86d014052ad9a010006";
+//def genre = new Genre();
+//genre.name = "genre name 4";
+//def song1 = new Song()
+//song1.name = "song name 4"
+//song1.artist = artist;
+//song1.genre = genre;
+//def song2 = new Song()
+//song2.name = "song name 5"
+//song2.artist = artist;
+//song2.genre = genre;
+//def songs = [song1, song2]
+
+def album = new Album();
+album.id = "4028fb9340549b4e014054a91b930001"
+//album.name = "album name 4"
+//album.genre = genre
+album.artist = artist;
+//album.songs = songs
+
+parameters['album'] = album</con:script><con:amfCall>albumService.update</con:amfCall></con:config></con:testStep><con:testStep type="amfrequest" name="delete"><con:settings/><con:config xsi:type="con:AMFRequestTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>sid</con:name><con:value>52bde310-aaf1-49d4-901c-48e3c44a97c5</con:value></con:property><con:property><con:name>song</con:name></con:property></con:properties><con:endpoint>http://localhost:8080/hotmusic-war/messagebroker/amf</con:endpoint><con:script>import cz.hotmusic.model.Song
+
+def song = new Song()
+song.id = "4028fb934052c500014052d7ceff0005";
+
+parameters['song'] = song</con:script><con:amfCall>songService.delete</con:amfCall></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/></con:soapui-project>

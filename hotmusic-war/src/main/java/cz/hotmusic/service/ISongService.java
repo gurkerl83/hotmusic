@@ -18,4 +18,6 @@ public interface ISongService {
 
 	void update(String sid, Song song) throws Throwable;
 
+	List<Song> autocomplete(String sid, String text) throws Throwable;
+
 }

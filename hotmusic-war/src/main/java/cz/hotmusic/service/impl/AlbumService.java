@@ -18,12 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import cz.hotmusic.model.Album;
 import cz.hotmusic.model.Artist;
 import cz.hotmusic.model.Genre;
-import cz.hotmusic.model.Song;
-import cz.hotmusic.service.ISongService;
+import cz.hotmusic.service.IAlbumService;
 
 @Repository
 @RemotingDestination
-public class SongService implements ISongService{
+public class AlbumService implements IAlbumService{
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private SessionFactory sessionFactory;
@@ -38,31 +37,31 @@ public class SongService implements ISongService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public String create(String sid, Song song) throws Throwable {
+	public String create(String sid, Album album) throws Throwable {
 		// check inputs
-		Assert.assertNotNull(song);
-		Assert.assertNotNull(song.name);
-		Assert.assertNotNull(song.artist);
-		Assert.assertNotNull(song.genre);
+		Assert.assertNotNull(album);
+		Assert.assertNotNull(album.name);
+		Assert.assertNotNull(album.artist);
+		Assert.assertNotNull(album.genre);
 		sessionHelper.checkSession(sid);
 		
 		Session session = sessionFactory.getCurrentSession();
-		session.save(song);
+		session.save(album);
 		
-		return song.id;
+		return album.id;
 	}
 
 	@Override
 	@RemotingInclude
 	@Transactional
-	public List<Song> list(String sid, int page, int count) throws Throwable {
+	public List<Album> list(String sid, int page, int count) throws Throwable {
 		Assert.assertNotNull(sid);
 		sessionHelper.checkSession(sid);
 		
 		Session session = sessionFactory.getCurrentSession();
 		Query query = null;
 		
-		query = session.createQuery("from Song");
+		query = session.createQuery("from Album");
 		
 		if (count == 0 ) count = 10;
 		
@@ -70,7 +69,7 @@ public class SongService implements ISongService{
 		query.setMaxResults(count);
 
 		@SuppressWarnings("unchecked")
-		List<Song> list = query.list();
+		List<Album> list = query.list();
 		
 		return list;
 	}
@@ -78,14 +77,14 @@ public class SongService implements ISongService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public List<Song> list(String sid) throws Throwable {
+	public List<Album> list(String sid) throws Throwable {
 		return list(sid, 0, 10);
 	}
 
 	@Override
 	@RemotingInclude
 	@Transactional
-	public List<Song> autocomplete(String sid, String text) throws Throwable {
+	public List<Album> autocomplete(String sid, String text) throws Throwable {
 		Assert.assertNotNull(sid);
 		Assert.assertNotNull(text);
 		
@@ -94,14 +93,13 @@ public class SongService implements ISongService{
 		Session session = sessionFactory.getCurrentSession();
 		Query query = null;
 		
-		query = session.createQuery("from Song where name like :name");
-		
+		query = session.createQuery("from Album where name like :name");
 		query.setParameter("name", text + "%");
 		
 		query.setMaxResults(7);
 
 		@SuppressWarnings("unchecked")
-		List<Song> list = query.list();
+		List<Album> list = query.list();
 		
 		return list;
 	}
@@ -113,75 +111,68 @@ public class SongService implements ISongService{
 		Assert.assertNotNull(sid);
 		sessionHelper.checkSession(sid);
 		Session session = sessionFactory.getCurrentSession();
-		int count = ((Long)session.createQuery("select count(*) from Song").uniqueResult()).intValue();;
+		int count = ((Long)session.createQuery("select count(*) from Album").uniqueResult()).intValue();;
 		return count;
 	}
 
 	@Override
 	@RemotingInclude
 	@Transactional
-	public void delete(String sid, Song song) throws Throwable {
+	public void delete(String sid, Album album) throws Throwable {
 		Assert.assertNotNull(sid);
-		Assert.assertNotNull(song);
-		Assert.assertNotNull(song.id);
+		Assert.assertNotNull(album);
+		Assert.assertNotNull(album.id);
 		sessionHelper.checkSession(sid);
 		Session session = sessionFactory.getCurrentSession();
 		Query query = null;
 		
-		query = session.createQuery("delete from Song where id = :id");
-		query.setParameter("id", song.id);
+		query = session.createQuery("delete from Album where id = :id");
+		query.setParameter("id", album.id);
 		query.executeUpdate();
 	}
 
 	@Override
 	@RemotingInclude
 	@Transactional
-	public void update(String sid, Song song) throws Throwable {
+	public void update(String sid, Album album) throws Throwable {
 		Assert.assertNotNull(sid);
-		Assert.assertNotNull(song);
-		Assert.assertNotNull(song.id);
+		Assert.assertNotNull(album);
+		Assert.assertNotNull(album.id);
 		sessionHelper.checkSession(sid);
 		
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from Song where id = :id");
-		query.setParameter("id", song.id);
+		Query query = session.createQuery("from Album where id = :id");
+		query.setParameter("id", album.id);
 		
 		@SuppressWarnings("unchecked")
-		List<Song> list = (List<Song>)query.list();
+		List<Album> list = (List<Album>)query.list();
 		if (list.size() != 1)
-			throw new Exception("Can't find the song");
-		Song foundSong = list.get(0);
+			throw new Exception("Can't find the Album");
+		Album foundAlbum = list.get(0);
 		
-		if (song.album != null)
-			foundSong.album = (Album) session.load(Album.class, song.album.id);
-		if (song.amazon != null)
-			foundSong.amazon = song.amazon;
-		if (song.artist != null)
-			foundSong.artist = (Artist) session.load(Artist.class, song.artist.id);
-		if (song.beatport != null)
-			foundSong.beatport = song.beatport;
-		if (song.genre != null)
-			foundSong.genre = (Genre) session.load(Genre.class, song.genre.id);
-		if (song.googlePlay != null)
-			foundSong.googlePlay = song.googlePlay;
-		if (song.itunes != null)
-			foundSong.itunes = song.itunes;
-		if (song.name != null)
-			foundSong.name = song.name;
-		if (song.releaseDate != null)
-			foundSong.releaseDate = song.releaseDate;
-		if (song.soundcloud != null)
-			foundSong.soundcloud = song.soundcloud;
-		if (song.youtube != null)
-			foundSong.youtube = song.youtube;
+		if (album.name != null)
+			foundAlbum.name = album.name;
+		if (album.artist != null) 
+			foundAlbum.artist = (Artist) session.load(Artist.class, album.artist.id);
+		if (album.genre != null)
+			foundAlbum.genre = (Genre) session.load(Genre.class, album.genre.id);
+		if (album.releaseDate != null)
+			foundAlbum.releaseDate = album.releaseDate;
+		if (album.itunes != null)
+			foundAlbum.itunes = album.itunes;
+		if (album.googlePlay != null)
+			foundAlbum.googlePlay = album.googlePlay;
+		if (album.amazon != null)
+			foundAlbum.amazon = album.amazon;
+		if (album.beatport != null)
+			foundAlbum.beatport = album.beatport;
 		
 //		session.close();
 
 //		session = sessionFactory.openSession();
-//		Transaction tr = session.beginTransaction();
-//		tr.begin();
-		session.update(foundSong);
-//		tr.commit();
+//		session.beginTransaction();
+		session.update(foundAlbum);
+//		session.getTransaction().commit();
 //		session.close();
 		session.flush();
 	}

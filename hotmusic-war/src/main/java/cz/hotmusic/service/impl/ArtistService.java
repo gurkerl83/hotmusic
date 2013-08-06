@@ -15,15 +15,12 @@ import org.springframework.flex.remoting.RemotingInclude;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import cz.hotmusic.model.Album;
 import cz.hotmusic.model.Artist;
-import cz.hotmusic.model.Genre;
-import cz.hotmusic.model.Song;
-import cz.hotmusic.service.ISongService;
+import cz.hotmusic.service.IArtistService;
 
 @Repository
 @RemotingDestination
-public class SongService implements ISongService{
+public class ArtistService implements IArtistService{
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private SessionFactory sessionFactory;
@@ -38,31 +35,29 @@ public class SongService implements ISongService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public String create(String sid, Song song) throws Throwable {
+	public String create(String sid, Artist artist) throws Throwable {
 		// check inputs
-		Assert.assertNotNull(song);
-		Assert.assertNotNull(song.name);
-		Assert.assertNotNull(song.artist);
-		Assert.assertNotNull(song.genre);
+		Assert.assertNotNull(artist);
+		Assert.assertNotNull(artist.name);
 		sessionHelper.checkSession(sid);
 		
 		Session session = sessionFactory.getCurrentSession();
-		session.save(song);
+		session.save(artist);
 		
-		return song.id;
+		return artist.id;
 	}
 
 	@Override
 	@RemotingInclude
 	@Transactional
-	public List<Song> list(String sid, int page, int count) throws Throwable {
+	public List<Artist> list(String sid, int page, int count) throws Throwable {
 		Assert.assertNotNull(sid);
 		sessionHelper.checkSession(sid);
 		
 		Session session = sessionFactory.getCurrentSession();
 		Query query = null;
 		
-		query = session.createQuery("from Song");
+		query = session.createQuery("from Artist");
 		
 		if (count == 0 ) count = 10;
 		
@@ -70,7 +65,7 @@ public class SongService implements ISongService{
 		query.setMaxResults(count);
 
 		@SuppressWarnings("unchecked")
-		List<Song> list = query.list();
+		List<Artist> list = query.list();
 		
 		return list;
 	}
@@ -78,14 +73,14 @@ public class SongService implements ISongService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public List<Song> list(String sid) throws Throwable {
+	public List<Artist> list(String sid) throws Throwable {
 		return list(sid, 0, 10);
 	}
 
 	@Override
 	@RemotingInclude
 	@Transactional
-	public List<Song> autocomplete(String sid, String text) throws Throwable {
+	public List<Artist> autocomplete(String sid, String text) throws Throwable {
 		Assert.assertNotNull(sid);
 		Assert.assertNotNull(text);
 		
@@ -94,14 +89,13 @@ public class SongService implements ISongService{
 		Session session = sessionFactory.getCurrentSession();
 		Query query = null;
 		
-		query = session.createQuery("from Song where name like :name");
-		
+		query = session.createQuery("from Artist where name like :name");
 		query.setParameter("name", text + "%");
 		
 		query.setMaxResults(7);
 
 		@SuppressWarnings("unchecked")
-		List<Song> list = query.list();
+		List<Artist> list = query.list();
 		
 		return list;
 	}
@@ -113,77 +107,54 @@ public class SongService implements ISongService{
 		Assert.assertNotNull(sid);
 		sessionHelper.checkSession(sid);
 		Session session = sessionFactory.getCurrentSession();
-		int count = ((Long)session.createQuery("select count(*) from Song").uniqueResult()).intValue();;
+		int count = ((Long)session.createQuery("select count(*) from Artist").uniqueResult()).intValue();;
 		return count;
 	}
 
 	@Override
 	@RemotingInclude
 	@Transactional
-	public void delete(String sid, Song song) throws Throwable {
+	public void delete(String sid, Artist artist) throws Throwable {
 		Assert.assertNotNull(sid);
-		Assert.assertNotNull(song);
-		Assert.assertNotNull(song.id);
+		Assert.assertNotNull(artist);
+		Assert.assertNotNull(artist.id);
 		sessionHelper.checkSession(sid);
 		Session session = sessionFactory.getCurrentSession();
 		Query query = null;
 		
-		query = session.createQuery("delete from Song where id = :id");
-		query.setParameter("id", song.id);
+		query = session.createQuery("delete from Artist where id = :id");
+		query.setParameter("id", artist.id);
 		query.executeUpdate();
 	}
 
 	@Override
 	@RemotingInclude
 	@Transactional
-	public void update(String sid, Song song) throws Throwable {
+	public void update(String sid, Artist artist) throws Throwable {
 		Assert.assertNotNull(sid);
-		Assert.assertNotNull(song);
-		Assert.assertNotNull(song.id);
+		Assert.assertNotNull(artist);
+		Assert.assertNotNull(artist.id);
 		sessionHelper.checkSession(sid);
 		
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from Song where id = :id");
-		query.setParameter("id", song.id);
+		Query query = session.createQuery("from Artist where id = :id");
+		query.setParameter("id", artist.id);
 		
 		@SuppressWarnings("unchecked")
-		List<Song> list = (List<Song>)query.list();
+		List<Artist> list = (List<Artist>)query.list();
 		if (list.size() != 1)
-			throw new Exception("Can't find the song");
-		Song foundSong = list.get(0);
-		
-		if (song.album != null)
-			foundSong.album = (Album) session.load(Album.class, song.album.id);
-		if (song.amazon != null)
-			foundSong.amazon = song.amazon;
-		if (song.artist != null)
-			foundSong.artist = (Artist) session.load(Artist.class, song.artist.id);
-		if (song.beatport != null)
-			foundSong.beatport = song.beatport;
-		if (song.genre != null)
-			foundSong.genre = (Genre) session.load(Genre.class, song.genre.id);
-		if (song.googlePlay != null)
-			foundSong.googlePlay = song.googlePlay;
-		if (song.itunes != null)
-			foundSong.itunes = song.itunes;
-		if (song.name != null)
-			foundSong.name = song.name;
-		if (song.releaseDate != null)
-			foundSong.releaseDate = song.releaseDate;
-		if (song.soundcloud != null)
-			foundSong.soundcloud = song.soundcloud;
-		if (song.youtube != null)
-			foundSong.youtube = song.youtube;
+			throw new Exception("Can't find the artist");
+		Artist foundArtist = list.get(0);
+		foundArtist.name = artist.name;
 		
 //		session.close();
 
-//		session = sessionFactory.openSession();
-//		Transaction tr = session.beginTransaction();
-//		tr.begin();
-		session.update(foundSong);
-//		tr.commit();
+		session = sessionFactory.openSession();
+		Transaction tr = session.beginTransaction();
+		tr.begin();
+		session.update(foundArtist);
+		tr.commit();
 //		session.close();
-		session.flush();
 	}
 	
 	//---------------------------------------------------
