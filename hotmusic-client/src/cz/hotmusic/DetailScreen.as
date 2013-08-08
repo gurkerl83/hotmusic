@@ -157,7 +157,7 @@ package cz.hotmusic
 			_artistLabel = new Label();
 			_artistLabel.text = "Artist:";
 			_artistValue = new Label();
-			_artistValue.text = song.artist.value;
+			_artistValue.text = song.artist.name;
 			_artistValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_scrollContainer.addChild(_artistLabel);
 			_scrollContainer.addChild(_artistValue);
@@ -168,7 +168,7 @@ package cz.hotmusic
 			_albumLabel = new Label();
 			_albumLabel.text = "Album:";
 			_albumValue = new Label();
-			_albumValue.text = song.album.value;
+			_albumValue.text = song.album.name;
 			_albumValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_scrollContainer.addChild(_albumLabel);
 			_scrollContainer.addChild(_albumValue);
@@ -179,7 +179,7 @@ package cz.hotmusic
 			_genreLabel = new Label();
 			_genreLabel.text = "Genre:";
 			_genreValue = new Label();
-			_genreValue.text = song.genre.value;
+			_genreValue.text = song.genre.name;
 			_genreValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_scrollContainer.addChild(_genreLabel);
 			_scrollContainer.addChild(_genreValue);
@@ -231,7 +231,7 @@ package cz.hotmusic
 			_shareLabel.text = "Share:";
 			_shareTwitterButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Twitter()));
 			_shareTwitterButton.addEventListener(Event.TRIGGERED, function onTwitter(event:Event):void {
-				var msgt:String = "#hotmusic testing message: I recommend song "+song.name+" from "+ song.artist.value;
+				var msgt:String = "#hotmusic testing message: I recommend song "+song.name+" from "+ song.artist.name;
 				if (Social.isSupported && Social.isAvailableForService(SocialService.twitter)) {
 					var st:Social = new Social(SocialService.twitter);
 					st.setMessage(msgt);
@@ -242,7 +242,7 @@ package cz.hotmusic
 			});
 			_shareFacebookButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Facebook()));
 			_shareFacebookButton.addEventListener(Event.TRIGGERED, function onFacebook(event:Event):void {
-				var msgf:String = "#hotmusic testing message: I recommend song "+song.name+" from "+ song.artist.value;
+				var msgf:String = "#hotmusic testing message: I recommend song "+song.name+" from "+ song.artist.name;
 				if (Social.isSupported && Social.isAvailableForService(SocialService.facebook)) {
 					var sf:Social = new Social(SocialService.facebook);
 					sf.setMessage(msgf);
@@ -258,7 +258,7 @@ package cz.hotmusic
 			_shareEmailButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Email()));
 			_shareEmailButton.addEventListener(Event.TRIGGERED, function onEmail(event:Event):void {
 				var subjmail:String = "hotmusic testing message";
-				var msgmail:String = "I recommend song "+song.name+" from "+ song.artist.value;
+				var msgmail:String = "I recommend song "+song.name+" from "+ song.artist.name;
 				navigateToURL(new URLRequest('mailto:aaa@bbb.cc?subject='+encodeURIComponent(subjmail)+'&body='+encodeURIComponent(msgmail)), '_blank');
 			});
 			_shareSmsButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Sms()));

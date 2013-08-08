@@ -35,6 +35,7 @@ public class User {
 	public Boolean facebook;
 	public String facebookId;
 	public String session;
+	public String lastSession;
 	/**
 	 * true = admin, false = user
 	 */
@@ -111,5 +112,11 @@ public class User {
 	}
 	public void setSession(String session) {
 		this.session = session;
+	}
+	public String getLastSession() {
+		return lastSession;
+	}
+	public void setLastSession(String lastSession) {
+		this.lastSession = lastSession;
 	}
 }

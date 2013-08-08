@@ -3,9 +3,10 @@ package cz.hotmusic
 	import com.thejustinwalsh.ane.TestFlight;
 	
 	import cz.hotmusic.components.SendDialog;
+	import cz.hotmusic.data.DataHelper;
 	import cz.hotmusic.helper.SortHelper;
-	import cz.hotmusic.model.DataHelper;
 	import cz.hotmusic.model.Model;
+	import cz.hotmusic.model.Song;
 	import cz.hotmusic.renderer.LeftListRenderer;
 	import cz.hotmusic.renderer.MainListRenderer;
 	import cz.hotmusic.renderer.RightListRenderer;
@@ -222,16 +223,18 @@ package cz.hotmusic
 			if (_list.selectedItem == null)
 				return;
 			
-			Model.getInstance().selectedSong.name = _list.selectedItem.song;
-			Model.getInstance().selectedSong.album.value = _list.selectedItem.album ? _list.selectedItem.album : "no album";
-			Model.getInstance().selectedSong.added = _list.selectedItem.added;
-			Model.getInstance().selectedSong.artist.value = _list.selectedItem.artist;
-			Model.getInstance().selectedSong.genre.value = _list.selectedItem.genre ? _list.selectedItem.genre : "no genre";
-			Model.getInstance().selectedSong.rateUp = _list.selectedItem.rateup;
-			Model.getInstance().selectedSong.rateDown = _list.selectedItem.ratedown;
-			Model.getInstance().selectedSong.hotstatus = _list.selectedItem.hotstatus;
+			Model.getInstance().selectedSong.name = Song(_list.selectedItem).name;
+			Model.getInstance().selectedSong.album.name = Song(_list.selectedItem).album ? Song(_list.selectedItem).album.name : "no album";
+			Model.getInstance().selectedSong.addedDate = Song(_list.selectedItem).addedDate;
+			Model.getInstance().selectedSong.addedByUser = Song(_list.selectedItem).addedByUser;
+			Model.getInstance().selectedSong.addedBySession = Song(_list.selectedItem).addedBySession;
+			Model.getInstance().selectedSong.artist.name = Song(_list.selectedItem).artist.name;
+			Model.getInstance().selectedSong.genre.name = Song(_list.selectedItem).genre ? Song(_list.selectedItem).genre.name : "no genre";
+			Model.getInstance().selectedSong.rateUp = Song(_list.selectedItem).rateUp;
+			Model.getInstance().selectedSong.rateDown = Song(_list.selectedItem).rateDown;
+			Model.getInstance().selectedSong.hotstatus = Song(_list.selectedItem).hotstatus;
 			
-			TestFlight.passCheckpoint("Song Selected: " + _list.selectedItem.song);
+			TestFlight.passCheckpoint("Song Selected: " + Song(_list.selectedItem).name);
 			
 			dispatchEventWith("showDetail");
 		}
@@ -377,10 +380,10 @@ package cz.hotmusic
 			this._list = new List();
 			this._list.itemRendererType = MainListRenderer;
 			this._list.dataProvider = new ListCollection(DataHelper.getInstance().songs);
-			this._list.itemRendererProperties.labelField = "song";
-			this._list.itemRendererProperties.accessoryLabelFunction = function(item:Object):String
+			this._list.itemRendererProperties.labelField = "name";
+			this._list.itemRendererProperties.accessoryLabelFunction = function(item:Song):String
 			{
-				return DateHelper.dateToText(item.added);
+				return DateHelper.dateToText(item.addedDate);
 			}
 			
 			this._list.addEventListener(Event.CHANGE, list_changeHandler);

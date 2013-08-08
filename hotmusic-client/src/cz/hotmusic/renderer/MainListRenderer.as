@@ -1,6 +1,7 @@
 package cz.hotmusic.renderer
 {
 	import cz.hotmusic.FontAssets;
+	import cz.hotmusic.model.Song;
 	import cz.zc.mylib.helper.DateHelper;
 	
 	import feathers.controls.Button;
@@ -85,15 +86,16 @@ package cz.hotmusic.renderer
 		/* OVERRIDE */
 		override public function set data(value:Object):void
 		{
-			super.data = value;
+			var song:Song = Song(value);
+			super.data = song;
 			
-			if(artistTextRenderer && value) {
-				artistTextRenderer.text = value.artist;
+			if(artistTextRenderer && song) {
+				artistTextRenderer.text = song.artist.name;
 				this.invalidate(INVALIDATION_FLAG_DATA);
 			}
-			if (value && value.hotstatus != null)
+			if (song)
 			{
-				showHotIcons(value.hotstatus);
+				showHotIcons(song.hotstatus);
 			}
 		}
 		
