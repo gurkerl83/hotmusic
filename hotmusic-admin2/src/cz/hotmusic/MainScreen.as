@@ -90,7 +90,6 @@ package cz.hotmusic
 			screenNavigator.addScreen(ADD_ARTIST_DETAIL, new ScreenNavigatorItem(AddArtistDetail,{close: ADD_ARTISTS_LIST}));
 
 			screenNavigator.addEventListener(Event.CHANGE, screenNavigatorChangeHandler);
-			screenNavigator.showScreen(SONGS_LIST);
 			
 			menu = new Menu(screenNavigator);
 			menu.setAuthorization(true, true, true);
@@ -101,6 +100,8 @@ package cz.hotmusic
 			addChild(header);
 			addChild(menu);
 			addChild(screenNavigator);
+			
+			screenNavigator.showScreen(SONGS_LIST);
 		}
 		
 		override protected function draw():void {

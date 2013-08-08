@@ -4,6 +4,7 @@
 <TextureAtlas imagePath="metalworks.png">
     <SubTexture name="textinput-skin" x="267" y="105" width="69" height="49"/>
     <SubTexture name="textinputblack-skin"  x="287" y="262" width="17" height="90"/>
+    <SubTexture name="textinputwhite-skin"  x="306" y="262" width="14" height="40"/>
     <SubTexture name="background-disabled-skin" x="323" y="59" width="32" height="32"/>
     <SubTexture name="background-down-skin" x="467" y="40" width="32" height="32"/>
     <SubTexture name="background-focused-skin" x="431" y="39" width="32" height="32"/>

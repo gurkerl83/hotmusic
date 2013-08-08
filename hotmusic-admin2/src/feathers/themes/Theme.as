@@ -138,6 +138,7 @@ package feathers.themes
 //		protected static const TEXTINPUT_SCALE9_GRID:Rectangle = new Rectangle(39, 0, 2, 49);
 //		protected static const TEXTINPUTBLACK_SCALE9_GRID:Rectangle = new Rectangle(4, 4, 7, 71);
 		protected static const TEXTINPUTBLACK_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 70);
+		protected static const TEXTINPUTWHITE_SCALE9_GRID:Rectangle = new Rectangle(2, 3, 10, 37);
 		protected static const TEXTINPUT_SCALE9_GRID:Rectangle = new Rectangle(39, 0, 2, 49);
 		protected static const DEFAULT_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 22, 22);
 		protected static const BUTTON_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 50, 50);
@@ -249,6 +250,7 @@ package feathers.themes
 		protected var atlasBitmapData:BitmapData;
 		protected var primaryBackgroundTexture:Texture;
 		protected var textinputblackSkinTextures:Scale9Textures;
+		protected var textinputwhiteSkinTextures:Scale9Textures;
 		protected var textinputSkinTextures:Scale9Textures;
 		protected var backgroundSkinTextures:Scale9Textures;
 		protected var backgroundDisabledSkinTextures:Scale9Textures;
@@ -423,6 +425,7 @@ package feathers.themes
 			this.primaryBackgroundTexture = atlas.getTexture("primary-background");
 
 			const textinputblackSkinTexture:Texture = atlas.getTexture("textinputblack-skin");
+			const textinputwhiteSkinTexture:Texture = atlas.getTexture("textinputwhite-skin");
 			const textinputSkinTexture:Texture = atlas.getTexture("textinput-skin");
 			const backgroundSkinTexture:Texture = atlas.getTexture("background-skin");
 			const backgroundDownSkinTexture:Texture = atlas.getTexture("background-down-skin");
@@ -430,6 +433,7 @@ package feathers.themes
 			const backgroundFocusedSkinTexture:Texture = atlas.getTexture("background-focused-skin");
 
 			this.textinputblackSkinTextures = new Scale9Textures(textinputblackSkinTexture, TEXTINPUTBLACK_SCALE9_GRID);
+			this.textinputwhiteSkinTextures = new Scale9Textures(textinputwhiteSkinTexture, TEXTINPUTWHITE_SCALE9_GRID);
 			this.textinputSkinTextures = new Scale9Textures(textinputSkinTexture, TEXTINPUT_SCALE9_GRID);
 			this.backgroundSkinTextures = new Scale9Textures(backgroundSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundDisabledSkinTextures = new Scale9Textures(backgroundDisabledSkinTexture, DEFAULT_SCALE9_GRID);
@@ -625,10 +629,15 @@ package feathers.themes
 					label.textRendererProperties.textFormat = this.smallNormalOrangeTextFormat;
 				} else if (label.name == SMALL_BOLD_ORANGE) {
 					label.textRendererProperties.textFormat = this.smallBoldOrangeTextFormat;
+				} else if (label.name == SMALL_BOLD_BLACK) {
+					label.textRendererProperties.textFormat = this.smallBoldBlackTextFormat;
+					
 				} else if (label.name == LARGE_BOLD_GRAY) {
 					label.textRendererProperties.textFormat = this.largeBoldGrayTextFormat;
+					
 				} else if (label.name == TINY_NORMAL_GRAY) {
 					label.textRendererProperties.textFormat = this.tinyNormalGrayTextFormat;
+					
 				} else {
 					label.textRendererProperties.textFormat = this.smallNormalGrayTextFormat;
 				}
@@ -1101,6 +1110,13 @@ package feathers.themes
 				paddingLeft = 18;
 				height = 65;
 				fontSize = 24;
+			} else if (input.name == "textinputwhite") {
+				tist = this.textinputwhiteSkinTextures;
+				textcolor = 0x000004;
+				promptcolor = 0x000004;
+				paddingLeft = 18;
+				height = 39;
+				fontSize = 24;
 			} else {
 				tist = this.textinputSkinTextures;
 				textcolor = 0x000004;
@@ -1125,7 +1141,7 @@ package feathers.themes
 			backgroundFocusedSkin.height = height * this.scale;
 			input.backgroundFocusedSkin = backgroundFocusedSkin;
 
-			input.minWidth = input.minHeight = 49 * this.scale;
+			input.minWidth = input.minHeight = height * this.scale;
 			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
 			input.paddingTop = input.paddingBottom = 4 * this.scale;
 			input.paddingLeft = paddingLeft * this.scale;
