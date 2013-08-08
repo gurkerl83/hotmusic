@@ -29,7 +29,6 @@ package cz.hotmusic
 			this._theme = new Theme(this.stage);
 			
 			this._navigator = new ScreenNavigator();
-			this.addChild(this._navigator);
 			
 			this._navigator.addScreen(LOGIN_SCREEN, new ScreenNavigatorItem(LoginScreen,
 				{
@@ -40,7 +39,8 @@ package cz.hotmusic
 				{
 					logout: LOGIN_SCREEN
 				}));
-			
+
+			this.addChild(this._navigator);
 			_navigator.showScreen(MAIN_LIST);
 
 			this._transitionManager = new ScreenSlidingStackTransitionManager(this._navigator);

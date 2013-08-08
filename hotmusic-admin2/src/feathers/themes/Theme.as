@@ -617,10 +617,14 @@ package feathers.themes
 					label.textRendererProperties.textFormat = this.smallNormalGrayTextFormat;
 				} else if (label.name == SMALL_NORMAL_ORANGE) {
 					label.textRendererProperties.textFormat = this.smallNormalOrangeTextFormat;
+				} else if (label.name == SMALL_BOLD_ORANGE) {
+					label.textRendererProperties.textFormat = this.smallBoldOrangeTextFormat;
 				} else if (label.name == LARGE_BOLD_GRAY) {
 					label.textRendererProperties.textFormat = this.largeBoldGrayTextFormat;
 				} else if (label.name == TINY_NORMAL_GRAY) {
 					label.textRendererProperties.textFormat = this.tinyNormalGrayTextFormat;
+				} else {
+					label.textRendererProperties.textFormat = this.smallNormalGrayTextFormat;
 				}
 			}
 		}
@@ -653,30 +657,61 @@ package feathers.themes
 		protected function buttonInitializer(button:Button):void
 		{
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-			skinSelector.defaultValue = this.buttonUpSkinTextures;
-			skinSelector.defaultSelectedValue = this.buttonSelectedUpSkinTextures;
-			skinSelector.setValueForState(this.buttonDownSkinTextures, Button.STATE_DOWN, false);
-			skinSelector.setValueForState(this.buttonDisabledSkinTextures, Button.STATE_DISABLED, false);
-			skinSelector.setValueForState(this.buttonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
+			
+			var myButtonUpSkinTextures:Scale9Textures;
+			var myButtonSelectedUpSkinTextures:Scale9Textures;
+			var myButtonDownSkinTextures:Scale9Textures;
+			var myButtonDisabledSkinTextures:Scale9Textures;
+			var myButtonSelectedDisabledSkinTextures:Scale9Textures;
+			var myDefaultLabelTextFormat:TextFormat;
+			var myDisabledLabelTextFormat:TextFormat;
+			var mySelectedDisabledLabelTextFormat:TextFormat;
+
+			if (button.name == SMALL_BOLD_RED)
+			{
+				myButtonUpSkinTextures = buttonDisabledSkinTextures;
+				myButtonSelectedUpSkinTextures = buttonSelectedUpSkinTextures;
+				myButtonDownSkinTextures = buttonDownSkinTextures;
+				myButtonDisabledSkinTextures = buttonDisabledSkinTextures;
+				myButtonSelectedDisabledSkinTextures = buttonSelectedDisabledSkinTextures;
+				myDefaultLabelTextFormat = smallBoldRedTextFormat;
+				myDisabledLabelTextFormat = smallUIDisabledTextFormat;
+				mySelectedDisabledLabelTextFormat = smallUIDisabledTextFormat;
+			} else {
+				myButtonUpSkinTextures = buttonUpSkinTextures;
+				myButtonSelectedUpSkinTextures = buttonSelectedUpSkinTextures;
+				myButtonDownSkinTextures = buttonDownSkinTextures;
+				myButtonDisabledSkinTextures = buttonDisabledSkinTextures;
+				myButtonSelectedDisabledSkinTextures = buttonSelectedDisabledSkinTextures;
+				myDefaultLabelTextFormat = smallUIDarkTextFormat;
+				myDisabledLabelTextFormat = smallUIDisabledTextFormat;
+				mySelectedDisabledLabelTextFormat = smallUIDisabledTextFormat;
+			}
+			
+			skinSelector.defaultValue = myButtonUpSkinTextures;
+			skinSelector.defaultSelectedValue = myButtonSelectedUpSkinTextures;
+			skinSelector.setValueForState(myButtonDownSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(myButtonDisabledSkinTextures, Button.STATE_DISABLED, false);
+			skinSelector.setValueForState(myButtonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
 			skinSelector.imageProperties =
 			{
 				width: 60 * this.scale,
-				height: 60 * this.scale,
+				height: 40 * this.scale,
 				textureScale: this.scale
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
 
-			button.defaultLabelProperties.textFormat = this.smallUIDarkTextFormat;
+			button.defaultLabelProperties.textFormat = myDefaultLabelTextFormat;
 			button.defaultLabelProperties.embedFonts = true;
-			button.disabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
+			button.disabledLabelProperties.textFormat = myDisabledLabelTextFormat;
 			button.disabledLabelProperties.embedFonts = true;
-			button.selectedDisabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
+			button.selectedDisabledLabelProperties.textFormat = mySelectedDisabledLabelTextFormat;
 			button.selectedDisabledLabelProperties.embedFonts = true;
 
 			button.paddingTop = button.paddingBottom = 8 * this.scale;
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
 			button.gap = 12 * this.scale;
-			button.minWidth = button.minHeight = 60 * this.scale;
+			button.minWidth = button.minHeight = 40 * this.scale;
 			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
 		}
 

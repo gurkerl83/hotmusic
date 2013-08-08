@@ -2,6 +2,7 @@ package cz.hotmusic.component
 {
 	import cz.hotmusic.FontAssets;
 	
+	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.core.FeathersControl;
 	import feathers.themes.Theme;
@@ -21,11 +22,23 @@ package cz.hotmusic.component
 			super();
 		}
 		
+		public function actionButtons(buttons:Array):void
+		{
+			if (this.buttons == buttons)
+				return;
+			
+			this.buttons = buttons;
+			
+			invalidate();
+		}
+		
+		private var buttons:Array;
+		
 		private var bg:DisplayObject;
 		private var logo:Image;
 		private var userLbl:Label;
 		private var rightsLbl:Label;
-		private var logoutBtn:Button;
+		private var logoutBtn:starling.display.Button;
 		private var updateLbl:Label;
 		private var updateValue:Label;
 		
@@ -47,7 +60,7 @@ package cz.hotmusic.component
 			rightsLbl.text = "admin";
 			rightsLbl.name = Theme.TINY_NORMAL_GRAY;
 			
-			logoutBtn = new Button(Texture.fromBitmap(new FontAssets.Logout()));
+			logoutBtn = new starling.display.Button(Texture.fromBitmap(new FontAssets.Logout()));
 			logoutBtn.addEventListener(Event.TRIGGERED, logout);
 			
 			updateLbl = new Label();
@@ -65,6 +78,14 @@ package cz.hotmusic.component
 			addChild(logoutBtn);
 			addChild(updateLbl);
 			addChild(updateValue);
+			
+			if (buttons && buttons.length > 0)
+			{
+				for each (var button:feathers.controls.Button in buttons)
+				{
+					addChild(button);
+				}
+			}
 		}
 		
 		private function logout(event:Event):void
@@ -103,6 +124,18 @@ package cz.hotmusic.component
 			updateValue.validate();
 			updateValue.x = updateLbl.x + updateLbl.width +gap ;
 			updateValue.y = actualHeight/2 - updateValue.height/2 - baseline;
+			
+			if (buttons && buttons.length > 0)
+			{
+				var btngap:int = paddingLeft;
+				for each (var button:feathers.controls.Button in buttons)
+				{
+					button.validate();
+					button.x = actualWidth - button.width - btngap;
+					button.y = actualHeight/2 - button.height/2;
+					btngap += button.width + 3*gap; 
+				}
+			}
 		}
 	}
 }

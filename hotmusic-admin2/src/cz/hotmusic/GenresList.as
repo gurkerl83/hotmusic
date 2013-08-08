@@ -6,9 +6,9 @@ package cz.hotmusic
 	
 	import starling.display.Sprite;
 	
-	public class UsersList extends Screen
+	public class GenresList extends Screen
 	{
-		public function UsersList()
+		public function GenresList()
 		{
 			super();
 		}
@@ -18,7 +18,7 @@ package cz.hotmusic
 		{
 			super.initialize();
 			label = new Label();
-			label.text = "UsersList";
+			label.text = "GenresList";
 			label.name = Theme.SMALL_BOLD_ORANGE;
 			
 			addChild(label);

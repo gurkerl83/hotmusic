@@ -1,24 +1,27 @@
 package cz.hotmusic
 {
+	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.themes.Theme;
 	
 	import starling.display.Sprite;
+	import starling.events.Event;
 	
-	public class UsersList extends Screen
+	public class ArtistDetail extends Screen
 	{
-		public function UsersList()
+		public function ArtistDetail()
 		{
 			super();
 		}
 		
 		private var label:Label;
+		
 		override protected function initialize():void
 		{
 			super.initialize();
 			label = new Label();
-			label.text = "UsersList";
+			label.text = "ArtistDetail";
 			label.name = Theme.SMALL_BOLD_ORANGE;
 			
 			addChild(label);
