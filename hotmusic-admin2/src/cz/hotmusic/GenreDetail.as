@@ -1,5 +1,7 @@
 package cz.hotmusic
 {
+	import cz.hotmusic.helper.ButtonHelper;
+	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
@@ -8,11 +10,21 @@ package cz.hotmusic
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class GenreDetail extends Screen
+	public class GenreDetail extends Screen implements IActionButtons
 	{
 		public function GenreDetail()
 		{
 			super();
+		}
+		
+		private var _actionButtons:Array;
+		public function get actionButtons():Array
+		{
+			if (_actionButtons == null)
+			{
+				_actionButtons = [ButtonHelper.inst().saveButton, ButtonHelper.inst().cancelButton, ButtonHelper.inst().clearButton];
+			}
+			return _actionButtons;
 		}
 		
 		private var label:Label;

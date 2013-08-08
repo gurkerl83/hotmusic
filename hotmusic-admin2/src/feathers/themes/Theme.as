@@ -25,6 +25,7 @@
 package feathers.themes
 {
 	import cz.hotmusic.FontAssets;
+	import cz.hotmusic.component.ActionButton;
 	
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -99,6 +100,7 @@ package feathers.themes
 		public static const SMALL_BOLD_RED			:String = "SMALL_BOLD_RED";
 		public static const SMALL_BOLD_ORANGE		:String = "SMALL_BOLD_ORANGE";
 		public static const SMALL_BOLD_GREEN		:String = "SMALL_BOLD_GREEN";
+		public static const SMALL_BOLD_BLUE			:String = "SMALL_BOLD_BLUE";
 		
 		public static const SMALL_NORMAL_BLACK		:String = "SMALL_NORMAL_BLACK";
 		public static const SMALL_NORMAL_GRAY		:String = "SMALL_NORMAL_GRAY";
@@ -114,6 +116,7 @@ package feathers.themes
 		public static const GRAY_TEXT_COLOR			:uint = 0x808080;
 		public static const GREEN_TEXT_COLOR		:uint = 0x349E49;
 		public static const RED_TEXT_COLOR			:uint = 0xC81D23;
+		public static const BLUE_TEXT_COLOR			:uint = 0x005BAA;
 		
 		
 		[Embed(source="/../assets/theme/metalworks.png")]
@@ -202,6 +205,7 @@ package feathers.themes
 		protected var smallBoldGreenTextFormat:TextFormat;
 		protected var smallBoldRedTextFormat:TextFormat;
 		protected var smallBoldOrangeTextFormat:TextFormat;
+		protected var smallBoldBlueTextFormat:TextFormat;
 
 		protected var smallNormalBlackTextFormat:TextFormat;
 		protected var smallNormalGrayTextFormat:TextFormat;
@@ -361,6 +365,7 @@ package feathers.themes
 			this.smallBoldGreenTextFormat = new TextFormat(fontBold, smallSize * this.scale, GREEN_TEXT_COLOR, true);
 			this.smallBoldRedTextFormat = new TextFormat(fontBold, smallSize * this.scale, RED_TEXT_COLOR, true);
 			this.smallBoldOrangeTextFormat = new TextFormat(fontBold, smallSize * this.scale, ORANGE_TEXT_COLOR, true);
+			this.smallBoldBlueTextFormat = new TextFormat(fontBold, smallSize * this.scale, BLUE_TEXT_COLOR, true);
 
 			this.smallNormalGrayTextFormat = new TextFormat(fontNormal, smallSize * this.scale, GRAY_TEXT_COLOR, true);
 			this.smallNormalBlackTextFormat = new TextFormat(fontNormal, smallSize * this.scale, BLACK_TEXT_COLOR, true);
@@ -498,6 +503,7 @@ package feathers.themes
 			this.setInitializerForClass(Label, labelInitializer, "header");
 			this.setInitializerForClass(TextFieldTextRenderer, itemRendererAccessoryLabelInitializer, BaseDefaultItemRenderer.DEFAULT_CHILD_NAME_ACCESSORY_LABEL);
 			this.setInitializerForClass(ScrollText, scrollTextInitializer);
+			this.setInitializerForClass(ActionButton, buttonInitializer);
 			this.setInitializerForClass(Button, buttonInitializer);
 			this.setInitializerForClass(Button, buttonGroupButtonInitializer, ButtonGroup.DEFAULT_CHILD_NAME_BUTTON);
 			this.setInitializerForClass(Button, simpleButtonInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_THUMB);
@@ -677,6 +683,17 @@ package feathers.themes
 				myDefaultLabelTextFormat = smallBoldRedTextFormat;
 				myDisabledLabelTextFormat = smallUIDisabledTextFormat;
 				mySelectedDisabledLabelTextFormat = smallUIDisabledTextFormat;
+				
+			} else if (button.name == SMALL_BOLD_BLUE) {
+				myButtonUpSkinTextures = buttonDisabledSkinTextures;
+				myButtonSelectedUpSkinTextures = buttonSelectedUpSkinTextures;
+				myButtonDownSkinTextures = buttonDownSkinTextures;
+				myButtonDisabledSkinTextures = buttonDisabledSkinTextures;
+				myButtonSelectedDisabledSkinTextures = buttonSelectedDisabledSkinTextures;
+				myDefaultLabelTextFormat = smallBoldBlueTextFormat;
+				myDisabledLabelTextFormat = smallUIDisabledTextFormat;
+				mySelectedDisabledLabelTextFormat = smallUIDisabledTextFormat;
+				
 			} else {
 				myButtonUpSkinTextures = buttonUpSkinTextures;
 				myButtonSelectedUpSkinTextures = buttonSelectedUpSkinTextures;

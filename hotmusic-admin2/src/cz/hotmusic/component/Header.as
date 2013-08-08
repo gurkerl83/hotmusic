@@ -27,7 +27,23 @@ package cz.hotmusic.component
 			if (this.buttons == buttons)
 				return;
 			
+			if (this.buttons && this.buttons.length > 0)
+			{
+				for each (var button:feathers.controls.Button in this.buttons)
+				{
+					removeChild(button);
+				}
+			}
+			
 			this.buttons = buttons;
+			
+			if (buttons && buttons.length > 0)
+			{
+				for each (var button:feathers.controls.Button in buttons)
+				{
+					addChild(button);
+				}
+			}
 			
 			invalidate();
 		}
@@ -79,13 +95,7 @@ package cz.hotmusic.component
 			addChild(updateLbl);
 			addChild(updateValue);
 			
-			if (buttons && buttons.length > 0)
-			{
-				for each (var button:feathers.controls.Button in buttons)
-				{
-					addChild(button);
-				}
-			}
+			
 		}
 		
 		private function logout(event:Event):void

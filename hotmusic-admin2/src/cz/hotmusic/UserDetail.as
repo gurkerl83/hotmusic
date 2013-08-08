@@ -1,12 +1,47 @@
 package cz.hotmusic
 {
-	import starling.display.Sprite;
+	import cz.hotmusic.helper.ButtonHelper;
 	
-	public class UserDetail extends Sprite
+	import feathers.controls.Button;
+	import feathers.controls.Label;
+	import feathers.controls.Screen;
+	import feathers.themes.Theme;
+	
+	import starling.display.Sprite;
+	import starling.events.Event;
+	
+	public class UserDetail extends Screen implements IActionButtons
 	{
 		public function UserDetail()
 		{
 			super();
+		}
+		
+		private var _actionButtons:Array;
+		public function get actionButtons():Array
+		{
+			if (_actionButtons == null)
+			{
+				_actionButtons = [ButtonHelper.inst().saveButton, ButtonHelper.inst().cancelButton, ButtonHelper.inst().clearButton];
+			}
+			return _actionButtons;
+		}
+		
+		private var label:Label;
+		
+		override protected function initialize():void
+		{
+			super.initialize();
+			label = new Label();
+			label.text = "UserDetail";
+			label.name = Theme.SMALL_BOLD_ORANGE;
+			
+			addChild(label);
+		}
+		
+		override protected function draw():void
+		{
+			super.draw();
 		}
 	}
 }

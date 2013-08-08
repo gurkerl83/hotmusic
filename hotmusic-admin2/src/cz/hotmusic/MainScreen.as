@@ -1,5 +1,6 @@
 package cz.hotmusic
 {
+	import cz.hotmusic.component.ActionButton;
 	import cz.hotmusic.component.Header;
 	import cz.hotmusic.component.Menu;
 	
@@ -43,18 +44,31 @@ package cz.hotmusic
 			super.initialize();
 			
 			header = new Header();
+			header.addEventListener(ActionButton.SAVE_BUTTON, saveButtonTriggeredHandler);
+			header.addEventListener(ActionButton.CANCEL_BUTTON, cancelButtonTriggeredHandler);
+			header.addEventListener(ActionButton.CLEAR_BUTTON, clearButtonTriggeredHandler);
+			header.addEventListener(ActionButton.ADD_NEW_BUTTON, addNewButtonTriggeredHandler);
 			
-			var saveButton:Button = new Button();
-			saveButton.label = "Save";
-			saveButton.addEventListener(Event.TRIGGERED, saveButtonTriggeredHandler);
-			
-			var cancelButton:Button = new Button();
-			cancelButton.label = "Cancel";
-			cancelButton.name = Theme.SMALL_BOLD_RED;
-			cancelButton.addEventListener(Event.TRIGGERED, cancelButtonTriggeredHandler);
-			
-			var buttons:Array = [saveButton,cancelButton];
-			header.actionButtons(buttons);
+//			var saveButton:Button = new Button();
+//			saveButton.label = "Save";
+//			saveButton.addEventListener(Event.TRIGGERED, saveButtonTriggeredHandler);
+//			
+//			var cancelButton:Button = new Button();
+//			cancelButton.label = "Cancel";
+//			cancelButton.name = Theme.SMALL_BOLD_RED;
+//			cancelButton.addEventListener(Event.TRIGGERED, cancelButtonTriggeredHandler);
+//
+//			var clearButton:Button = new Button();
+//			clearButton.label = "Clear";
+//			clearButton.name = Theme.SMALL_BOLD_BLUE;
+//			clearButton.addEventListener(Event.TRIGGERED, clearButtonTriggeredHandler);
+//
+//			var addNewButton:Button = new Button();
+//			addNewButton.label = "Add new ";
+//			addNewButton.addEventListener(Event.TRIGGERED, addNewButtonTriggeredHandler);
+//			
+//			var buttons:Array = [saveButton, cancelButton, clearButton];
+//			header.actionButtons(buttons);
 			
 			screenNavigator = new ScreenNavigator();
 			screenNavigator.addScreen(SONGS_LIST, new ScreenNavigatorItem(SongsList,{showDetail: SONG_DETAIL}));
@@ -74,7 +88,8 @@ package cz.hotmusic
 			
 			screenNavigator.addScreen(ADD_ARTISTS_LIST, new ScreenNavigatorItem(AddArtistsList,{showDetail: ADD_ARTIST_DETAIL}));
 			screenNavigator.addScreen(ADD_ARTIST_DETAIL, new ScreenNavigatorItem(AddArtistDetail,{close: ADD_ARTISTS_LIST}));
-			
+
+			screenNavigator.addEventListener(Event.CHANGE, screenNavigatorChangeHandler);
 			screenNavigator.showScreen(SONGS_LIST);
 			
 			menu = new Menu(screenNavigator);
@@ -110,6 +125,21 @@ package cz.hotmusic
 		private function cancelButtonTriggeredHandler(event:Event):void 
 		{
 			screenNavigator.activeScreen.dispatchEventWith(Event.CLOSE);
+		}
+
+		private function clearButtonTriggeredHandler(event:Event):void 
+		{
+//			screenNavigator.activeScreen.dispatchEventWith(Event.CLOSE);
+		}
+
+		private function addNewButtonTriggeredHandler(event:Event):void 
+		{
+			screenNavigator.activeScreen.dispatchEventWith("showDetail");
+		}
+		
+		private function screenNavigatorChangeHandler(event:Event):void 
+		{
+			header.actionButtons(IActionButtons(screenNavigator.activeScreen).actionButtons);
 		}
 	}
 }

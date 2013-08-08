@@ -1,16 +1,28 @@
 package cz.hotmusic
 {
+	import cz.hotmusic.helper.ButtonHelper;
+	
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.themes.Theme;
 	
 	import starling.display.Sprite;
 	
-	public class UsersList extends Screen
+	public class UsersList extends Screen implements IActionButtons
 	{
 		public function UsersList()
 		{
 			super();
+		}
+		
+		private var _actionButtons:Array;
+		public function get actionButtons():Array
+		{
+			if (_actionButtons == null)
+			{
+				_actionButtons = [ButtonHelper.inst().addNewButton("user")];
+			}
+			return _actionButtons;
 		}
 		
 		private var label:Label;
