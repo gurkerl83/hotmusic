@@ -2,11 +2,13 @@ package cz.hotmusic
 {
 	import cz.hotmusic.helper.ButtonHelper;
 	
+	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.themes.Theme;
 	
 	import starling.display.Sprite;
+	import starling.events.Event;
 	
 	public class AlbumsList extends Screen implements IActionButtons
 	{
@@ -27,6 +29,7 @@ package cz.hotmusic
 		}
 		
 		private var label:Label;
+		
 		override protected function initialize():void
 		{
 			super.initialize();
@@ -41,5 +44,6 @@ package cz.hotmusic
 		{
 			super.draw();
 		}
+		
 	}
 }

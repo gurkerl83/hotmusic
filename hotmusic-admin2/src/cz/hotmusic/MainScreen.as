@@ -107,15 +107,17 @@ package cz.hotmusic
 		override protected function draw():void {
 			super.draw();
 			
+			var padding:int = 20;
 //			header.height = 100;
 			header.width = actualWidth;
 			
 			menu.y = header.height;
+			menu.height = actualHeight - header.height;
 			
-			screenNavigator.x = menu.width;
-			screenNavigator.y = header.height;
-			screenNavigator.width = actualWidth - screenNavigator.x;
-			screenNavigator.height = actualHeight - screenNavigator.y;
+			screenNavigator.x = menu.width + padding;
+			screenNavigator.y = header.height + padding;
+			screenNavigator.width = actualWidth - screenNavigator.x - padding;
+			screenNavigator.height = actualHeight - screenNavigator.y - 2*padding;
 		}
 		
 		private function saveButtonTriggeredHandler(event:Event):void 

@@ -99,6 +99,10 @@ package cz.hotmusic
 		public static const ShadowRight:Class;
 		[Embed(source="assets/icon/logout.png")]
 		public static const Logout:Class;
+		[Embed(source="assets/icon/check.png")]
+		public static const Check:Class;
+		[Embed(source="assets/icon/delete.png")]
+		public static const Delete:Class;
 		
 		public function FontAssets()
 		{

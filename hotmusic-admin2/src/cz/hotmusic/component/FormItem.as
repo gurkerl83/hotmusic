@@ -72,7 +72,7 @@ package cz.hotmusic.component
 			_orderNumberLbl.name = Theme.SMALL_BOLD_ORANGE;
 			
 			_labelLbl = new Label();
-			_labelLbl.name = Theme.SMALL_BOLD_BLACK;
+			_labelLbl.name = Theme.SMALL_NORMAL_BLACK;
 			
 			_textinput = new TextInput();
 			_textinput.name = "textinputwhite";
@@ -105,13 +105,13 @@ package cz.hotmusic.component
 			
 			
 			_labelLbl.validate();
-			_labelLbl.x = _orderNumberLbl.x + _orderNumberLbl.width + gap;
+			_labelLbl.x = _orderNumberLbl.x + _orderNumberLbl.width;// + gap;
 			_labelLbl.y = actualHeight/2 - _labelLbl.height/2;
 
-			_textinput.x = 200;
-			_textinput.width = actualWidth - _textinput.x - paddingLeft; 
+			_textinput.x = 250;
 			_textinput.validate();
 			_textinput.y = actualHeight/2 - _textinput.height/2;
+			_textinput.width = actualWidth - _textinput.x - _textinput.y; 
 		}
 	}
 }

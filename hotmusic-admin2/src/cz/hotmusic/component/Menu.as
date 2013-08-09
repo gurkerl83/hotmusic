@@ -56,6 +56,7 @@ package cz.hotmusic.component
 			list.itemRendererProperties.labelField = "label";
 			list.selectedIndex = 0;
 			list.addEventListener(Event.CHANGE, listChangeHandler);
+			list.hasElasticEdges = false;
 			
 			addChild(bg);
 			addChild(list);
@@ -64,9 +65,10 @@ package cz.hotmusic.component
 		override protected function draw():void
 		{
 			super.draw();
-			bg.width = actualWidth;
+			bg.width = actualWidth - 12;
 			bg.height = actualHeight;
 			
+			list.y = 25;
 			list.width = actualWidth;
 		}
 		

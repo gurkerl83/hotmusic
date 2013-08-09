@@ -26,6 +26,7 @@ package feathers.themes
 {
 	import cz.hotmusic.FontAssets;
 	import cz.hotmusic.component.ActionButton;
+	import cz.hotmusic.renderer.GenreRenderer;
 	
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -74,7 +75,6 @@ package feathers.themes
 	import flash.geom.Rectangle;
 	import flash.text.Font;
 	import flash.text.TextFormat;
-	import flash.text.TextFormatAlign;
 	
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -138,12 +138,14 @@ package feathers.themes
 //		protected static const TEXTINPUT_SCALE9_GRID:Rectangle = new Rectangle(39, 0, 2, 49);
 //		protected static const TEXTINPUTBLACK_SCALE9_GRID:Rectangle = new Rectangle(4, 4, 7, 71);
 		protected static const TEXTINPUTBLACK_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 70);
-		protected static const TEXTINPUTWHITE_SCALE9_GRID:Rectangle = new Rectangle(2, 3, 10, 37);
+		protected static const TEXTINPUTWHITE_SCALE9_GRID:Rectangle = new Rectangle(2, 2, 10, 36);
 		protected static const TEXTINPUT_SCALE9_GRID:Rectangle = new Rectangle(39, 0, 2, 49);
 		protected static const DEFAULT_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 22, 22);
 		protected static const BUTTON_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 50, 50);
 		protected static const BUTTON2_SCALE9_GRID:Rectangle = new Rectangle(15, 15, 4, 47);
 		protected static const ITEM_RENDERER_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 1, 82);
+		protected static const ITEM_RENDERER_MAIN_SCALE9_GRID:Rectangle = new Rectangle(1, 5, 10, 40);
+		protected static const ITEM_RENDERER_MENU_SCALE9_GRID:Rectangle = new Rectangle(1, 1, 26, 50);
 		protected static const INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 1, 82);
 		protected static const INSET_ITEM_RENDERER_FIRST_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 70);
 		protected static const INSET_ITEM_RENDERER_LAST_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 3, 75);
@@ -211,6 +213,7 @@ package feathers.themes
 		protected var smallNormalBlackTextFormat:TextFormat;
 		protected var smallNormalGrayTextFormat:TextFormat;
 		protected var smallNormalOrangeTextFormat:TextFormat;
+		protected var smallNormalWhiteTextFormat:TextFormat;
 
 		protected var largeBoldGrayTextFormat:TextFormat;
 		protected var largeBoldWhiteTextFormat:TextFormat;
@@ -278,6 +281,10 @@ package feathers.themes
 		protected var checkSelectedDisabledIconTexture:Texture;
 		protected var pageIndicatorNormalSkinTexture:Texture;
 		protected var pageIndicatorSelectedSkinTexture:Texture;
+		protected var itemRendererMainUpSkinTextures:Scale9Textures;
+		protected var itemRendererMainSelectedSkinTextures:Scale9Textures;
+		protected var itemRendererMenuUpSkinTextures:Scale9Textures;
+		protected var itemRendererMenuSelectedSkinTextures:Scale9Textures;
 		protected var itemRendererUpSkinTextures:Scale9Textures;
 		protected var itemRendererSelectedSkinTextures:Scale9Textures;
 		protected var insetItemRendererMiddleUpSkinTextures:Scale9Textures;
@@ -356,7 +363,7 @@ package feathers.themes
 //			const fontNormal:String = "MyriadProSemibold";
 			const fontNormal:String = "MyriadProRegular";
 			const fontBold:String = "MyriadProBold";
-			const smallSize:int = 17;
+			const smallSize:int = 20;
 			const largeSize:int = 33;
 			const tinySize:int = 10;
 
@@ -372,6 +379,7 @@ package feathers.themes
 			this.smallNormalGrayTextFormat = new TextFormat(fontNormal, smallSize * this.scale, GRAY_TEXT_COLOR, true);
 			this.smallNormalBlackTextFormat = new TextFormat(fontNormal, smallSize * this.scale, BLACK_TEXT_COLOR, true);
 			this.smallNormalOrangeTextFormat = new TextFormat(fontNormal, smallSize * this.scale, ORANGE_TEXT_COLOR, true);
+			this.smallNormalWhiteTextFormat = new TextFormat(fontNormal, smallSize * this.scale, WHITE_TEXT_COLOR, true);
 			
 			this.largeBoldGrayTextFormat = new TextFormat(fontBold, largeSize * this.scale, GRAY_TEXT_COLOR, true);
 			this.largeBoldWhiteTextFormat = new TextFormat(fontBold, largeSize * this.scale, WHITE_TEXT_COLOR, true);
@@ -471,6 +479,10 @@ package feathers.themes
 			this.pageIndicatorSelectedSkinTexture = atlas.getTexture("page-indicator-selected-skin");
 			this.pageIndicatorNormalSkinTexture = atlas.getTexture("page-indicator-normal-skin");
 
+			this.itemRendererMainUpSkinTextures = new Scale9Textures(atlas.getTexture("list-item-main-up-skin"), ITEM_RENDERER_MAIN_SCALE9_GRID);
+			this.itemRendererMainSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-main-selected-skin"), ITEM_RENDERER_MAIN_SCALE9_GRID);
+			this.itemRendererMenuUpSkinTextures = new Scale9Textures(atlas.getTexture("list-item-menu-up-skin"), ITEM_RENDERER_MENU_SCALE9_GRID);
+			this.itemRendererMenuSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-menu-selected-skin"), ITEM_RENDERER_MENU_SCALE9_GRID);
 			this.itemRendererUpSkinTextures = new Scale9Textures(atlas.getTexture("list-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.itemRendererSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.insetItemRendererMiddleUpSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-middle-up-skin"), INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID);
@@ -519,6 +531,7 @@ package feathers.themes
 			this.setInitializerForClass(Button, toggleSwitchTrackInitializer, ToggleSwitch.DEFAULT_CHILD_NAME_ON_TRACK);
 			this.setInitializerForClass(Button, nothingInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
+			this.setInitializerForClass(GenreRenderer, itemRendererMainInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);
@@ -631,6 +644,8 @@ package feathers.themes
 					label.textRendererProperties.textFormat = this.smallBoldOrangeTextFormat;
 				} else if (label.name == SMALL_BOLD_BLACK) {
 					label.textRendererProperties.textFormat = this.smallBoldBlackTextFormat;
+				} else if (label.name == SMALL_NORMAL_BLACK) {
+					label.textRendererProperties.textFormat = this.smallNormalBlackTextFormat;
 					
 				} else if (label.name == LARGE_BOLD_GRAY) {
 					label.textRendererProperties.textFormat = this.largeBoldGrayTextFormat;
@@ -826,23 +841,23 @@ package feathers.themes
 		protected function itemRendererInitializer(renderer:BaseDefaultItemRenderer):void
 		{
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
-			skinSelector.defaultSelectedValue = this.itemRendererSelectedSkinTextures;
-			skinSelector.setValueForState(this.itemRendererSelectedSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.defaultValue = this.itemRendererMenuUpSkinTextures;
+			skinSelector.defaultSelectedValue = this.itemRendererMenuSelectedSkinTextures;
+			skinSelector.setValueForState(this.itemRendererMenuSelectedSkinTextures, Button.STATE_DOWN, false);
 			skinSelector.imageProperties =
 			{
-				width: 88 * this.scale,
-				height: 88 * this.scale,
+				width: 50 * this.scale,
+				height: 50 * this.scale,
 				textureScale: this.scale
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-			renderer.defaultLabelProperties.textFormat = this.largeLightTextFormat;
+			renderer.defaultLabelProperties.textFormat = this.smallNormalBlackTextFormat;
 			renderer.defaultLabelProperties.embedFonts = true;
-				renderer.defaultSelectedLabelProperties.textFormat = this.largeLightTextFormat;
-				renderer.defaultSelectedLabelProperties.embedFonts = true;
-				renderer.downLabelProperties.textFormat = this.largeLightTextFormat;
-				renderer.downLabelProperties.embedFonts = true;
+			renderer.defaultSelectedLabelProperties.textFormat = this.smallBoldBlackTextFormat;
+			renderer.defaultSelectedLabelProperties.embedFonts = true;
+			renderer.downLabelProperties.textFormat = this.smallBoldBlackTextFormat;
+			renderer.downLabelProperties.embedFonts = true;
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
@@ -852,8 +867,44 @@ package feathers.themes
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-			renderer.minWidth = renderer.minHeight = 88 * this.scale;
-			renderer.minTouchWidth = renderer.minTouchHeight = 88 * this.scale;
+			renderer.minWidth = renderer.minHeight = 50 * this.scale;
+			renderer.minTouchWidth = renderer.minTouchHeight = 50 * this.scale;
+
+			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
+			renderer.iconLoaderFactory = this.imageLoaderFactory;
+		}
+
+		protected function itemRendererMainInitializer(renderer:BaseDefaultItemRenderer):void
+		{
+			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
+			skinSelector.defaultValue = this.itemRendererMainUpSkinTextures;
+			skinSelector.defaultSelectedValue = this.itemRendererMainSelectedSkinTextures;
+			skinSelector.setValueForState(this.itemRendererMainSelectedSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.imageProperties =
+			{
+				width: 50 * this.scale,
+				height: 50 * this.scale,
+				textureScale: this.scale
+			};
+			renderer.stateToSkinFunction = skinSelector.updateValue;
+
+			renderer.defaultLabelProperties.textFormat = this.smallBoldBlackTextFormat;
+			renderer.defaultLabelProperties.embedFonts = true;
+			renderer.defaultSelectedLabelProperties.textFormat = this.smallBoldBlackTextFormat;
+			renderer.defaultSelectedLabelProperties.embedFonts = true;
+			renderer.downLabelProperties.textFormat = this.smallBoldBlackTextFormat;
+			renderer.downLabelProperties.embedFonts = true;
+
+			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
+			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
+			renderer.paddingLeft = 32 * this.scale;
+			renderer.paddingRight = 24 * this.scale;
+			renderer.gap = 20 * this.scale;
+			renderer.iconPosition = Button.ICON_POSITION_LEFT;
+			renderer.accessoryGap = Number.POSITIVE_INFINITY;
+			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+			renderer.minWidth = renderer.minHeight = 50 * this.scale;
+			renderer.minTouchWidth = renderer.minTouchHeight = 50 * this.scale;
 
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
@@ -1052,12 +1103,15 @@ package feathers.themes
 			};
 			check.stateToIconFunction = iconSelector.updateValue;
 
-			check.defaultLabelProperties.textFormat = this.smallUILightTextFormat;
-			check.disabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
-			check.selectedDisabledLabelProperties.textFormat = this.smallUIDisabledTextFormat;
+			check.defaultLabelProperties.textFormat = this.smallNormalWhiteTextFormat;
+			check.defaultLabelProperties.embedFonts = true;
+			check.disabledLabelProperties.textFormat = this.smallNormalWhiteTextFormat;
+			check.disabledLabelProperties.embedFonts = true;
+			check.selectedDisabledLabelProperties.textFormat = this.smallNormalWhiteTextFormat;
+			check.selectedDisabledLabelProperties.embedFonts = true;
 
 			check.gap = 12 * this.scale;
-			check.minTouchWidth = check.minTouchHeight = 88 * this.scale;
+			check.minTouchWidth = check.minTouchHeight = 40 * this.scale;
 		}
 
 		protected function sliderInitializer(slider:Slider):void
@@ -1115,7 +1169,7 @@ package feathers.themes
 				textcolor = 0x000004;
 				promptcolor = 0x000004;
 				paddingLeft = 18;
-				height = 39;
+				height = 40;
 				fontSize = 24;
 			} else {
 				tist = this.textinputSkinTextures;
@@ -1142,7 +1196,7 @@ package feathers.themes
 			input.backgroundFocusedSkin = backgroundFocusedSkin;
 
 			input.minWidth = input.minHeight = height * this.scale;
-			input.minTouchWidth = input.minTouchHeight = 88 * this.scale;
+			input.minTouchWidth = input.minTouchHeight = height * this.scale;
 			input.paddingTop = input.paddingBottom = 4 * this.scale;
 			input.paddingLeft = paddingLeft * this.scale;
 			input.paddingRight = 12 * this.scale; 
