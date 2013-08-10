@@ -1,6 +1,8 @@
 package cz.hotmusic.renderer
 {
 	import cz.hotmusic.FontAssets;
+	import cz.hotmusic.component.DateField;
+	import cz.hotmusic.model.Artist;
 	import cz.hotmusic.model.Genre;
 	
 	import feathers.controls.Label;
@@ -10,48 +12,64 @@ package cz.hotmusic.renderer
 	import starling.events.Event;
 	import starling.textures.Texture;
 	
-	public class GenreRenderer extends DefaultListItemRenderer
+	public class ArtistRenderer extends DefaultListItemRenderer
 	{
-		public function GenreRenderer()
+		public function ArtistRenderer()
 		{
 			super();
 		}
 		
-//		private var _nameLabel:Label;
 		private var _deleteButton:Button;
+		private var _dateField:DateField;
+		
+		private var artist:Artist;
 		
 		override public function set data(value:Object):void
 		{
 			super.data = value;
 			
-//			var g:Genre = Genre(value);
-//			_nameLabel.text = g.name;
-//			labelTextRenderer.text = g.name;
+			artist = Artist(value);
+			if (_dateField && artist)
+				_dateField.date = artist.addedDate;
 		}
 		
 		override protected function initialize():void
 		{
 			super.initialize();
 			
-//			_nameLabel = new Label();
 			_deleteButton = new Button(Texture.fromBitmap(new FontAssets.Delete()));
 			_deleteButton.addEventListener(Event.TRIGGERED, function (e:Event):void {
 				e.stopImmediatePropagation();
 				dispatchEventWith("delete", true);
 			});
 			
-//			addChild(_nameLabel);
+			_dateField = new DateField();
+			
 			addChild(_deleteButton);
+			addChild(_dateField);
 		}
 		
 		override protected function layoutContent():void
 		{
 			super.layoutContent();
 			
-			if (_deleteButton.y == 0)
+			if (_deleteButton.y == 0) {
 				_deleteButton.y = actualHeight/2 - _deleteButton.height/2;
-			if (_deleteButton.x == 0)
+//				trace("deleteButton.y = " + _deleteButton.y);
+			}
+			if (_deleteButton.x == 0) {
 				_deleteButton.x = actualWidth - _deleteButton.width - _deleteButton.y ;
+//				trace("deleteButton.x = " + _deleteButton.x);
+			}
+			
+			_dateField.validate();
+			_dateField.x = _deleteButton.x - gap - _dateField.width;
+			_dateField.y = actualHeight/2 - _dateField.height/2;
+		}
+		
+		override protected function draw():void
+		{
+			super.draw();
 		}
 	}
 }

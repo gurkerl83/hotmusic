@@ -87,7 +87,7 @@ package cz.hotmusic.component
 			updateValue.text = "47:55:14";
 			updateValue.name = Theme.LARGE_BOLD_GRAY;
 			
-			addChild(bg);
+			addChildAt(bg,0);
 			addChild(logo);
 			addChild(userLbl);
 			addChild(rightsLbl);

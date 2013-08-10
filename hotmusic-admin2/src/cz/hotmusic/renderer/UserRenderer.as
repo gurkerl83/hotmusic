@@ -10,37 +10,30 @@ package cz.hotmusic.renderer
 	import starling.events.Event;
 	import starling.textures.Texture;
 	
-	public class GenreRenderer extends DefaultListItemRenderer
+	public class UserRenderer extends DefaultListItemRenderer
 	{
-		public function GenreRenderer()
+		public function UserRenderer()
 		{
 			super();
 		}
 		
-//		private var _nameLabel:Label;
 		private var _deleteButton:Button;
 		
 		override public function set data(value:Object):void
 		{
 			super.data = value;
-			
-//			var g:Genre = Genre(value);
-//			_nameLabel.text = g.name;
-//			labelTextRenderer.text = g.name;
 		}
 		
 		override protected function initialize():void
 		{
 			super.initialize();
 			
-//			_nameLabel = new Label();
 			_deleteButton = new Button(Texture.fromBitmap(new FontAssets.Delete()));
 			_deleteButton.addEventListener(Event.TRIGGERED, function (e:Event):void {
 				e.stopImmediatePropagation();
 				dispatchEventWith("delete", true);
 			});
 			
-//			addChild(_nameLabel);
 			addChild(_deleteButton);
 		}
 		

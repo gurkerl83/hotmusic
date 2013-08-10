@@ -26,7 +26,11 @@ package feathers.themes
 {
 	import cz.hotmusic.FontAssets;
 	import cz.hotmusic.component.ActionButton;
+	import cz.hotmusic.renderer.AlbumRenderer;
+	import cz.hotmusic.renderer.ArtistRenderer;
 	import cz.hotmusic.renderer.GenreRenderer;
+	import cz.hotmusic.renderer.SongRenderer;
+	import cz.hotmusic.renderer.UserRenderer;
 	
 	import feathers.controls.Button;
 	import feathers.controls.ButtonGroup;
@@ -108,6 +112,7 @@ package feathers.themes
 
 		public static const TINY_NORMAL_WHITE		:String = "TINY_NORMAL_WHITE";
 		public static const TINY_NORMAL_GRAY		:String = "TINY_NORMAL_GRAY";
+		public static const TINY_BOLD_WHITE			:String = "TINY_BOLD_WHITE";
 		
 		// barvy
 		
@@ -222,6 +227,7 @@ package feathers.themes
 
 		protected var tinyNormalGrayTextFormat:TextFormat;
 		protected var tinyNormalWhiteTextFormat:TextFormat;
+		protected var tinyBoldWhiteTextFormat:TextFormat;
 		// konec
 		
 		protected var headerTextFormat:TextFormat;
@@ -388,6 +394,7 @@ package feathers.themes
 			
 			this.tinyNormalGrayTextFormat = new TextFormat(fontNormal, tinySize * this.scale, GRAY_TEXT_COLOR, true);
 			this.tinyNormalWhiteTextFormat = new TextFormat(fontNormal, tinySize * this.scale, WHITE_TEXT_COLOR, true);
+			this.tinyBoldWhiteTextFormat = new TextFormat(fontBold, tinySize * this.scale, WHITE_TEXT_COLOR, true);
 			// konec definice
 			
 			this.headerTextFormat = new TextFormat("MyriadProBold", Math.round(40 * this.scale), ORANGE_TEXT_COLOR, true);
@@ -532,6 +539,10 @@ package feathers.themes
 			this.setInitializerForClass(Button, nothingInitializer, SimpleScrollBar.DEFAULT_CHILD_NAME_THUMB);
 			this.setInitializerForClass(ButtonGroup, buttonGroupInitializer);
 			this.setInitializerForClass(GenreRenderer, itemRendererMainInitializer);
+			this.setInitializerForClass(ArtistRenderer, itemRendererMainInitializer);
+			this.setInitializerForClass(AlbumRenderer, itemRendererMainInitializer);
+			this.setInitializerForClass(SongRenderer, itemRendererMainInitializer);
+			this.setInitializerForClass(UserRenderer, itemRendererMainInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);
@@ -652,6 +663,10 @@ package feathers.themes
 					
 				} else if (label.name == TINY_NORMAL_GRAY) {
 					label.textRendererProperties.textFormat = this.tinyNormalGrayTextFormat;
+				} else if (label.name == TINY_NORMAL_WHITE) {
+					label.textRendererProperties.textFormat = this.tinyNormalWhiteTextFormat;
+				} else if (label.name == TINY_BOLD_WHITE) {
+					label.textRendererProperties.textFormat = this.tinyBoldWhiteTextFormat;
 					
 				} else {
 					label.textRendererProperties.textFormat = this.smallNormalGrayTextFormat;

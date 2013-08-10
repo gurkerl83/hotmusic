@@ -2,8 +2,12 @@ package cz.hotmusic.model
 {
 	public class User
 	{
-		public function User()
+		public function User(firstname:String=null, surname:String=null)
 		{
+			if (firstname != null)
+				this.firstname = firstname;
+			if (surname != null)
+				this.surname = surname;
 		}
 		
 		public var id:String;

@@ -103,6 +103,8 @@ package cz.hotmusic
 		public static const Check:Class;
 		[Embed(source="assets/icon/delete.png")]
 		public static const Delete:Class;
+		[Embed(source="assets/icon/datebg.png")]
+		public static const DateBG:Class;
 		
 		public function FontAssets()
 		{
