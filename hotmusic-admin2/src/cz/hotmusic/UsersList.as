@@ -1,7 +1,8 @@
 package cz.hotmusic
 {
 	import cz.hotmusic.helper.ButtonHelper;
-	import cz.hotmusic.helper.DataHelper;
+	import cz.hotmusic.helper.MockDataHelper;
+	import cz.hotmusic.model.Model;
 	import cz.hotmusic.model.User;
 	import cz.hotmusic.renderer.UserRenderer;
 	
@@ -43,7 +44,7 @@ package cz.hotmusic
 			
 			list = new List();
 			list.itemRendererType = UserRenderer;
-			list.dataProvider = new ListCollection(DataHelper.getInstance().users);
+			list.dataProvider = new ListCollection(Model.getInstance().users);
 			list.itemRendererProperties.labelFunction = function (user:User):String {
 				return user.firstname + " " + user.surname;
 			}

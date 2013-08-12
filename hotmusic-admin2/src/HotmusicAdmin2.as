@@ -1,6 +1,7 @@
 package
 {
 	import cz.hotmusic.Main;
+	import cz.hotmusic.controller.MyController;
 	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -46,11 +47,15 @@ package
 			_starling.antiAliasing = 1;
 //			_starling.addEventListener("rootCreated", removeSplash);
 			_starling.start();
+		
+			_myController = new MyController();
+			_myController.init();
 			
 			this.stage.addEventListener(Event.RESIZE, stage_resizeHandler, false, int.MAX_VALUE, true);
 			this.stage.addEventListener(Event.DEACTIVATE, stage_deactivateHandler, false, 0, true);
 		}
 		
+		private var _myController:MyController;
 		private var _starling:Starling;
 		
 		private function stage_resizeHandler(event:Event):void

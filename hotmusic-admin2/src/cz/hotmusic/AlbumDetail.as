@@ -44,7 +44,7 @@ package cz.hotmusic
 			albumname = new FormItem();
 			albumname.orderNumber = "1.";
 			albumname.label = "Album name";
-			albumname.value = "Slash";
+//			albumname.value = "Slash";
 
 			artistname = new FormItem();
 			artistname.orderNumber = "2.";

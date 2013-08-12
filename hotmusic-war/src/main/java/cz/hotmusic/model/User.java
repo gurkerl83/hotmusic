@@ -39,7 +39,10 @@ public class User {
 	/**
 	 * true = admin, false = user
 	 */
-	public Boolean rights;
+	public Boolean adminRights;
+	public Boolean genresAuthorized;
+	public Boolean usersAuthorized;
+	public Boolean addArtistAuthorized;
 	
 	public String getFacebookId() {
 		return facebookId;
@@ -118,5 +121,29 @@ public class User {
 	}
 	public void setLastSession(String lastSession) {
 		this.lastSession = lastSession;
+	}
+	public Boolean getAdminRights() {
+		return adminRights;
+	}
+	public void setAdminRights(Boolean adminRights) {
+		this.adminRights = adminRights;
+	}
+	public Boolean getGenresAuthorized() {
+		return genresAuthorized;
+	}
+	public void setGenresAuthorized(Boolean genresAuthorized) {
+		this.genresAuthorized = genresAuthorized;
+	}
+	public Boolean getUsersAuthorized() {
+		return usersAuthorized;
+	}
+	public void setUsersAuthorized(Boolean usersAuthorized) {
+		this.usersAuthorized = usersAuthorized;
+	}
+	public Boolean getAddArtistAuthorized() {
+		return addArtistAuthorized;
+	}
+	public void setAddArtistAuthorized(Boolean addArtistAuthorized) {
+		this.addArtistAuthorized = addArtistAuthorized;
 	}
 }

@@ -10,6 +10,6 @@ public interface IAlbumService {
 	List<Album> list(String sid) throws Throwable;
 	List<Album> autocomplete(String sid, String text) throws Throwable;
 	int listCount(String sid) throws Throwable;
-	void delete(String sid, Album album) throws Throwable;
+	void remove(String sid, Album album) throws Throwable;
 	void update(String sid, Album album) throws Throwable;
 }

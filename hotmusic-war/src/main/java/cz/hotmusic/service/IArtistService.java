@@ -14,7 +14,7 @@ public interface IArtistService {
 
 	int listCount(String sid) throws Throwable;
 
-	void delete(String sid, Artist artist) throws Throwable;
+	void remove(String sid, Artist artist) throws Throwable;
 
 	void update(String sid, Artist artist) throws Throwable;
 

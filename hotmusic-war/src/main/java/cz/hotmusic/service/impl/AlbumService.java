@@ -1,5 +1,6 @@
 package cz.hotmusic.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -44,6 +45,9 @@ public class AlbumService implements IAlbumService{
 		Assert.assertNotNull(album.artist);
 		Assert.assertNotNull(album.genre);
 		sessionHelper.checkSession(sid);
+		
+		album.addedBySession = sid;
+		album.addedDate = new Date();
 		
 		Session session = sessionFactory.getCurrentSession();
 		session.save(album);
@@ -118,7 +122,7 @@ public class AlbumService implements IAlbumService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public void delete(String sid, Album album) throws Throwable {
+	public void remove(String sid, Album album) throws Throwable {
 		Assert.assertNotNull(sid);
 		Assert.assertNotNull(album);
 		Assert.assertNotNull(album.id);

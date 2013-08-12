@@ -1,9 +1,13 @@
 package cz.hotmusic.model;
 
+import java.util.Date;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -21,6 +25,10 @@ public class Artist {
 	@Transient
 	public String objectUUID;
 	public String name;
+	public Date addedDate;
+	@OneToOne(cascade=CascadeType.ALL)
+	public User addedByUser;
+	public String addedBySession;
 	
 	public String getId() {
 		return id;
@@ -39,5 +47,23 @@ public class Artist {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Date getAddedDate() {
+		return addedDate;
+	}
+	public void setAddedDate(Date addedDate) {
+		this.addedDate = addedDate;
+	}
+	public User getAddedByUser() {
+		return addedByUser;
+	}
+	public void setAddedByUser(User addedByUser) {
+		this.addedByUser = addedByUser;
+	}
+	public String getAddedBySession() {
+		return addedBySession;
+	}
+	public void setAddedBySession(String addedBySession) {
+		this.addedBySession = addedBySession;
 	}
 }

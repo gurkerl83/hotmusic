@@ -1,8 +1,9 @@
 package cz.hotmusic
 {
 	import cz.hotmusic.helper.ButtonHelper;
-	import cz.hotmusic.helper.DataHelper;
+	import cz.hotmusic.helper.MockDataHelper;
 	import cz.hotmusic.model.Album;
+	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.AlbumRenderer;
 	
 	import feathers.controls.Button;
@@ -43,7 +44,7 @@ package cz.hotmusic
 			
 			list = new List();
 			list.itemRendererType = AlbumRenderer;
-			list.dataProvider = new ListCollection(DataHelper.getInstance().albums);
+			list.dataProvider = new ListCollection(Model.getInstance().albums);
 			list.itemRendererProperties.labelFunction = function (album:Album):String {
 				var albumName:String = "";
 				var lng:int = 24;

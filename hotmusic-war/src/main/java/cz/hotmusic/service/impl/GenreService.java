@@ -1,5 +1,6 @@
 package cz.hotmusic.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -114,7 +115,7 @@ public class GenreService implements IGenreService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public void delete(String sid, Genre genre) throws Throwable {
+	public void remove(String sid, Genre genre) throws Throwable {
 		Assert.assertNotNull(sid);
 		Assert.assertNotNull(genre);
 		Assert.assertNotNull(genre.id);

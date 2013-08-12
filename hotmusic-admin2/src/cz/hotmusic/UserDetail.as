@@ -1,7 +1,12 @@
 package cz.hotmusic
 {
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
+	
 	import cz.hotmusic.component.FormItem;
+	import cz.hotmusic.event.ProfileServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
+	import cz.hotmusic.model.Model;
+	import cz.hotmusic.model.User;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Check;
@@ -9,10 +14,12 @@ package cz.hotmusic
 	import feathers.controls.Screen;
 	import feathers.themes.Theme;
 	
+	import mx.rpc.events.ResultEvent;
+	
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class UserDetail extends Screen implements IActionButtons
+	public class UserDetail extends Screen implements IActionButtons, IActions
 	{
 		public function UserDetail()
 		{
@@ -27,6 +34,74 @@ package cz.hotmusic
 				_actionButtons = [ButtonHelper.inst().saveButton, ButtonHelper.inst().cancelButton, ButtonHelper.inst().clearButton];
 			}
 			return _actionButtons;
+		}
+		
+		public function save():void
+		{
+			if (!firstname.value || !surname.value || !email.value)
+				return;
+			
+			var user:User = new User();
+			user.firstname = firstname.value;
+			user.surname = surname.value;
+			user.email = email.value;
+			user.adminRights = adminRightCB.isSelected;
+			user.genresAuthorized = genresCB.isSelected;
+			user.usersAuthorized = usersCB.isSelected;
+			user.addArtistAuthorized = addArtistCB.isSelected;
+			
+			var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.REGISTER, registerResult, registerFault);
+			se.user = user;
+			se.sid = Model.getInstance().user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		public function clear():void
+		{
+			firstname.value = "";
+			surname.value = "";
+			email.value = "";
+			adminRightCB.isSelected = false;
+			userRightCB.isSelected = true;
+			genresCB.isSelected = true;
+			usersCB.isSelected = true;
+			addArtistCB.isSelected = true;
+		}
+		
+		public function remove():void
+		{
+			
+		}
+		
+		private function registerResult(result:Object):void
+		{
+			trace("got result");
+			var pse:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST, listResult, listFault);
+			pse.sid = Model.getInstance().user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
+		}
+		
+		private function registerFault(info:Object):void
+		{
+			trace("got error");
+		}
+		
+		private function listResult(result:ResultEvent):void
+		{
+			var users:Array = Model.getInstance().users;
+			users.splice(0, users.length); // erase array
+			
+			for each (var u:User in result.result) 
+			{
+				users.push(u);
+			}
+			dispatchEventWith(Event.CLOSE);
+			
+		}
+		
+		private function listFault(info:Object):void
+		{
+			trace("got error");
 		}
 		
 		private var firstname:FormItem;
@@ -45,7 +120,7 @@ package cz.hotmusic
 			firstname = new FormItem();
 			firstname.orderNumber = "1.";
 			firstname.label = "First name";
-			firstname.value = "Thomas";
+//			firstname.value = "Thomas";
 
 			surname = new FormItem();
 			surname.orderNumber = "2.";
@@ -54,22 +129,40 @@ package cz.hotmusic
 			email = new FormItem();
 			email.orderNumber = "3.";
 			email.label = "E-mail";
-			email.value = "thomas90@seznam.cz";
+//			email.value = "thomas90@seznam.cz";
 			
 			adminRightCB = new Check();
 			adminRightCB.label = "Admin";
+			adminRightCB.addEventListener(Event.CHANGE, function (event:Event):void {
+				if (!adminRightCB.isSelected)
+					return;
+				adminRightCB.isEnabled = false;
+				userRightCB.isEnabled = true;
+				userRightCB.isSelected = false;
+			});
 			
 			userRightCB = new Check();
 			userRightCB.label = "User";
+			userRightCB.isSelected = true;
+			userRightCB.addEventListener(Event.CHANGE, function (event:Event):void {
+				if (!userRightCB.isSelected)
+					return;
+				userRightCB.isEnabled = false;
+				adminRightCB.isEnabled = true;
+				adminRightCB.isSelected = false;
+			});
 			
 			genresCB = new Check();
 			genresCB.label = "Authorize item \"Genres\"";
+			genresCB.isSelected = true;
 			
 			usersCB = new Check();
 			usersCB.label = "Authorize item \"Users\"";
+			usersCB.isSelected = true;
 			
 			addArtistCB = new Check();
 			addArtistCB.label = "Authorize item \"+Artist\"";
+			addArtistCB.isSelected = true;
 			
 			addChild(firstname);
 			addChild(surname);
@@ -79,6 +172,8 @@ package cz.hotmusic
 			addChild(genresCB);
 			addChild(usersCB);
 			addChild(addArtistCB);
+			
+//			firstname.nextTabFocus = surname.textinput;
 		}
 		
 		override protected function draw():void

@@ -14,7 +14,7 @@ public interface ISongService {
 
 	int listCount(String sid) throws Throwable;
 
-	void delete(String sid, Song song) throws Throwable;
+	void remove(String sid, Song song) throws Throwable;
 
 	void update(String sid, Song song) throws Throwable;
 

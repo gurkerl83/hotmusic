@@ -41,7 +41,7 @@ package cz.hotmusic
 				}));
 
 			this.addChild(this._navigator);
-			_navigator.showScreen(MAIN_LIST);
+			_navigator.showScreen(LOGIN_SCREEN);
 
 			this._transitionManager = new ScreenSlidingStackTransitionManager(this._navigator);
 			this._transitionManager.duration = 0.5;

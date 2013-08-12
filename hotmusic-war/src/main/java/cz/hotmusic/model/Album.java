@@ -46,6 +46,11 @@ public class Album {
 		@LazyCollection(LazyCollectionOption.FALSE)
 		public List<Song> songs;
 		
+		public Date addedDate;
+		@OneToOne(cascade=CascadeType.ALL)
+		public User addedByUser;
+		public String addedBySession;
+		
 		public String getId() {
 			return id;
 		}
@@ -111,5 +116,29 @@ public class Album {
 		}
 		public void setSongs(List<Song> songs) {
 			this.songs = songs;
+		}
+		public Date getReleaseDate() {
+			return releaseDate;
+		}
+		public void setReleaseDate(Date releaseDate) {
+			this.releaseDate = releaseDate;
+		}
+		public Date getAddedDate() {
+			return addedDate;
+		}
+		public void setAddedDate(Date addedDate) {
+			this.addedDate = addedDate;
+		}
+		public User getAddedByUser() {
+			return addedByUser;
+		}
+		public void setAddedByUser(User addedByUser) {
+			this.addedByUser = addedByUser;
+		}
+		public String getAddedBySession() {
+			return addedBySession;
+		}
+		public void setAddedBySession(String addedBySession) {
+			this.addedBySession = addedBySession;
 		}
 }

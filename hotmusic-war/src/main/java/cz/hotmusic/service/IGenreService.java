@@ -16,8 +16,9 @@ public interface IGenreService {
 
 	int listCount(String sid) throws Throwable;
 
-	void delete(String sid, Genre genre) throws Throwable;
+	void remove(String sid, Genre genre) throws Throwable;
 
 	void update(String sid, Genre genre) throws Throwable;
+
 
 }

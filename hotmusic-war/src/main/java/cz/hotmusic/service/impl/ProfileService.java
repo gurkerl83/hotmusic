@@ -48,15 +48,15 @@ public class ProfileService implements IProfileService{
 		Assert.assertNotNull(user);
 		Assert.assertNotNull(user.email);
 //		Assert.assertNotNull(user.nick);
-		Assert.assertNotNull(user.password);
+//		Assert.assertNotNull(user.password);
 //		Assert.assertNotNull(user.male);
 		
 		if (user.version != 0)
 			throw new Exception("Wrong client version. Please download newest version.");
 		
-		if ((user.facebookId == null || user.facebookId.length() <= 0) && 
-			 (user.password == null || user.password.length() <= 0))
-			throw new Exception("You have to fill facebooId or password");
+//		if ((user.facebookId == null || user.facebookId.length() <= 0) && 
+//			 (user.password == null || user.password.length() <= 0))
+//			throw new Exception("You have to fill facebooId or password");
 		
 		// check previous registration
 		Session session = sessionFactory.getCurrentSession();
@@ -114,7 +114,7 @@ public class ProfileService implements IProfileService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public String login(User user) throws Exception {
+	public User login(User user) throws Exception {
 		// check inputs
 		Assert.assertNotNull(user);
 //		Assert.assertNotNull(user.password);
@@ -180,7 +180,7 @@ public class ProfileService implements IProfileService{
 		tr.commit();
 	    session.close();
 		
-		return foundUser.session;
+		return foundUser;
 	}
 	
 	@Override
@@ -285,7 +285,7 @@ public class ProfileService implements IProfileService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public void delete(String sid, User user) throws Throwable {
+	public void remove(String sid, User user) throws Throwable {
 		Assert.assertNotNull(sid);
 		Assert.assertNotNull(user);
 		Assert.assertNotNull(user.id);
@@ -319,7 +319,10 @@ public class ProfileService implements IProfileService{
 		foundUser.firstname = user.firstname;
 		foundUser.surname = user.surname;
 		foundUser.email = user.email;
-		foundUser.rights = user.rights;
+		foundUser.adminRights = user.adminRights;
+		foundUser.genresAuthorized = user.genresAuthorized;
+		foundUser.usersAuthorized = user.usersAuthorized;
+		foundUser.addArtistAuthorized = user.addArtistAuthorized;
 		
 //		session.close();
 

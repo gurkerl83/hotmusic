@@ -122,7 +122,8 @@ package cz.hotmusic
 		
 		private function saveButtonTriggeredHandler(event:Event):void 
 		{
-			screenNavigator.activeScreen.dispatchEventWith(Event.CLOSE);
+			IActions(screenNavigator.activeScreen).save();
+//			screenNavigator.activeScreen.dispatchEventWith(Event.CLOSE);
 		}
 		
 		private function cancelButtonTriggeredHandler(event:Event):void 
@@ -132,6 +133,7 @@ package cz.hotmusic
 
 		private function clearButtonTriggeredHandler(event:Event):void 
 		{
+			IActions(screenNavigator.activeScreen).clear();
 //			screenNavigator.activeScreen.dispatchEventWith(Event.CLOSE);
 		}
 

@@ -47,7 +47,7 @@ package cz.hotmusic.component
 		}
 		public function get value():String
 		{
-			return _value;
+			return textinput.text;
 		}
 		
 		private static const NORMAL_STATE	:String = "normal";
@@ -58,7 +58,7 @@ package cz.hotmusic.component
 		private var _bg:Quad;
 		private var _orderNumberLbl:Label;
 		private var _labelLbl:Label;
-		private var _textinput:TextInput;
+		public var textinput:TextInput;
 		
 		override protected function initialize():void
 		{
@@ -74,13 +74,13 @@ package cz.hotmusic.component
 			_labelLbl = new Label();
 			_labelLbl.name = Theme.SMALL_NORMAL_BLACK;
 			
-			_textinput = new TextInput();
-			_textinput.name = "textinputwhite";
+			textinput = new TextInput();
+			textinput.name = "textinputwhite";
 			
 			addChild(_bg);
 			addChild(_orderNumberLbl);
 			addChild(_labelLbl);
-			addChild(_textinput);
+			addChild(textinput);
 		}
 		
 		override protected function draw():void
@@ -96,7 +96,7 @@ package cz.hotmusic.component
 			if (isInvalid(INVALIDATION_FLAG_DATA)) {
 				_orderNumberLbl.text = _orderNumber;
 				_labelLbl.text = _label;
-				_textinput.text = _value;
+				textinput.text = _value;
 			}
 			
 			_orderNumberLbl.validate();
@@ -108,10 +108,10 @@ package cz.hotmusic.component
 			_labelLbl.x = _orderNumberLbl.x + _orderNumberLbl.width;// + gap;
 			_labelLbl.y = actualHeight/2 - _labelLbl.height/2;
 
-			_textinput.x = 250;
-			_textinput.validate();
-			_textinput.y = actualHeight/2 - _textinput.height/2;
-			_textinput.width = actualWidth - _textinput.x - _textinput.y; 
+			textinput.x = 250;
+			textinput.validate();
+			textinput.y = actualHeight/2 - textinput.height/2;
+			textinput.width = actualWidth - textinput.x - textinput.y; 
 		}
 	}
 }

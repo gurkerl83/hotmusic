@@ -1,18 +1,25 @@
 package cz.hotmusic.helper
 {
-	import cz.hotmusic.FontAssets;
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
+	
+	import cz.hotmusic.event.AlbumServiceEvent;
+	import cz.hotmusic.event.ArtistServiceEvent;
+	import cz.hotmusic.event.GenreServiceEvent;
+	import cz.hotmusic.event.ProfileServiceEvent;
+	import cz.hotmusic.event.SongServiceEvent;
 	import cz.hotmusic.model.Album;
 	import cz.hotmusic.model.Artist;
 	import cz.hotmusic.model.Genre;
+	import cz.hotmusic.model.Model;
 	import cz.hotmusic.model.Song;
 	import cz.hotmusic.model.User;
-	import cz.zc.mylib.event.GenericEvent;
-	import cz.zc.mylib.helper.DateHelper;
 	
-	import starling.display.Image;
-	import starling.textures.Texture;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	
-	public class DataHelper
+	import mx.rpc.events.ResultEvent;
+
+	public class DataHelper extends EventDispatcher
 	{
 		public function DataHelper()
 		{
@@ -23,142 +30,222 @@ package cz.hotmusic.helper
 		{
 			if (_instance == null) {
 				_instance = new DataHelper();
-				_instance.init();
 			}
 			return _instance;
 		}
 		
-		public var songs:Array;
-		public var genres:Array;
-		public var artists:Array;
-		public var albums:Array;
-		public var users:Array;
-		
-		private function init():void {
-			createGenres();
-			createArtists();
-			createAlbums();
-			createSongs();
-			createUsers();
+		public function initModel():void
+		{
+			_songsComplete = _artistsComplete = _albumsComplete = _genresComplete = _usersComplete = false;
+			getSongs();
+			getArtists();
+			getAlbums();
+			getGenres();
+			getUsers();
 		}
 		
-		private function createSongs():void
+		private var _songsComplete:Boolean;
+		private var _artistsComplete:Boolean;
+		private var _albumsComplete:Boolean;
+		private var _genresComplete:Boolean;
+		private var _usersComplete:Boolean;
+		
+		public static const INIT_COMPLETE		:String = "INIT_COMPLETE";
+		public static const SONGS_COMPLETE		:String = "SONGS_COMPLETE";
+		public static const ARTISTS_COMPLETE	:String = "ARTISTS_COMPLETE";
+		public static const ALBUMS_COMPLETE		:String = "ALBUMS_COMPLETE";
+		public static const GENRES_COMPLETE		:String = "GENRES_COMPLETE";
+		public static const USERS_COMPLETE		:String = "USERS_COMPLETE";
+		
+		private function dispatchInitComplete():void
 		{
-			var now:Date = new Date();
-			
-			var songsObj:Array = [
-				{ name: "What if", artist: coldplay, album: xy, genre: rock, addedDate: new Date(2013, 5, 26), hotstatus: 3, rateUp:14, rateDown:2, itunes: "https://itunes.apple.com/us/album/californication/id130244757#", amazon: "http://www.amazon.com/gp/product/B00973902K/ref=dm_mu_dp_trk3", beatport: "http://www.beatport.com/track/like-home-original-mix/3907632", youtube: "https://www.youtube.com/watch?v=fWNaR-rxAic"},
-				{ name: "The Adventures Of Rain Dance Maggie", artist: redhot, album: iamwithyou, genre: rock, addedDate: new Date(now.fullYear, now.month,now.date-1), hotstatus: 2, rateUp:84, rateDown:4, itunes: "https://itunes.apple.com/us/album/californication/id130244757#", amazon: "http://www.amazon.com/gp/product/B00973902K/ref=dm_mu_dp_trk3", beatport: "http://www.beatport.com/track/like-home-original-mix/3907632", youtube: "https://www.youtube.com/watch?v=fWNaR-rxAic"},
-				{ name: "Everything At Once", artist: mgmt, album: coolalbum, genre: pop, addedDate: new Date(2013, 5,7), hotstatus: 0, rateUp:33, rateDown:33, itunes: "https://itunes.apple.com/us/album/californication/id130244757#", amazon: "http://www.amazon.com/gp/product/B00973902K/ref=dm_mu_dp_trk3", beatport: "http://www.beatport.com/track/like-home-original-mix/3907632", youtube: "https://www.youtube.com/watch?v=fWNaR-rxAic"},
-				{ name: "Jump Around", artist: houseofpain, album:highsky, genre: hiphop, addedDate: new Date(now.fullYear, now.month,now.date-2), hotstatus: 0, rateUp:121, rateDown:4, itunes: "https://itunes.apple.com/us/album/californication/id130244757#", amazon: "http://www.amazon.com/gp/product/B00973902K/ref=dm_mu_dp_trk3", beatport: "http://www.beatport.com/track/like-home-original-mix/3907632", youtube: "https://www.youtube.com/watch?v=fWNaR-rxAic"},
-				{ name: "Heartbeats", artist: gonzales, album: slash, genre: house, addedDate: new Date(now.fullYear, now.month,now.date-3), hotstatus: 0, rateUp:13, rateDown:21, itunes: "https://itunes.apple.com/us/album/californication/id130244757#", amazon: "http://www.amazon.com/gp/product/B00973902K/ref=dm_mu_dp_trk3", beatport: "http://www.beatport.com/track/like-home-original-mix/3907632", youtube: "https://www.youtube.com/watch?v=fWNaR-rxAic"},
-				{ name: "Roads", artist: portishead, album: fallout, genre: blues, addedDate: new Date(now.fullYear, now.month,now.date-4), hotstatus: 0, rateUp:6, rateDown:6, itunes: "https://itunes.apple.com/us/album/californication/id130244757#", amazon: "http://www.amazon.com/gp/product/B00973902K/ref=dm_mu_dp_trk3", beatport: "http://www.beatport.com/track/like-home-original-mix/3907632", youtube: "https://www.youtube.com/watch?v=fWNaR-rxAic"},
-				{ name: "Tear Drop", artist: massiveattack, album: getone, genre: rock, addedDate: new Date(2013, 5,7), hotstatus: 0, rateUp:33, rateDown:3, itunes: "https://itunes.apple.com/us/album/californication/id130244757#", amazon: "http://www.amazon.com/gp/product/B00973902K/ref=dm_mu_dp_trk3", beatport: "http://www.beatport.com/track/like-home-original-mix/3907632", youtube: "https://www.youtube.com/watch?v=fWNaR-rxAic"},
-			];
-			
-			songs = [];
-			for each (var songObj:Object in songsObj)
+			if (_songsComplete && _artistsComplete && _albumsComplete && _genresComplete && _usersComplete)
+				dispatchEvent(new Event(INIT_COMPLETE));
+		}
+		
+		//-------------------------------
+		//
+		// SONGS
+		//
+		//-------------------------------
+		
+		private var songsCallback:Function;
+		public function getSongs(callback:Function=null):void
+		{
+			songsCallback = null;
+			if (callback != null)
+				songsCallback = callback;
+			var sse:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST,songResult,songFault);
+			sse.sid = Model.getInstance().user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(sse);
+		}
+		
+		private function songResult(result:ResultEvent):void
+		{
+			var songs:Array = Model.getInstance().songs;
+			songs.splice(0, songs.length);
+			for each (var song:Song in result.result)
 			{
-				var song:Song = new Song();
-				song.name = songObj.name;
-				song.artist = songObj.artist;
-				song.album = songObj.album;
-				song.genre = songObj.genre;
-				song.addedDate = songObj.addedDate;
-				song.hotstatus = songObj.hotstatus;
-				song.rateUp = songObj.rateUp;
-				song.rateDown = songObj.rateDown;
-				song.itunesURL = songObj.itunes;
-				song.amazonURL = songObj.amazon;
-				song.soundcloudURL = songObj.soundcloud;
-				song.youtubeURL = songObj.youtube;
-				
 				songs.push(song);
 			}
+			dispatchEvent(new Event(SONGS_COMPLETE));
+			_songsComplete = true;
+			dispatchInitComplete();
+			if (songsCallback != null)
+				songsCallback.call();
 		}
 		
-		private var blues:Genre;
-		private var classis:Genre;
-		private var country:Genre;
-		private var dance:Genre;
-		private var electro:Genre;
-		private var folk:Genre;
-		private var house:Genre;
-		private var hiphop:Genre;
-		private var rock:Genre;
-		private var pop:Genre;
-		
-		private function createGenres():void
+		private function songFault(info:Object):void
 		{
-			genres = [
-				blues = new Genre("Blues"),
-				classis = new Genre("Classis"),
-				country = new Genre("Country"),
-				dance = new Genre("Dance"),
-				electro = new Genre("Electro"),
-				folk = new Genre("Folk"),
-				house = new Genre("House"),
-				hiphop = new Genre("HipHop"),
-				rock = new Genre("Rock"),
-				pop = new Genre("Pop")
-			];
+			
 		}
 
+		//-------------------------------
+		//
+		// ARTISTS
+		//
+		//-------------------------------
 		
-		private var coldplay:Artist;
-		private var redhot:Artist;
-		private var mgmt:Artist;
-		private var houseofpain:Artist;
-		private var gonzales:Artist;
-		private var portishead:Artist;
-		private var massiveattack:Artist;
-		
-		private function createArtists():void
+		private var artistsCallback:Function;
+		public function getArtists(callback:Function=null):void
 		{
-			artists = [
-				coldplay = new Artist("Coldplay", new Date(2013, 5, 26)),
-				redhot = new Artist("Red Hot Chili Peppers", new Date(2013, 5, 25)),
-				mgmt = new Artist("MGMT", new Date(2013, 5, 24)),
-				houseofpain = new Artist("House of Pain", new Date(2013, 5, 5)),
-				gonzales = new Artist("Jose Gonzales", new Date(2012, 10, 29)),
-				portishead = new Artist("Portishead", new Date(2013, 9, 27)),
-				massiveattack = new Artist("Massive Attack", new Date(2013, 9, 25)),
-			];
+			artistsCallback = null;
+			if (callback != null)
+				artistsCallback = callback;
+			var se:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST,artistResult,artistFault);
+			se.sid = Model.getInstance().user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function artistResult(result:ResultEvent):void
+		{
+			var artists:Array = Model.getInstance().artists;
+			artists.splice(0, artists.length);
+			for each (var artist:Artist in result.result)
+			{
+				artists.push(artist);
+			}
+			dispatchEvent(new Event(ARTISTS_COMPLETE));
+			_artistsComplete = true;
+			dispatchInitComplete();
+			if (artistsCallback != null)
+				artistsCallback.call();
+		}
+		
+		private function artistFault(info:Object):void
+		{
+			
 		}
 
-		private var xy:Album;
-		private var iamwithyou:Album;
-		private var coolalbum:Album;
-		private var highsky:Album;
-		private var slash:Album;
-		private var fallout:Album;
-		private var getone:Album;
+		//-------------------------------
+		//
+		// ALBUM
+		//
+		//-------------------------------
 		
-		private function createAlbums():void
+		private var albumsCallback:Function;
+		public function getAlbums(callback:Function=null):void
 		{
-			albums = [
-				xy = new Album("X & Y", coldplay, new Date(2013, 5, 26)),
-				iamwithyou = new Album("I'm with you", redhot, new Date(2013, 5, 25)),
-				coolalbum = new Album("Cool Album", mgmt, new Date(2013, 5, 24)),
-				highsky = new Album("High Sky", houseofpain, new Date(2013, 5, 5)),
-				slash = new Album("Slash", gonzales, new Date(2012, 10, 29)),
-				fallout = new Album("Fall Out", portishead,  new Date(2013, 9, 27)),
-				getone = new Album("Get one", massiveattack, new Date(2013, 9, 25)),
-			];
+			albumsCallback = null;
+			if (callback != null)
+				albumsCallback = callback;
+			var se:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST,albumResult,albumFault);
+			se.sid = Model.getInstance().user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function albumResult(result:ResultEvent):void
+		{
+			var albums:Array = Model.getInstance().albums;
+			albums.splice(0, albums.length);
+			for each (var album:Album in result.result)
+			{
+				albums.push(album);
+			}
+			dispatchEvent(new Event(ALBUMS_COMPLETE));
+			_albumsComplete = true;
+			dispatchInitComplete();
+			if (albumsCallback != null)
+				albumsCallback.call();
+		}
+		
+		private function albumFault(info:Object):void
+		{
+			
 		}
 
-		private function createUsers():void
+		//-------------------------------
+		//
+		// GENRE
+		//
+		//-------------------------------
+		
+		private var genresCallback:Function;
+		public function getGenres(callback:Function=null):void
 		{
-			users = [
-				new User("Jan", "Novák"),
-				new User("Tomáš", "Nejedlý"),
-				new User("Eva", "Procházková"),
-				new User("Jana", "Skokanová"),
-				new User("Hana", "Hrubá"),
-				new User("Radomír", "Velký"),
-				new User("Theodor", "Falk"),
-			];
+			genresCallback = null;
+			if (callback != null)
+				genresCallback = callback;
+			var se:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.LIST,genreResult,genreFault);
+			se.sid = Model.getInstance().user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 		}
 		
+		private function genreResult(result:ResultEvent):void
+		{
+			var genres:Array = Model.getInstance().genres;
+			genres.splice(0, genres.length);
+			for each (var genre:Genre in result.result)
+			{
+				genres.push(genre);
+			}
+			dispatchEvent(new Event(GENRES_COMPLETE));
+			_genresComplete = true;
+			dispatchInitComplete();
+			if (genresCallback != null)
+				genresCallback.call();
+		}
+		
+		private function genreFault(info:Object):void
+		{
+			
+		}
+
+		//-------------------------------
+		//
+		// USERS
+		//
+		//-------------------------------
+		
+		private var usersCallback:Function;
+		public function getUsers(callback:Function=null):void
+		{
+			usersCallback = null;
+			if (callback != null)
+				usersCallback = callback;
+			var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST,userResult,userFault);
+			se.sid = Model.getInstance().user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function userResult(result:ResultEvent):void
+		{
+			var users:Array = Model.getInstance().users;
+			users.splice(0, users.length);
+			for each (var user:User in result.result)
+			{
+				users.push(user);
+			}
+			dispatchEvent(new Event(USERS_COMPLETE));
+			_usersComplete = true;
+			dispatchInitComplete();
+			if (usersCallback != null)
+				usersCallback.call();
+		}
+		
+		private function userFault(info:Object):void
+		{
+			
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package cz.hotmusic.component
 {
 	import cz.hotmusic.FontAssets;
+	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -69,11 +70,11 @@ package cz.hotmusic.component
 			logo = new Image(Texture.fromBitmap(new FontAssets.LogoSmallBlack()));
 			
 			userLbl = new Label();
-			userLbl.text = "Daniel Jay Lett";
+			userLbl.text = Model.getInstance().user.firstname + " " + Model.getInstance().user.surname;
 			userLbl.name = Theme.SMALL_NORMAL_GRAY;
 			
 			rightsLbl = new Label();
-			rightsLbl.text = "admin";
+			rightsLbl.text = Model.getInstance().user.adminRights ? "admin" : "user";
 			rightsLbl.name = Theme.TINY_NORMAL_GRAY;
 			
 			logoutBtn = new starling.display.Button(Texture.fromBitmap(new FontAssets.Logout()));

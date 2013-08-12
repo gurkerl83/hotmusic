@@ -1,7 +1,8 @@
 package cz.hotmusic
 {
 	import cz.hotmusic.helper.ButtonHelper;
-	import cz.hotmusic.helper.DataHelper;
+	import cz.hotmusic.helper.MockDataHelper;
+	import cz.hotmusic.model.Model;
 	import cz.hotmusic.model.Song;
 	import cz.hotmusic.renderer.SongRenderer;
 	
@@ -43,7 +44,7 @@ package cz.hotmusic
 			
 			list = new List();
 			list.itemRendererType = SongRenderer;
-			list.dataProvider = new ListCollection(DataHelper.getInstance().songs);
+			list.dataProvider = new ListCollection(Model.getInstance().songs);
 			list.itemRendererProperties.labelFunction = function (song:Song):String {
 				var songName:String = "";
 				if (song && song.name.length > 24)

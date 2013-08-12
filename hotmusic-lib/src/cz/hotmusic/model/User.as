@@ -23,5 +23,9 @@ package cz.hotmusic.model
 		public var facebookId:String;
 		public var session:String;
 		public var lastSession:String;
+		public var adminRights:Boolean;
+		public var genresAuthorized:Boolean;
+		public var usersAuthorized:Boolean;
+		public var addArtistAuthorized:Boolean;
 	}
 }
