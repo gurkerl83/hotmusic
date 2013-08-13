@@ -19,11 +19,11 @@ package cz.hotmusic.model
 		public var addedByUser		:User;
 		public var addedBySession	:String;
 		
-		public var itunesURL		:String;
-		public var googleURL		:String;
-		public var amazonURL		:String;
+		public var itunes			:String;
+		public var googlePlay		:String;
+		public var amazon			:String;
 		public var beatport			:String;
-		public var soundcloudURL	:String;
-		public var youtubeURL		:String;
+		public var soundcloud		:String;
+		public var youtube			:String;
 	}
 }

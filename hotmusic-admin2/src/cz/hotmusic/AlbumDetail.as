@@ -1,17 +1,29 @@
 package cz.hotmusic
 {
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
+	
 	import cz.hotmusic.component.FormItem;
+	import cz.hotmusic.event.AlbumServiceEvent;
+	import cz.hotmusic.event.ArtistServiceEvent;
+	import cz.hotmusic.event.GenreServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
+	import cz.hotmusic.helper.DataHelper;
+	import cz.hotmusic.model.Album;
+	import cz.hotmusic.model.Artist;
+	import cz.hotmusic.model.Genre;
+	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.themes.Theme;
 	
+	import flash.events.Event;
+	
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class AlbumDetail extends Screen implements IActionButtons
+	public class AlbumDetail extends Screen implements IActionButtons, IActions
 	{
 		public function AlbumDetail()
 		{
@@ -26,6 +38,57 @@ package cz.hotmusic
 				_actionButtons = [ButtonHelper.inst().saveButton, ButtonHelper.inst().cancelButton, ButtonHelper.inst().clearButton];
 			}
 			return _actionButtons;
+		}
+		
+		public function save():void
+		{
+			if (!albumname.value || !artistname.selectedItem || !genre.selectedItem )
+				return;
+			
+			var album:Album = new Album();
+			album.name = albumname.value;
+			album.artist = Artist(artistname.selectedItem);
+			album.genre = Genre(genre.selectedItem);
+			album.itunes = itunes.value;
+			album.googlePlay = google.value;
+			album.amazon = amazon.value;
+			album.beatport = beatport.value;
+			
+			var se:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.CREATE, createResult, createFault);
+			se.album = album;
+			se.sid = Model.getInstance().user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function createResult(result:Object):void
+		{
+			DataHelper.getInstance().addEventListener(DataHelper.ALBUMS_COMPLETE, function sch(event:flash.events.Event):void {
+				removeEventListener(DataHelper.ALBUMS_COMPLETE, sch);
+				dispatchEventWith(starling.events.Event.CLOSE);
+			});
+			DataHelper.getInstance().getAlbums();
+		}
+		
+		private function createFault(info:Object):void
+		{
+			trace("got error");
+		}
+		
+		public function clear():void
+		{
+			albumname.value = "";
+			artistname.value = "";
+			genre.value = "";
+			releasedate.value = "";
+			itunes.value = "";
+			google.value = "";
+			amazon.value = "";
+			beatport.value = "";
+		}
+		
+		public function remove():void
+		{
+			
 		}
 		
 		private var albumname:FormItem;
@@ -46,13 +109,21 @@ package cz.hotmusic
 			albumname.label = "Album name";
 //			albumname.value = "Slash";
 
+			var ase:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.AUTOCOMPLETE, null, null);
+			ase.sid = Model.getInstance().user.session;
 			artistname = new FormItem();
 			artistname.orderNumber = "2.";
 			artistname.label = "Artist name";
+			artistname.isAutocomplete = true;
+			artistname.serviceEvent = ase;
 			
+			var gse:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.AUTOCOMPLETE, null, null);
+			gse.sid = Model.getInstance().user.session;
 			genre = new FormItem();
 			genre.orderNumber = "3.";
 			genre.label = "Genre";
+			genre.isAutocomplete = true;
+			genre.serviceEvent = gse;
 			
 			releasedate = new FormItem();
 			releasedate.orderNumber = "4.";
@@ -74,14 +145,32 @@ package cz.hotmusic
 			beatport.orderNumber = "8.";
 			beatport.label = "Beatport link to buy";
 			
-			addChild(albumname);
-			addChild(artistname);
-			addChild(genre);
-			addChild(releasedate);
-			addChild(itunes);
-			addChild(google);
-			addChild(amazon);
 			addChild(beatport);
+			addChild(amazon);
+			addChild(google);
+			addChild(itunes);
+			addChild(releasedate);
+			addChild(genre);
+			addChild(artistname);
+			addChild(albumname);
+			
+			albumname.nextTabFocus = artistname;
+			artistname.nextTabFocus = genre;
+			genre.nextTabFocus = releasedate;
+			releasedate.nextTabFocus = itunes;
+			itunes.nextTabFocus = google;
+			google.nextTabFocus = amazon;
+			amazon.nextTabFocus = beatport;
+			beatport.nextTabFocus = albumname;
+			
+			albumname.previousTabFocus = beatport;
+			artistname.previousTabFocus = albumname;
+			genre.previousTabFocus = artistname;
+			releasedate.previousTabFocus = genre;
+			itunes.previousTabFocus = releasedate;
+			google.previousTabFocus = itunes;
+			amazon.previousTabFocus = google;
+			beatport.previousTabFocus = amazon;
 		}
 		
 		override protected function draw():void

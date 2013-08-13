@@ -17,6 +17,12 @@ package cz.hotmusic.model
 		public var objectUUID:String;
 		public var name:String;
 		public var artist:Artist;
+		public var genre:Genre;
+		public var itunes:String;
+		public var googlePlay:String;
+		public var amazon:String;
+		public var beatport:String;
+		
 		public var addedDate		:Date;
 		public var addedByUser		:User;
 		public var addedBySession	:String;

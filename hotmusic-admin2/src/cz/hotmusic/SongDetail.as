@@ -1,5 +1,7 @@
 package cz.hotmusic
 {
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
+	
 	import cz.hotmusic.component.Autocomplete;
 	import cz.hotmusic.component.FormItem;
 	import cz.hotmusic.event.AlbumServiceEvent;
@@ -9,7 +11,11 @@ package cz.hotmusic
 	import cz.hotmusic.event.SongServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.helper.DataHelper;
+	import cz.hotmusic.model.Album;
+	import cz.hotmusic.model.Artist;
+	import cz.hotmusic.model.Genre;
 	import cz.hotmusic.model.Model;
+	import cz.hotmusic.model.Song;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -53,21 +59,39 @@ package cz.hotmusic
 		
 		public function save():void
 		{
-//			if (!songname.value || !surname.value || !email.value)
-//				return;
-//			
-//			var user:User = new User();
-//			user.firstname = firstname.value;
-//			user.surname = surname.value;
-//			user.email = email.value;
-//			user.adminRights = adminRightCB.isSelected;
-//			user.genresAuthorized = genresCB.isSelected;
-//			user.usersAuthorized = usersCB.isSelected;
-//			user.addArtistAuthorized = addArtistCB.isSelected;
-//			
-//			var pse:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.REGISTER, createResult, createFault);
-//			pse.user = user;
-//			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
+			if (!songname.value || !artistname.selectedItem || !genre.selectedItem )
+				return;
+			
+			var song:Song = new Song();
+			song.name = songname.value;
+			song.artist = Artist(artistname.selectedItem);
+			song.album = Album(albumname.selectedItem);
+			song.genre = Genre(genre.selectedItem);
+			song.itunes = itunes.value;
+			song.googlePlay = google.value;
+			song.amazon = amazon.value;
+			song.beatport = beatport.value;
+			song.soundcloud = soundcloud.value;
+			song.youtube = youtube.value;
+			
+			var se:SongServiceEvent = new SongServiceEvent(SongServiceEvent.CREATE, createResult, createFault);
+			se.song = song;
+			se.sid = Model.getInstance().user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function createResult(result:Object):void
+		{
+			DataHelper.getInstance().addEventListener(DataHelper.SONGS_COMPLETE, function sch(event:flash.events.Event):void {
+				removeEventListener(DataHelper.SONGS_COMPLETE, sch);
+				dispatchEventWith(starling.events.Event.CLOSE);
+			});
+			DataHelper.getInstance().getSongs();
+		}
+		
+		private function createFault(info:Object):void
+		{
+			trace("got error");
 		}
 		
 		public function clear():void
@@ -87,19 +111,6 @@ package cz.hotmusic
 		public function remove():void
 		{
 			
-		}
-		
-		private function createResult(result:Object):void
-		{
-			DataHelper.getInstance().addEventListener(DataHelper.SONGS_COMPLETE, function sch(event:flash.events.Event):void {
-				removeEventListener(DataHelper.SONGS_COMPLETE, sch);
-				dispatchEventWith(starling.events.Event.CLOSE);
-			});
-		}
-		
-		private function createFault(info:Object):void
-		{
-			trace("got error");
 		}
 		
 		override protected function initialize():void

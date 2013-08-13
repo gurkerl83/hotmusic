@@ -66,6 +66,7 @@ package cz.hotmusic
 		private function removeResult(result:ResultEvent):void
 		{
 			DataHelper.getInstance().getGenres(function onGenres():void {
+				list.selectedIndex = -1;
 				list.dataProvider = new ListCollection(Model.getInstance().genres);
 				invalidate();
 			});

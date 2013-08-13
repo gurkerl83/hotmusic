@@ -22,6 +22,11 @@ package cz.hotmusic.component
 
 		public var isAutocomplete:Boolean;
 		public var serviceEvent:ServiceEvent;
+		public function get selectedItem():Object {
+			if (_autocomplete && _autocomplete.selectedItem)
+				return _autocomplete.selectedItem;
+			return null;
+		}
 		
 		private var _label:String;
 		private var _orderNumber:String;

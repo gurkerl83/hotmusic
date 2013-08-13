@@ -1,6 +1,10 @@
 package cz.hotmusic
 {
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
+	
+	import cz.hotmusic.event.SongServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
+	import cz.hotmusic.helper.DataHelper;
 	import cz.hotmusic.helper.MockDataHelper;
 	import cz.hotmusic.model.Model;
 	import cz.hotmusic.model.Song;
@@ -12,6 +16,8 @@ package cz.hotmusic
 	import feathers.controls.Screen;
 	import feathers.data.ListCollection;
 	import feathers.themes.Theme;
+	
+	import mx.rpc.events.ResultEvent;
 	
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -54,8 +60,28 @@ package cz.hotmusic
 				return songName;
 			}
 			list.hasElasticEdges = false;
+			list.addEventListener("delete", function onDelete(event:Event):void {
+				var se:SongServiceEvent = new SongServiceEvent(SongServiceEvent.REMOVE, removeResult, removeFault);
+				se.sid = Model.getInstance().user.session;
+				se.song = Song(SongRenderer(event.target).data);
+				CairngormEventDispatcher.getInstance().dispatchEvent(se);
+			});
 			
 			addChild(list);
+		}
+		
+		private function removeResult(result:ResultEvent):void
+		{
+			DataHelper.getInstance().getSongs(function onData():void {
+				list.selectedIndex = -1;
+				list.dataProvider = new ListCollection(Model.getInstance().songs);
+				invalidate();
+			});
+		}
+		
+		private function removeFault(info:Object):void
+		{
+			
 		}
 		
 		override protected function draw():void

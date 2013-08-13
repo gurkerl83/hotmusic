@@ -68,10 +68,10 @@ package cz.hotmusic.helper
 				song.hotstatus = songObj.hotstatus;
 				song.rateUp = songObj.rateUp;
 				song.rateDown = songObj.rateDown;
-				song.itunesURL = songObj.itunes;
-				song.amazonURL = songObj.amazon;
-				song.soundcloudURL = songObj.soundcloud;
-				song.youtubeURL = songObj.youtube;
+				song.itunes = songObj.itunes;
+				song.amazon = songObj.amazon;
+				song.soundcloud = songObj.soundcloud;
+				song.youtube = songObj.youtube;
 				
 				songs.push(song);
 			}
