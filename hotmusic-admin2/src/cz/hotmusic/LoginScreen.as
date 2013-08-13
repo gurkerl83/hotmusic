@@ -49,6 +49,7 @@ package cz.hotmusic
 			passwordTI = new TextInput();
 			passwordTI.prompt = "password";
 			passwordTI.name = "textinputblack";
+			passwordTI.displayAsPassword = true;
 			
 			signInBtn = new Button();
 			signInBtn.label = "Sign in";
