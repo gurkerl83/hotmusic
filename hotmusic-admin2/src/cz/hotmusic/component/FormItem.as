@@ -140,7 +140,8 @@ package cz.hotmusic.component
 		}
 		
 		private function tiFocusInHandler(event:Event):void {
-			textinput.selectRange(textinput.text.length, textinput.text.length);
+			trace("FormItem.tiFocusInHandler" + ObjectHelper.getId(this));
+//			textinput.selectRange(textinput.text.length, textinput.text.length);
 		}
 		
 		override public function showFocus():void
