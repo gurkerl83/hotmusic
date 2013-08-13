@@ -11,6 +11,7 @@ package cz.hotmusic.model
 		}
 		
 		public var id:String;
+		public var objectUUID:String;
 		public var name:String;
 		public var addedDate		:Date;
 		public var addedByUser		:User;

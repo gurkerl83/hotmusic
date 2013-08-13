@@ -2,6 +2,7 @@ package cz.hotmusic
 {
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.core.FocusManager;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.themes.Theme;
 	
@@ -26,6 +27,7 @@ package cz.hotmusic
 		
 		private function addedToStageHandler(event:Event):void
 		{
+			FocusManager.isEnabled = true;
 			this._theme = new Theme(this.stage);
 			
 			this._navigator = new ScreenNavigator();

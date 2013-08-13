@@ -9,14 +9,9 @@ package cz.hotmusic.event
 	
 	import flash.events.Event;
 
-	public class SongServiceEvent extends CairngormEvent
+	public class SongServiceEvent extends ServiceEvent
 	{
 		public var song:Song;
-		public var sid:String;
-		public var autocomplete:String;
-		public var response:Object;
-		public var resultCallback:Function;
-		public var faultCallback:Function;
 		
 		public static const CREATE			:String = "CREATE_SONG";
 		public static const LOGIN			:String = "LOGIN_SONG";

@@ -19,6 +19,11 @@ package cz.hotmusic.helper
 			return _instance;
 		}
 		
+		public function reset():void
+		{
+			_instance = null;
+		}
+		
 		private var _saveButton:ActionButton;
 		private var _cancelButton:ActionButton;
 		private var _clearButton:ActionButton;

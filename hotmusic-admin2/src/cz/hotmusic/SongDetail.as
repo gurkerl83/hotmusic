@@ -1,9 +1,15 @@
 package cz.hotmusic
 {
+	import cz.hotmusic.component.Autocomplete;
 	import cz.hotmusic.component.FormItem;
+	import cz.hotmusic.event.AlbumServiceEvent;
+	import cz.hotmusic.event.ArtistServiceEvent;
+	import cz.hotmusic.event.GenreServiceEvent;
+	import cz.hotmusic.event.ServiceEvent;
 	import cz.hotmusic.event.SongServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.helper.DataHelper;
+	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -43,6 +49,7 @@ package cz.hotmusic
 		private var beatport:FormItem;
 		private var soundcloud:FormItem;
 		private var youtube:FormItem;
+		private var autocomplete:Autocomplete;
 		
 		public function save():void
 		{
@@ -104,17 +111,29 @@ package cz.hotmusic
 			songname.label = "Song name";
 //			songname.value = "The Adventure Of Rain Dancce Maggie";
 			
+			var ase:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.AUTOCOMPLETE, null, null);
+			ase.sid = Model.getInstance().user.session;
 			artistname = new FormItem();
 			artistname.orderNumber = "2.";
 			artistname.label = "Artist name";
+			artistname.isAutocomplete = true;
+			artistname.serviceEvent = ase;
 			
+			var alse:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.AUTOCOMPLETE, null, null);
+			alse.sid = Model.getInstance().user.session;
 			albumname = new FormItem();
 			albumname.orderNumber = "3.";
 			albumname.label = "Album name";
+			albumname.isAutocomplete = true;
+			albumname.serviceEvent = alse;
 			
+			var gse:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.AUTOCOMPLETE, null, null);
+			gse.sid = Model.getInstance().user.session;
 			genre = new FormItem();
 			genre.orderNumber = "4.";
 			genre.label = "Genre";
+			genre.isAutocomplete = true;
+			genre.serviceEvent = gse;
 			
 			releasedate = new FormItem();
 			releasedate.orderNumber = "5.";
@@ -144,17 +163,43 @@ package cz.hotmusic
 			youtube.orderNumber = "11.";
 			youtube.label = "YouTube watch link";
 			
-			addChild(songname);
-			addChild(artistname);
-			addChild(albumname);
-			addChild(genre);
-			addChild(releasedate);
-			addChild(itunes);
-			addChild(google);
-			addChild(amazon);
-			addChild(beatport);
-			addChild(soundcloud);
+			// jsou pridany v opacnem poradi kvuli zobrazeni autocomplete listu "na vrchu"
 			addChild(youtube);
+			addChild(soundcloud);
+			addChild(beatport);
+			addChild(amazon);
+			addChild(google);
+			addChild(itunes);
+			addChild(releasedate);
+			addChild(genre);
+			addChild(albumname);
+			addChild(artistname);
+			addChild(songname);
+
+			// protoze jsou pridany childy v opacnem poradi, je treba rucne nastavit focus order
+			songname.nextTabFocus = artistname;
+			artistname.nextTabFocus = albumname;
+			albumname.nextTabFocus = genre;
+			genre.nextTabFocus = releasedate;
+			releasedate.nextTabFocus = itunes;
+			itunes.nextTabFocus = google;
+			google.nextTabFocus = amazon;
+			amazon.nextTabFocus = beatport;
+			beatport.nextTabFocus = soundcloud;
+			soundcloud.nextTabFocus = youtube;
+			youtube.nextTabFocus = songname;
+
+			songname.previousTabFocus = youtube;
+			artistname.previousTabFocus = songname;
+			albumname.previousTabFocus = artistname;
+			genre.previousTabFocus = albumname;
+			releasedate.previousTabFocus = genre;
+			itunes.previousTabFocus = releasedate;
+			google.previousTabFocus = itunes;
+			amazon.previousTabFocus = google;
+			beatport.previousTabFocus = amazon;
+			soundcloud.previousTabFocus = beatport;
+			youtube.previousTabFocus = soundcloud;
 		}
 		
 		override protected function draw():void
@@ -174,7 +219,7 @@ package cz.hotmusic
 			artistname.width = actualWidth - 2*padding;
 			
 			albumname.x = padding;
-			albumname.y = songname.y + songname.height + formgap;
+			albumname.y = artistname.y + artistname.height + formgap;
 			albumname.width = actualWidth - 2*padding;
 			
 			genre.x = padding;
@@ -208,6 +253,10 @@ package cz.hotmusic
 			youtube.x = padding;
 			youtube.y = soundcloud.y + soundcloud.height + gap;
 			youtube.width = actualWidth - 2*padding;
+			
+//			autocomplete.x = padding;
+//			autocomplete.y = youtube.y + youtube.height + gap;
+//			autocomplete.width = actualWidth - 2*padding;
 		}
 	}
 }

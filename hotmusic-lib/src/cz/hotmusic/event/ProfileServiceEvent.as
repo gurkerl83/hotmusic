@@ -6,14 +6,9 @@ package cz.hotmusic.event
 	
 	import flash.events.Event;
 
-	public class ProfileServiceEvent extends CairngormEvent
+	public class ProfileServiceEvent extends ServiceEvent
 	{
 		public var user:User;
-		public var sid:String;
-		public var autocomplete:String;
-		public var response:Object;
-		public var resultCallback:Function;
-		public var faultCallback:Function;
 		
 		public static const REGISTER		:String = "REGISTER_USER";
 		public static const LOGIN			:String = "LOGIN_USER";

@@ -110,6 +110,9 @@ package cz.hotmusic
 		
 		private function loginResult(result:ResultEvent):void
 		{
+			if (result.result == null)
+				return;
+			
 			Model.getInstance().user = User(result.result);
 			
 			DataHelper.getInstance().addEventListener(DataHelper.INIT_COMPLETE, function ich(e:flash.events.Event):void {

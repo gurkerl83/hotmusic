@@ -291,6 +291,8 @@ package feathers.themes
 		protected var itemRendererMainSelectedSkinTextures:Scale9Textures;
 		protected var itemRendererMenuUpSkinTextures:Scale9Textures;
 		protected var itemRendererMenuSelectedSkinTextures:Scale9Textures;
+		protected var itemRendererAutocompleteUpSkinTextures:Scale9Textures;
+		protected var itemRendererAutocompleteSelectedSkinTextures:Scale9Textures;
 		protected var itemRendererUpSkinTextures:Scale9Textures;
 		protected var itemRendererSelectedSkinTextures:Scale9Textures;
 		protected var insetItemRendererMiddleUpSkinTextures:Scale9Textures;
@@ -490,6 +492,8 @@ package feathers.themes
 			this.itemRendererMainSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-main-selected-skin"), ITEM_RENDERER_MAIN_SCALE9_GRID);
 			this.itemRendererMenuUpSkinTextures = new Scale9Textures(atlas.getTexture("list-item-menu-up-skin"), ITEM_RENDERER_MENU_SCALE9_GRID);
 			this.itemRendererMenuSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-menu-selected-skin"), ITEM_RENDERER_MENU_SCALE9_GRID);
+			this.itemRendererAutocompleteUpSkinTextures = itemRendererMainUpSkinTextures;
+			this.itemRendererAutocompleteSelectedSkinTextures = itemRendererMainSelectedSkinTextures;
 			this.itemRendererUpSkinTextures = new Scale9Textures(atlas.getTexture("list-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.itemRendererSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.insetItemRendererMiddleUpSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-middle-up-skin"), INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID);
@@ -856,34 +860,58 @@ package feathers.themes
 		protected function itemRendererInitializer(renderer:BaseDefaultItemRenderer):void
 		{
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-			skinSelector.defaultValue = this.itemRendererMenuUpSkinTextures;
-			skinSelector.defaultSelectedValue = this.itemRendererMenuSelectedSkinTextures;
-			skinSelector.setValueForState(this.itemRendererMenuSelectedSkinTextures, Button.STATE_DOWN, false);
+			var skinDefault:Scale9Textures;
+			var skinSelected:Scale9Textures;
+			var height:int;
+			var defaultTF:TextFormat;
+			var selectedTF:TextFormat;
+			var padding:int;
+			var paddingLeft:int;
+			if (renderer.name == "autocomplete") {
+				skinDefault = itemRendererAutocompleteUpSkinTextures;
+				skinSelected = itemRendererAutocompleteSelectedSkinTextures;
+				defaultTF = selectedTF = smallBoldBlackTextFormat;
+				height = 30;
+				padding = 0;
+				paddingLeft = 18;
+			} else {
+				skinDefault = itemRendererMenuUpSkinTextures;
+				skinSelected = itemRendererMenuSelectedSkinTextures;
+				defaultTF = smallNormalBlackTextFormat;
+				selectedTF = smallBoldBlackTextFormat;
+				height = 50;
+				padding = 8;
+				paddingLeft = 32;
+			}
+			
+			skinSelector.defaultValue = skinDefault;
+			skinSelector.defaultSelectedValue = skinSelected;
+			skinSelector.setValueForState(skinSelected, Button.STATE_DOWN, false);
 			skinSelector.imageProperties =
 			{
 				width: 50 * this.scale,
-				height: 50 * this.scale,
+				height: height * this.scale,
 				textureScale: this.scale
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
-			renderer.defaultLabelProperties.textFormat = this.smallNormalBlackTextFormat;
+			renderer.defaultLabelProperties.textFormat = defaultTF;
 			renderer.defaultLabelProperties.embedFonts = true;
-			renderer.defaultSelectedLabelProperties.textFormat = this.smallBoldBlackTextFormat;
+			renderer.defaultSelectedLabelProperties.textFormat = selectedTF;
 			renderer.defaultSelectedLabelProperties.embedFonts = true;
-			renderer.downLabelProperties.textFormat = this.smallBoldBlackTextFormat;
+			renderer.downLabelProperties.textFormat = selectedTF;
 			renderer.downLabelProperties.embedFonts = true;
 
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
-			renderer.paddingLeft = 32 * this.scale;
+			renderer.paddingTop = renderer.paddingBottom = padding * this.scale;
+			renderer.paddingLeft = paddingLeft * this.scale;
 			renderer.paddingRight = 24 * this.scale;
 			renderer.gap = 20 * this.scale;
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
 			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-			renderer.minWidth = renderer.minHeight = 50 * this.scale;
-			renderer.minTouchWidth = renderer.minTouchHeight = 50 * this.scale;
+			renderer.minWidth = renderer.minHeight = height * this.scale;
+			renderer.minTouchWidth = renderer.minTouchHeight = height * this.scale;
 
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;

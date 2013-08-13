@@ -2,12 +2,15 @@ package cz.hotmusic.controller
 {
 	import com.adobe.cairngorm.control.FrontController;
 	
+	import cz.hotmusic.command.album.AutocompleteAlbumCommand;
 	import cz.hotmusic.command.album.CreateAlbumCommand;
 	import cz.hotmusic.command.album.ListAlbumCommand;
 	import cz.hotmusic.command.album.RemoveAlbumCommand;
+	import cz.hotmusic.command.artist.AutocompleteArtistCommand;
 	import cz.hotmusic.command.artist.CreateArtistCommand;
 	import cz.hotmusic.command.artist.ListArtistCommand;
 	import cz.hotmusic.command.artist.RemoveArtistCommand;
+	import cz.hotmusic.command.genre.AutocompleteGenreCommand;
 	import cz.hotmusic.command.genre.CreateGenreCommand;
 	import cz.hotmusic.command.genre.ListGenreCommand;
 	import cz.hotmusic.command.genre.RemoveGenreCommand;
@@ -15,6 +18,7 @@ package cz.hotmusic.controller
 	import cz.hotmusic.command.profile.LoginUserCommand;
 	import cz.hotmusic.command.profile.RegisterUserCommand;
 	import cz.hotmusic.command.profile.RemoveUserCommand;
+	import cz.hotmusic.command.song.AutocompleteSongCommand;
 	import cz.hotmusic.command.song.CreateSongCommand;
 	import cz.hotmusic.command.song.ListSongCommand;
 	import cz.hotmusic.command.song.RemoveSongCommand;
@@ -59,18 +63,22 @@ package cz.hotmusic.controller
 //			addCommand(ProfileServiceEvent.DELETE, ValidatePromoCodeCommand);
 //			addCommand(ProfileServiceEvent.AUTOCOMPLETE, ValidatePromoCodeCommand);
 			
+			addCommand(SongServiceEvent.AUTOCOMPLETE, AutocompleteSongCommand);
 			addCommand(SongServiceEvent.CREATE, CreateSongCommand);
 			addCommand(SongServiceEvent.LIST, ListSongCommand);
 			addCommand(SongServiceEvent.REMOVE, RemoveSongCommand);
 			
+			addCommand(ArtistServiceEvent.AUTOCOMPLETE, AutocompleteArtistCommand);
 			addCommand(ArtistServiceEvent.CREATE, CreateArtistCommand);
 			addCommand(ArtistServiceEvent.LIST, ListArtistCommand);
 			addCommand(ArtistServiceEvent.REMOVE, RemoveArtistCommand);
 			
+			addCommand(AlbumServiceEvent.AUTOCOMPLETE, AutocompleteAlbumCommand);
 			addCommand(AlbumServiceEvent.CREATE, CreateAlbumCommand);
 			addCommand(AlbumServiceEvent.LIST, ListAlbumCommand);
 			addCommand(AlbumServiceEvent.REMOVE, RemoveAlbumCommand);
 			
+			addCommand(GenreServiceEvent.AUTOCOMPLETE, AutocompleteGenreCommand);
 			addCommand(GenreServiceEvent.CREATE, CreateGenreCommand);
 			addCommand(GenreServiceEvent.LIST, ListGenreCommand);
 			addCommand(GenreServiceEvent.REMOVE, RemoveGenreCommand);

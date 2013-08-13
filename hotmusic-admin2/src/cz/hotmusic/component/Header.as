@@ -1,6 +1,7 @@
 package cz.hotmusic.component
 {
 	import cz.hotmusic.FontAssets;
+	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.Button;
@@ -101,6 +102,7 @@ package cz.hotmusic.component
 		
 		private function logout(event:Event):void
 		{
+			ButtonHelper.inst().reset();
 			dispatchEventWith("logout", true);
 		}
 		

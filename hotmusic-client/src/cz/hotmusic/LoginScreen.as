@@ -1,9 +1,12 @@
 package cz.hotmusic
 {
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	import com.facebook.graph.FacebookMobile;
 	import com.facebook.graph.data.FacebookSession;
 	
+	import cz.hotmusic.event.ProfileServiceEvent;
 	import cz.hotmusic.helper.LoginHelper;
+	import cz.hotmusic.model.User;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -134,5 +137,7 @@ package cz.hotmusic
 			_createAccountBtn.x = padding;
 			_createAccountBtn.height = btnHeight;
 		}
+		
+		
 	}
 }

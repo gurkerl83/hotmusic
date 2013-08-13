@@ -7,14 +7,9 @@ package cz.hotmusic.event
 	
 	import flash.events.Event;
 
-	public class GenreServiceEvent extends CairngormEvent
+	public class GenreServiceEvent extends ServiceEvent
 	{
 		public var genre:Genre;
-		public var sid:String;
-		public var autocomplete:String;
-		public var response:Object;
-		public var resultCallback:Function;
-		public var faultCallback:Function;
 		
 		public static const CREATE			:String = "CREATE_GENRE";
 		public static const LOGIN			:String = "LOGIN_GENRE";

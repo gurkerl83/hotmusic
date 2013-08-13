@@ -1,20 +1,27 @@
 package cz.hotmusic.component
 {
+	import cz.hotmusic.event.ServiceEvent;
+	import cz.hotmusic.helper.ObjectHelper;
+	
 	import feathers.controls.Label;
 	import feathers.controls.TextInput;
 	import feathers.core.FeathersControl;
+	import feathers.core.IFocusDisplayObject;
+	import feathers.events.FeathersEventType;
 	import feathers.themes.Theme;
 	
 	import starling.display.Quad;
+	import starling.events.Event;
 	
-	public class FormItem extends FeathersControl
+	public class FormItem extends FeathersControl implements IFocusDisplayObject
 	{
 		public function FormItem()
 		{
 			super();
 		}
 
-		public var autocomplete:Boolean;
+		public var isAutocomplete:Boolean;
+		public var serviceEvent:ServiceEvent;
 		
 		private var _label:String;
 		private var _orderNumber:String;
@@ -59,6 +66,7 @@ package cz.hotmusic.component
 		private var _orderNumberLbl:Label;
 		private var _labelLbl:Label;
 		public var textinput:TextInput;
+		private var _autocomplete:Autocomplete;
 		
 		override protected function initialize():void
 		{
@@ -74,13 +82,22 @@ package cz.hotmusic.component
 			_labelLbl = new Label();
 			_labelLbl.name = Theme.SMALL_NORMAL_BLACK;
 			
-			textinput = new TextInput();
-			textinput.name = "textinputwhite";
+			if (isAutocomplete) {
+				_autocomplete = new Autocomplete();
+				_autocomplete.serviceEvent = serviceEvent;
+			} else {
+				textinput = new TextInput();
+				textinput.name = "textinputwhite";
+				textinput.addEventListener(FeathersEventType.FOCUS_IN,tiFocusInHandler); 
+			}
 			
 			addChild(_bg);
 			addChild(_orderNumberLbl);
 			addChild(_labelLbl);
-			addChild(textinput);
+			if (isAutocomplete)
+				addChild(_autocomplete);
+			else
+				addChild(textinput);
 		}
 		
 		override protected function draw():void
@@ -96,7 +113,8 @@ package cz.hotmusic.component
 			if (isInvalid(INVALIDATION_FLAG_DATA)) {
 				_orderNumberLbl.text = _orderNumber;
 				_labelLbl.text = _label;
-				textinput.text = _value;
+				if (!isAutocomplete)
+					textinput.text = _value;
 			}
 			
 			_orderNumberLbl.validate();
@@ -108,10 +126,70 @@ package cz.hotmusic.component
 			_labelLbl.x = _orderNumberLbl.x + _orderNumberLbl.width;// + gap;
 			_labelLbl.y = actualHeight/2 - _labelLbl.height/2;
 
-			textinput.x = 250;
-			textinput.validate();
-			textinput.y = actualHeight/2 - textinput.height/2;
-			textinput.width = actualWidth - textinput.x - textinput.y; 
+			if (isAutocomplete) {
+				_autocomplete.x = 250;
+				_autocomplete.validate();
+				_autocomplete.y = actualHeight/2 - _autocomplete.height/2;
+				_autocomplete.width = actualWidth - _autocomplete.x - _autocomplete.y;
+			} else {
+				textinput.x = 250;
+				textinput.validate();
+				textinput.y = actualHeight/2 - textinput.height/2;
+				textinput.width = actualWidth - textinput.x - textinput.y;
+			}
+		}
+		
+		private function tiFocusInHandler(event:Event):void {
+			textinput.selectRange(textinput.text.length, textinput.text.length);
+		}
+		
+		override public function showFocus():void
+		{
+			trace("FormItem.showFocus" + ObjectHelper.getId(this));
+			super.showFocus();
+			if (isAutocomplete)
+				_autocomplete.showFocus();
+			else
+				textinput.setFocus();
+		}
+		
+		// toto je zde kvuli nastaveni focusu uvnitr
+		override public function set nextTabFocus(value:IFocusDisplayObject):void
+		{
+			trace("FormItem.nextTabFocus set" + ObjectHelper.getId(this));
+			super.nextTabFocus = value;
+			if (isAutocomplete)
+				_autocomplete.textinput.nextTabFocus = value;
+			else
+				textinput.nextTabFocus = value;
+		}
+		
+		override public function set previousTabFocus(value:IFocusDisplayObject):void
+		{
+			trace("FormItem.previousTabFocus set" + ObjectHelper.getId(this));
+			super.previousTabFocus = value;
+			if (isAutocomplete)
+				_autocomplete.textinput.previousTabFocus = value;
+			else
+				textinput.previousTabFocus = value;
+		}
+		
+		override public function get nextTabFocus():IFocusDisplayObject
+		{
+			trace("FormItem.nextTabFocus get" + ObjectHelper.getId(this));
+			if (isAutocomplete)
+				return _autocomplete.textinput.nextTabFocus;
+			else
+				return textinput.nextTabFocus;
+		}
+
+		override public function get previousTabFocus():IFocusDisplayObject
+		{
+			trace("FormItem.previousTabFocus get" + ObjectHelper.getId(this));
+			if (isAutocomplete)
+				return _autocomplete.textinput.previousTabFocus;
+			else
+				return textinput.previousTabFocus;
 		}
 	}
 }
