@@ -157,7 +157,6 @@ package cz.hotmusic.component
 		override public function set nextTabFocus(value:IFocusDisplayObject):void
 		{
 			trace("FormItem.nextTabFocus set" + ObjectHelper.getId(this));
-			super.nextTabFocus = value;
 			if (isAutocomplete)
 				_autocomplete.textinput.nextTabFocus = value;
 			else
@@ -167,7 +166,6 @@ package cz.hotmusic.component
 		override public function set previousTabFocus(value:IFocusDisplayObject):void
 		{
 			trace("FormItem.previousTabFocus set" + ObjectHelper.getId(this));
-			super.previousTabFocus = value;
 			if (isAutocomplete)
 				_autocomplete.textinput.previousTabFocus = value;
 			else
