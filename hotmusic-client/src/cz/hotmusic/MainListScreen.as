@@ -6,7 +6,7 @@ package cz.hotmusic
 	import cz.hotmusic.data.DataHelper;
 	import cz.hotmusic.helper.SortHelper;
 	import cz.hotmusic.model.Model;
-	import cz.hotmusic.model.Song;
+	import cz.hotmusic.lib.model.Song;
 	import cz.hotmusic.renderer.LeftListRenderer;
 	import cz.hotmusic.renderer.MainListRenderer;
 	import cz.hotmusic.renderer.RightListRenderer;

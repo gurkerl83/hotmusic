@@ -1,5 +1,7 @@
 package cz.hotmusic.model
 {
+	import cz.hotmusic.lib.model.User;
+
 	public class Model
 	{
 		public function Model()

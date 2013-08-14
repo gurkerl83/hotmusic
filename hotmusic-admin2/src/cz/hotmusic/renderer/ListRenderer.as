@@ -1,7 +1,7 @@
 package cz.hotmusic.renderer
 {
 	import cz.hotmusic.component.DateField;
-	import cz.hotmusic.model.Genre;
+	import cz.hotmusic.lib.model.Genre;
 	
 	import feathers.controls.Label;
 	import feathers.controls.renderers.DefaultListItemRenderer;

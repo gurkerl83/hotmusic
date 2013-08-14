@@ -1,5 +1,10 @@
 package cz.hotmusic.model
 {
+	import cz.hotmusic.lib.model.Album;
+	import cz.hotmusic.lib.model.Artist;
+	import cz.hotmusic.lib.model.Genre;
+	import cz.hotmusic.lib.model.Song;
+
 	public class Model
 	{
 		public function Model()

@@ -2,11 +2,11 @@ package cz.hotmusic
 {
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
-	import cz.hotmusic.controller.MyServiceLocator;
-	import cz.hotmusic.event.ProfileServiceEvent;
-	import cz.hotmusic.helper.DataHelper;
+	import cz.hotmusic.lib.controller.MyServiceLocator;
+	import cz.hotmusic.lib.data.DataHelper;
+	import cz.hotmusic.lib.event.ProfileServiceEvent;
+	import cz.hotmusic.lib.model.User;
 	import cz.hotmusic.model.Model;
-	import cz.hotmusic.model.User;
 	import cz.zc.mylib.helper.DateHelper;
 	
 	import feathers.controls.Button;
@@ -120,7 +120,7 @@ package cz.hotmusic
 				removeEventListener(DataHelper.INIT_COMPLETE, ich);
 				dispatchEventWith("login");
 			});
-			DataHelper.getInstance().initModel();
+			DataHelper.getInstance().initModel(Model.getInstance());
 			
 		}
 		

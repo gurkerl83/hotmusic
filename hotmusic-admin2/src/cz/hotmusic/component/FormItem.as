@@ -1,6 +1,6 @@
 package cz.hotmusic.component
 {
-	import cz.hotmusic.event.ServiceEvent;
+	import cz.hotmusic.lib.event.ServiceEvent;
 	import cz.hotmusic.helper.ObjectHelper;
 	
 	import feathers.controls.Label;

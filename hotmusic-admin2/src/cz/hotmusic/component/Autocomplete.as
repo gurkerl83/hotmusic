@@ -3,7 +3,7 @@ package cz.hotmusic.component
 	import com.adobe.cairngorm.control.CairngormEvent;
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
-	import cz.hotmusic.event.ServiceEvent;
+	import cz.hotmusic.lib.event.ServiceEvent;
 	import cz.hotmusic.helper.ObjectHelper;
 	
 	import feathers.controls.List;

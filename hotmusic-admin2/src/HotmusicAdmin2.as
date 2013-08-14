@@ -1,7 +1,7 @@
 package
 {
 	import cz.hotmusic.Main;
-	import cz.hotmusic.controller.MyController;
+	import cz.hotmusic.lib.controller.MyController;
 	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;

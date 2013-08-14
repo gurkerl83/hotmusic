@@ -2,10 +2,10 @@ package cz.hotmusic.data
 {
 	import cz.hotmusic.FontAssets;
 	import cz.hotmusic.helper.SortHelper;
-	import cz.hotmusic.model.Album;
-	import cz.hotmusic.model.Artist;
-	import cz.hotmusic.model.Genre;
-	import cz.hotmusic.model.Song;
+	import cz.hotmusic.lib.model.Album;
+	import cz.hotmusic.lib.model.Artist;
+	import cz.hotmusic.lib.model.Genre;
+	import cz.hotmusic.lib.model.Song;
 	import cz.zc.mylib.event.GenericEvent;
 	import cz.zc.mylib.helper.DateHelper;
 	

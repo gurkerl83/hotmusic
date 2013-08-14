@@ -5,7 +5,7 @@ package cz.hotmusic
 	
 	import cz.hotmusic.helper.TextHelper;
 	import cz.hotmusic.model.Model;
-	import cz.hotmusic.model.Song;
+	import cz.hotmusic.lib.model.Song;
 	import cz.hotmusic.renderer.MainListRenderer;
 	
 	import feathers.controls.Button;

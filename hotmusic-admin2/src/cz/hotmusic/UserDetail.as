@@ -3,10 +3,10 @@ package cz.hotmusic
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
 	import cz.hotmusic.component.FormItem;
-	import cz.hotmusic.event.ProfileServiceEvent;
+	import cz.hotmusic.lib.event.ProfileServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.model.Model;
-	import cz.hotmusic.model.User;
+	import cz.hotmusic.lib.model.User;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Check;

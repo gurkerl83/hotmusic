@@ -1,7 +1,7 @@
 package cz.hotmusic.renderer
 {
 	import cz.hotmusic.FontAssets;
-	import cz.hotmusic.model.Song;
+	import cz.hotmusic.lib.model.Song;
 	import cz.zc.mylib.helper.DateHelper;
 	
 	import feathers.controls.Button;
