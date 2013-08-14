@@ -13,7 +13,7 @@ package cz.hotmusic.component
 	import starling.display.Quad;
 	import starling.events.Event;
 	
-	public class FormItem extends FeathersControl implements IFocusDisplayObject
+	public class FormItem extends FeathersControl// implements IFocusDisplayObject
 	{
 		public function FormItem()
 		{
@@ -23,8 +23,8 @@ package cz.hotmusic.component
 		public var isAutocomplete:Boolean;
 		public var serviceEvent:ServiceEvent;
 		public function get selectedItem():Object {
-			if (_autocomplete && _autocomplete.selectedItem)
-				return _autocomplete.selectedItem;
+			if (autocomplete && autocomplete.selectedItem)
+				return autocomplete.selectedItem;
 			return null;
 		}
 		
@@ -71,7 +71,7 @@ package cz.hotmusic.component
 		private var _orderNumberLbl:Label;
 		private var _labelLbl:Label;
 		public var textinput:TextInput;
-		private var _autocomplete:Autocomplete;
+		public var autocomplete:Autocomplete;
 		
 		override protected function initialize():void
 		{
@@ -88,8 +88,8 @@ package cz.hotmusic.component
 			_labelLbl.name = Theme.SMALL_NORMAL_BLACK;
 			
 			if (isAutocomplete) {
-				_autocomplete = new Autocomplete();
-				_autocomplete.serviceEvent = serviceEvent;
+				autocomplete = new Autocomplete();
+				autocomplete.serviceEvent = serviceEvent;
 			} else {
 				textinput = new TextInput();
 				textinput.name = "textinputwhite";
@@ -100,7 +100,7 @@ package cz.hotmusic.component
 			addChild(_orderNumberLbl);
 			addChild(_labelLbl);
 			if (isAutocomplete)
-				addChild(_autocomplete);
+				addChild(autocomplete);
 			else
 				addChild(textinput);
 		}
@@ -132,10 +132,10 @@ package cz.hotmusic.component
 			_labelLbl.y = actualHeight/2 - _labelLbl.height/2;
 
 			if (isAutocomplete) {
-				_autocomplete.x = 250;
-				_autocomplete.validate();
-				_autocomplete.y = actualHeight/2 - _autocomplete.height/2;
-				_autocomplete.width = actualWidth - _autocomplete.x - _autocomplete.y;
+				autocomplete.x = 250;
+				autocomplete.validate();
+				autocomplete.y = actualHeight/2 - autocomplete.height/2;
+				autocomplete.width = actualWidth - autocomplete.x - autocomplete.y;
 			} else {
 				textinput.x = 250;
 				textinput.validate();
@@ -149,22 +149,22 @@ package cz.hotmusic.component
 //			textinput.selectRange(textinput.text.length, textinput.text.length);
 		}
 		
-		override public function showFocus():void
-		{
-			trace("FormItem.showFocus" + ObjectHelper.getId(this));
-			super.showFocus();
-			if (isAutocomplete)
-				_autocomplete.showFocus();
-			else
-				textinput.setFocus();
-		}
+//		override public function showFocus():void
+//		{
+//			trace("FormItem.showFocus" + ObjectHelper.getId(this));
+//			super.showFocus();
+//			if (isAutocomplete)
+//				_autocomplete.showFocus();
+//			else
+//				textinput.setFocus();
+//		}
 		
 		// toto je zde kvuli nastaveni focusu uvnitr
 		override public function set nextTabFocus(value:IFocusDisplayObject):void
 		{
 			trace("FormItem.nextTabFocus set" + ObjectHelper.getId(this));
 			if (isAutocomplete)
-				_autocomplete.textinput.nextTabFocus = value;
+				autocomplete.textinput.nextTabFocus = value;
 			else
 				textinput.nextTabFocus = value;
 		}
@@ -173,7 +173,7 @@ package cz.hotmusic.component
 		{
 			trace("FormItem.previousTabFocus set" + ObjectHelper.getId(this));
 			if (isAutocomplete)
-				_autocomplete.textinput.previousTabFocus = value;
+				autocomplete.textinput.previousTabFocus = value;
 			else
 				textinput.previousTabFocus = value;
 		}
@@ -182,7 +182,7 @@ package cz.hotmusic.component
 		{
 			trace("FormItem.nextTabFocus get" + ObjectHelper.getId(this));
 			if (isAutocomplete)
-				return _autocomplete.textinput.nextTabFocus;
+				return autocomplete.textinput.nextTabFocus;
 			else
 				return textinput.nextTabFocus;
 		}
@@ -191,7 +191,7 @@ package cz.hotmusic.component
 		{
 			trace("FormItem.previousTabFocus get" + ObjectHelper.getId(this));
 			if (isAutocomplete)
-				return _autocomplete.textinput.previousTabFocus;
+				return autocomplete.textinput.previousTabFocus;
 			else
 				return textinput.previousTabFocus;
 		}

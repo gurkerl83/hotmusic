@@ -154,23 +154,23 @@ package cz.hotmusic
 			addChild(artistname);
 			addChild(albumname);
 			
-			albumname.nextTabFocus = artistname;
-			artistname.nextTabFocus = genre;
-			genre.nextTabFocus = releasedate;
-			releasedate.nextTabFocus = itunes;
-			itunes.nextTabFocus = google;
-			google.nextTabFocus = amazon;
-			amazon.nextTabFocus = beatport;
-			beatport.nextTabFocus = albumname;
+			albumname.nextTabFocus = artistname.autocomplete.textinput;
+			artistname.nextTabFocus = genre.autocomplete.textinput;
+			genre.nextTabFocus = releasedate.textinput;
+			releasedate.nextTabFocus = itunes.textinput;
+			itunes.nextTabFocus = google.textinput;
+			google.nextTabFocus = amazon.textinput;
+			amazon.nextTabFocus = beatport.textinput;
+			beatport.nextTabFocus = albumname.textinput;
 			
-			albumname.previousTabFocus = beatport;
-			artistname.previousTabFocus = albumname;
-			genre.previousTabFocus = artistname;
-			releasedate.previousTabFocus = genre;
-			itunes.previousTabFocus = releasedate;
-			google.previousTabFocus = itunes;
-			amazon.previousTabFocus = google;
-			beatport.previousTabFocus = amazon;
+			albumname.previousTabFocus = beatport.textinput;
+			artistname.previousTabFocus = albumname.textinput;
+			genre.previousTabFocus = artistname.autocomplete.textinput;
+			releasedate.previousTabFocus = genre.autocomplete.textinput;
+			itunes.previousTabFocus = releasedate.textinput;
+			google.previousTabFocus = itunes.textinput;
+			amazon.previousTabFocus = google.textinput;
+			beatport.previousTabFocus = amazon.textinput;
 			
 			albumname.textinput.focusManager.focus = albumname.textinput;
 		}

@@ -20,7 +20,7 @@ package cz.hotmusic.component
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	
-	public class Autocomplete extends FeathersControl implements IFocusDisplayObject
+	public class Autocomplete extends FeathersControl //implements IFocusDisplayObject
 	{
 		public function Autocomplete()
 		{
@@ -93,11 +93,6 @@ package cz.hotmusic.component
 		
 		private function tiFocusOutHandler(event:Event):void {
 			trace("tiFocusOutHandler" + ObjectHelper.getId(this));
-//			var fm:FocusManager = FocusManager.
-			//				if (focusManager.focus == _list)
-			//					return;
-			//				_list.visible = false;
-			//				_list.selectedIndex = -1;
 			if (selectedItem == null) {
 				textinput.removeEventListener(Event.CHANGE, tiChangeHandler);
 				textinput.text = "";
@@ -131,13 +126,9 @@ package cz.hotmusic.component
 			_list.y = textinput.height;
 			setSize(actualWidth, textinput.height);
 			
-			// list schovavam v metode draw proto, protoze je tu zaruceno, ze uz ma focus jiny prvek.
-			// jinymi slovy neni mozne schovavat list primo v focusOut handleru, protoze bych se na list
-			// pak nikdy neprokliknul, vzdy by mi zmizel
-			trace("draw" + ObjectHelper.getId(this) + " focusManager.focus "+focusManager.focus+ObjectHelper.getId(focusManager.focus) );
-			if (focusManager && focusManager.focus != textinput && focusManager.focus != this && focusManager.focus != parent)
+			// kdyz kliknu mimo
+			if (textinput.focusManager.focus != textinput && _list.focusManager && _list.focusManager.focus != _list)
 			{
-//				_list.visible = false;
 				removeChild(_list);
 			}
 		}
@@ -148,7 +139,6 @@ package cz.hotmusic.component
 			selectedItem = null;
 			if (textinput.text.length < 3)
 			{
-//				_list.visible = false;
 				_list.selectedIndex = -1;
 				removeChild(_list);
 				return;
@@ -162,16 +152,10 @@ package cz.hotmusic.component
 					items.push(item);
 				}
 				_list.dataProvider = new ListCollection(items);
-//				_list.visible = true;
 				addChild(_list);
 			}
 			CairngormEventDispatcher.getInstance().dispatchEvent(_se);
 		}
 		
-		override public function showFocus():void
-		{	trace("showFocus" + ObjectHelper.getId(this));
-			super.showFocus();
-			textinput.setFocus();
-		}
 	}
 }

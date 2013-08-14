@@ -188,29 +188,29 @@ package cz.hotmusic
 			addChild(songname);
 
 			// protoze jsou pridany childy v opacnem poradi, je treba rucne nastavit focus order
-			songname.nextTabFocus = artistname;
-			artistname.nextTabFocus = albumname;
-			albumname.nextTabFocus = genre;
-			genre.nextTabFocus = releasedate;
-			releasedate.nextTabFocus = itunes;
-			itunes.nextTabFocus = google;
-			google.nextTabFocus = amazon;
-			amazon.nextTabFocus = beatport;
-			beatport.nextTabFocus = soundcloud;
-			soundcloud.nextTabFocus = youtube;
-			youtube.nextTabFocus = songname;
+			songname.nextTabFocus = artistname.autocomplete.textinput;
+			artistname.nextTabFocus = albumname.autocomplete.textinput;
+			albumname.nextTabFocus = genre.autocomplete.textinput;
+			genre.nextTabFocus = releasedate.textinput;
+			releasedate.nextTabFocus = itunes.textinput;
+			itunes.nextTabFocus = google.textinput;
+			google.nextTabFocus = amazon.textinput;
+			amazon.nextTabFocus = beatport.textinput;
+			beatport.nextTabFocus = soundcloud.textinput;
+			soundcloud.nextTabFocus = youtube.textinput;
+			youtube.nextTabFocus = songname.textinput;
 
-			songname.previousTabFocus = youtube;
-			artistname.previousTabFocus = songname;
-			albumname.previousTabFocus = artistname;
-			genre.previousTabFocus = albumname;
-			releasedate.previousTabFocus = genre;
-			itunes.previousTabFocus = releasedate;
-			google.previousTabFocus = itunes;
-			amazon.previousTabFocus = google;
-			beatport.previousTabFocus = amazon;
-			soundcloud.previousTabFocus = beatport;
-			youtube.previousTabFocus = soundcloud;
+			songname.previousTabFocus = youtube.textinput;
+			artistname.previousTabFocus = songname.textinput;
+			albumname.previousTabFocus = artistname.autocomplete.textinput;
+			genre.previousTabFocus = albumname.autocomplete.textinput;
+			releasedate.previousTabFocus = genre.autocomplete.textinput;
+			itunes.previousTabFocus = releasedate.textinput;
+			google.previousTabFocus = itunes.textinput;
+			amazon.previousTabFocus = google.textinput;
+			beatport.previousTabFocus = amazon.textinput;
+			soundcloud.previousTabFocus = beatport.textinput;
+			youtube.previousTabFocus = soundcloud.textinput;
 			
 			songname.textinput.focusManager.focus = songname.textinput;
 		}
