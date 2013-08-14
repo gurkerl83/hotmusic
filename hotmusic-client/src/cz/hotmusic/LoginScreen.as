@@ -4,18 +4,23 @@ package cz.hotmusic
 	import com.facebook.graph.FacebookMobile;
 	import com.facebook.graph.data.FacebookSession;
 	
-	import cz.hotmusic.lib.event.ProfileServiceEvent;
 	import cz.hotmusic.helper.LoginHelper;
+	import cz.hotmusic.lib.data.DataHelper;
+	import cz.hotmusic.lib.event.ProfileServiceEvent;
 	import cz.hotmusic.lib.model.User;
+	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
 	
+	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
 	import flash.net.SharedObject;
+	
+	import mx.rpc.events.ResultEvent;
 	
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -53,10 +58,16 @@ package cz.hotmusic
 			_passwordTI.name = "textinputblack";
 			
 			_loginBtn = new Button();
-			_loginBtn.addEventListener(Event.TRIGGERED, function (event:Event):void {
-				LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, false, function():void
+			_loginBtn.addEventListener(starling.events.Event.TRIGGERED, function (event:starling.events.Event):void {
+				LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, false, function(result:ResultEvent):void
 				{
-					dispatchEventWith("login");
+					Model.getInstance().user = User(result.result);
+					
+					DataHelper.getInstance().addEventListener(DataHelper.INIT_COMPLETE, function ich(e:flash.events.Event):void {
+						removeEventListener(DataHelper.INIT_COMPLETE, ich);
+						dispatchEventWith("login");
+					});
+					DataHelper.getInstance().initModel(Model.getInstance());
 				})
 			});
 			_loginBtn.label = "Sign in";
@@ -68,11 +79,11 @@ package cz.hotmusic
 			
 			_loginFBBtn = new Button();
 			_loginFBBtn.label = "Facebook login";
-			_loginFBBtn.addEventListener(Event.TRIGGERED, loginFBBtn_triggeredHandler);
+			_loginFBBtn.addEventListener(starling.events.Event.TRIGGERED, loginFBBtn_triggeredHandler);
 			
 			_createAccountBtn = new Button();
 			_createAccountBtn.label = "Create new account";
-			_createAccountBtn.addEventListener(Event.TRIGGERED, function (event:Event):void {
+			_createAccountBtn.addEventListener(starling.events.Event.TRIGGERED, function (event:starling.events.Event):void {
 				LoginHelper.getInstance().createAccount(_emailTI.text, _passwordTI.text);
 //				dispatchEventWith("login");
 			});
@@ -87,7 +98,7 @@ package cz.hotmusic
 			addChild(_createAccountBtn);
 		}
 		
-		private function loginFBBtn_triggeredHandler(event:Event):void
+		private function loginFBBtn_triggeredHandler(event:starling.events.Event):void
 		{
 			LoginHelper.getInstance().facebook(actualWidth, actualHeight, function():void
 			{

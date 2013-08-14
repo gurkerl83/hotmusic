@@ -3,10 +3,10 @@ package cz.hotmusic
 	import com.thejustinwalsh.ane.TestFlight;
 	
 	import cz.hotmusic.components.SendDialog;
-	import cz.hotmusic.data.DataHelper;
 	import cz.hotmusic.helper.SortHelper;
-	import cz.hotmusic.model.Model;
+	import cz.hotmusic.lib.model.Genre;
 	import cz.hotmusic.lib.model.Song;
+	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.LeftListRenderer;
 	import cz.hotmusic.renderer.MainListRenderer;
 	import cz.hotmusic.renderer.RightListRenderer;
@@ -336,17 +336,17 @@ package cz.hotmusic
 			if (_leftList.selectedItem == null)
 				return;
 				
-			filterGenreBy = _leftList.selectedItem.genre;
+			filterGenreBy = _leftList.selectedItem.name;
 			TestFlight.passCheckpoint("Genre Filter Button: by " + filterGenreBy);
 			var filteredArr:Array;
-			filteredArr = DataHelper.getInstance().songs.filter(filterGenre); 
+			filteredArr = Model.getInstance().songs.filter(filterGenre); 
 			this._list.dataProvider = new ListCollection(filteredArr);
 			leftButton_triggeredHandler(null);
 		}
 		private var filterGenreBy:String;
 		private function filterGenre(item:Object, index:int, arr:Array):Boolean
 		{
-			if (filterGenreBy == item.genre || filterGenreBy == "All genres")
+			if (filterGenreBy == item.genre.name || filterGenreBy == "All genres")
 				return true;
 			return false;
 		}
@@ -379,7 +379,7 @@ package cz.hotmusic
 			// LIST
 			this._list = new List();
 			this._list.itemRendererType = MainListRenderer;
-			this._list.dataProvider = new ListCollection(DataHelper.getInstance().songs);
+			this._list.dataProvider = new ListCollection(Model.getInstance().songs);
 			this._list.itemRendererProperties.labelField = "name";
 			this._list.itemRendererProperties.accessoryLabelFunction = function(item:Song):String
 			{
@@ -413,9 +413,17 @@ package cz.hotmusic
 			this._leftList = new List();
 //			this._leftList.allowMultipleSelection = true;
 			this._leftList.itemRendererType = LeftListRenderer;
-			this._leftList.dataProvider = new ListCollection(DataHelper.getInstance().genres);
+
+			var allGenres:Genre = new Genre("All genres");
+			allGenres.count = Model.getInstance().songs.length;
+			
+			var genresArr:Array = [];
+			genresArr.push(allGenres);
+			genresArr = genresArr.concat(Model.getInstance().genres);
+			
+			this._leftList.dataProvider = new ListCollection(genresArr);
 				
-			this._leftList.itemRendererProperties.labelField = "genre";
+			this._leftList.itemRendererProperties.labelField = "name";
 			this._leftList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
 			this._leftList.addEventListener(Event.CHANGE, leftlist_changeHandler);
 			_leftList.visible = false;
@@ -440,7 +448,7 @@ package cz.hotmusic
 			this._rightList = new GroupedList();
 			this._rightList.verticalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
 			this._rightList.itemRendererType = RightListRenderer;
-			this._rightList.dataProvider = new HierarchicalCollection(DataHelper.getInstance().sorts);
+			this._rightList.dataProvider = new HierarchicalCollection(SortHelper.getInstance().sorts);
 			this._rightList.nameList.add(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
 			this._rightList.itemRendererProperties.labelField = "sortby";
 			this._rightList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
@@ -464,7 +472,7 @@ package cz.hotmusic
 			// SEARCH FILTER
 			filterByWhatever = _searchTI.text;
 			var filteredArr:Array;
-			filteredArr = DataHelper.getInstance().songs.filter(filterWhatever); 
+			filteredArr = Model.getInstance().songs.filter(filterWhatever); 
 			var checkpointText:String = "Filter Button (right). Search: " + filterByWhatever; 
 			// SORT FILTER
 			if (_rightList.selectedItem) {
@@ -481,9 +489,9 @@ package cz.hotmusic
 		private var filterByWhatever:String;
 		private function filterWhatever(item:Object, index:int, arr:Array):Boolean
 		{
-			if (String(item.genre).toLowerCase().indexOf(filterByWhatever.toLowerCase()) > -1 ||
-				String(item.artist).toLowerCase().indexOf(filterByWhatever.toLowerCase()) > -1 ||
-				String(item.song).toLowerCase().indexOf(filterByWhatever.toLowerCase()) > -1 ||
+			if (String(item.genre.name).toLowerCase().indexOf(filterByWhatever.toLowerCase()) > -1 ||
+				String(item.artist.name).toLowerCase().indexOf(filterByWhatever.toLowerCase()) > -1 ||
+				String(item.name).toLowerCase().indexOf(filterByWhatever.toLowerCase()) > -1 ||
 				filterByWhatever == null || filterByWhatever.length <= 0
 			)
 				return true;

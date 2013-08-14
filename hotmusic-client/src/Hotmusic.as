@@ -3,6 +3,8 @@ package
 	import com.thejustinwalsh.ane.TestFlight;
 	
 	import cz.hotmusic.Main;
+	import cz.hotmusic.lib.controller.MyController;
+	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.model.Model;
 	import cz.zc.mylib.helper.LogHelper;
 	
@@ -76,11 +78,14 @@ package
 			}
 		}
 		
+		private var myc:MyController;
 		private function onAddedToStage(event:Event):void
 		{
 			splash.removeEventListener(Event.ENTER_FRAME, onAddedToStage);
+			myc = new MyController();
+			myc.init();
 			
-			Model.getInstance().resetModel();
+			
 			// distriqt
 //			FacebookUtils.init("a95cb5c9288dceac783021d52ed24107c45e48f0BndL53Ei3PQ5uK7LWqJNT1mb6aUE0KiH/cHQIeDcT2xGDoBiDhIEnOO7HfMc8RpyECrdJKhMopbk+O9Pecv3lw==");
 //			TestFlightSDK.init("a95cb5c9288dceac783021d52ed24107c45e48f0BndL53Ei3PQ5uK7LWqJNT1mb6aUE0KiH/cHQIeDcT2xGDoBiDhIEnOO7HfMc8RpyECrdJKhMopbk+O9Pecv3lw==");

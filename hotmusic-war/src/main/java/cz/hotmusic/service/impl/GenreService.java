@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import cz.hotmusic.model.Genre;
+import cz.hotmusic.model.Song;
 import cz.hotmusic.service.IGenreService;
 
 @Repository
@@ -67,6 +68,10 @@ public class GenreService implements IGenreService{
 
 		@SuppressWarnings("unchecked")
 		List<Genre> list = query.list();
+		
+		for (Genre genre : list) {
+			genre.count = ((Long)session.createQuery("select count(*) from Song where genre = :genre").setParameter("genre", genre).uniqueResult()).doubleValue();
+		}
 		
 		return list;
 	}

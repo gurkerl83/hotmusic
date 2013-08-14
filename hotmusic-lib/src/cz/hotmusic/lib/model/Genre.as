@@ -11,5 +11,6 @@ package cz.hotmusic.lib.model
 		public var id:String;
 		public var objectUUID:String;
 		public var name:String;
+		public var count:Number;
 	}
 }

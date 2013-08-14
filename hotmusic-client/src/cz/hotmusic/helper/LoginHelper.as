@@ -1,8 +1,11 @@
 package cz.hotmusic.helper
 {
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	import com.facebook.graph.FacebookMobile;
 	import com.facebook.graph.data.FacebookSession;
 	
+	import cz.hotmusic.lib.event.ProfileServiceEvent;
+	import cz.hotmusic.lib.model.User;
 	import cz.zc.mylib.event.GenericEvent;
 	
 	import flash.desktop.NativeApplication;
@@ -11,6 +14,8 @@ package cz.hotmusic.helper
 	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
 	import flash.net.SharedObject;
+	
+	import mx.rpc.events.ResultEvent;
 	
 	import starling.core.Starling;
 
@@ -45,6 +50,12 @@ package cz.hotmusic.helper
 			return _instance;
 		}
 		
+		private var user:String;
+		private var pass:String;
+		private var isFB:Boolean;
+		private var successCall:Function;
+		private var failCall:Function;
+		
 		public function login(user:String, pass:String, isFB:Boolean=false, successCall:Function=null, failCall:Function=null):void
 		{
 			if (user == null || user == "")
@@ -52,27 +63,48 @@ package cz.hotmusic.helper
 			if (!isFB && (pass == null || pass == ""))
 				if (failCall != null) failCall.call();
 			
-			var result:Boolean;
+			this.user = user;
+			this.pass = pass;
+			this.isFB = isFB;
+			this.successCall = successCall;
+			this.failCall = failCall;
+
+//			var result:Boolean;
 			
-			// TODO server call
-			if (user == TEST_USER && pass == TEST_PASS && !isFB)
-				result = true;
+			// server call
+			var pse:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LOGIN, loginProfileServiceResult, loginProfileServiceFault);
+			pse.user = new User();
+			pse.user.email = user;
+			pse.user.password = pass;
+			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
 			
-			if (user == TEST_FBID && isFB)
-				result = true;
+//			if (user == TEST_USER && pass == TEST_PASS && !isFB)
+//				result = true;
+//			
+//			if (user == TEST_FBID && isFB)
+//				result = true;
+		}
+		
+		private function loginProfileServiceResult(result:ResultEvent):void
+		{
+			// login incorrect
+			if (result.result == null)
+			{
+				if (failCall != null) failCall.call();
+				return;
+			}
 			
-			if (result && !isLoginSO())
+			// login ok, save to SO
+			if (!isLoginSO())
 				setLoginSO(user, pass, isFB);
 			
-			if (result)
-			{
-//				var ge:GenericEvent = new GenericEvent("loginSuccess");
-//				ge.data = user;
-//				dispatchEvent(ge);
-				if (successCall != null) successCall.call();
-			} else {
-				if (failCall != null) failCall.call();
-			}
+			// call callback
+			if (successCall != null) successCall.call(this, result);
+		}
+		
+		private function loginProfileServiceFault(info:Object):void
+		{
+			if (failCall != null) failCall.call();
 		}
 		
 		public function facebook(facebookWidth:Number, facebookHeight:Number, successCall:Function=null, failCall:Function=null):void 
