@@ -85,6 +85,8 @@ package cz.hotmusic
 //			artist.value = "Red Hot Chilli Peppers";
 			
 			addChild(artist);
+			
+			artist.textinput.focusManager.focus = artist.textinput;
 		}
 		
 		override protected function draw():void

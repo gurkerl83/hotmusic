@@ -211,6 +211,8 @@ package cz.hotmusic
 			beatport.previousTabFocus = amazon;
 			soundcloud.previousTabFocus = beatport;
 			youtube.previousTabFocus = soundcloud;
+			
+			songname.textinput.focusManager.focus = songname.textinput;
 		}
 		
 		override protected function draw():void

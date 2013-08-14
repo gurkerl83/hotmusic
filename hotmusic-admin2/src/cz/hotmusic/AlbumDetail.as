@@ -171,6 +171,8 @@ package cz.hotmusic
 			google.previousTabFocus = itunes;
 			amazon.previousTabFocus = google;
 			beatport.previousTabFocus = amazon;
+			
+			albumname.textinput.focusManager.focus = albumname.textinput;
 		}
 		
 		override protected function draw():void

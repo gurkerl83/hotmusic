@@ -173,6 +173,8 @@ package cz.hotmusic
 			addChild(usersCB);
 			addChild(addArtistCB);
 			
+			firstname.textinput.focusManager.focus = firstname.textinput;
+			
 //			firstname.nextTabFocus = surname.textinput;
 		}
 		

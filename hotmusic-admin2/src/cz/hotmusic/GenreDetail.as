@@ -85,6 +85,8 @@ package cz.hotmusic
 //			genre.value = "Pop/Rock";
 			
 			addChild(genre);
+			
+			genre.textinput.focusManager.focus = genre.textinput;
 		}
 		
 		override protected function draw():void
