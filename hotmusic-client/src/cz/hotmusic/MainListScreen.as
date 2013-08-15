@@ -232,7 +232,7 @@ package cz.hotmusic
 			Model.getInstance().selectedSong.genre.name = Song(_list.selectedItem).genre ? Song(_list.selectedItem).genre.name : "no genre";
 			Model.getInstance().selectedSong.rateUp = Song(_list.selectedItem).rateUp;
 			Model.getInstance().selectedSong.rateDown = Song(_list.selectedItem).rateDown;
-			Model.getInstance().selectedSong.hotstatus = Song(_list.selectedItem).hotstatus;
+//			Model.getInstance().selectedSong.hotstatus = Song(_list.selectedItem).hotstatus;
 			
 			TestFlight.passCheckpoint("Song Selected: " + Song(_list.selectedItem).name);
 			
