@@ -1135,10 +1135,10 @@ package feathers.themes
 			const iconSelector:ImageStateValueSelector = new ImageStateValueSelector();
 			iconSelector.defaultValue = this.checkUpIconTexture;
 			iconSelector.defaultSelectedValue = this.checkSelectedUpIconTexture;
-			iconSelector.setValueForState(this.checkDownIconTexture, Button.STATE_DOWN, false);
-			iconSelector.setValueForState(this.checkDisabledIconTexture, Button.STATE_DISABLED, false);
-			iconSelector.setValueForState(this.checkSelectedDownIconTexture, Button.STATE_DOWN, true);
-			iconSelector.setValueForState(this.checkSelectedDisabledIconTexture, Button.STATE_DISABLED, true);
+			iconSelector.setValueForState(this.checkUpIconTexture, Button.STATE_DOWN, false);
+			iconSelector.setValueForState(this.checkUpIconTexture, Button.STATE_DISABLED, false);
+			iconSelector.setValueForState(this.checkSelectedUpIconTexture, Button.STATE_DOWN, true);
+			iconSelector.setValueForState(this.checkSelectedUpIconTexture, Button.STATE_DISABLED, true);
 			iconSelector.imageProperties =
 			{
 				scaleX: this.scale,
