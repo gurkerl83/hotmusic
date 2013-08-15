@@ -14,6 +14,7 @@ package cz.hotmusic
 	import feathers.controls.Screen;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
+	import feathers.themes.Theme;
 	
 	import flash.events.Event;
 	
@@ -34,7 +35,7 @@ package cz.hotmusic
 		private var loginTI:TextInput;
 		private var passwordTI:TextInput;
 		private var signInBtn:Button;
-		private var debugText:TextArea;
+		private var version:Label;
 		
 		override protected function initialize():void {
 			super.initialize();
@@ -55,15 +56,16 @@ package cz.hotmusic
 			signInBtn.label = "Sign in";
 			signInBtn.addEventListener(starling.events.Event.TRIGGERED, signInBtn_TriggeredHandler);
 			
-			debugText = new TextArea();
-			debugText.text = MyServiceLocator.AMF_ENDPOINT;
+			version = new Label();
+			version.name = Theme.TINY_NORMAL_WHITE;
+			version.text = MyServiceLocator.version;
 			
 			// adding
 			addChild(logo);
 			addChild(loginTI);
 			addChild(passwordTI);
 			addChild(signInBtn);
-//			addChild(debugText);
+			addChild(version);
 		}
 		
 		private function signInBtn_TriggeredHandler(event:starling.events.Event):void
@@ -104,9 +106,6 @@ package cz.hotmusic
 			signInBtn.x = actualWidth/2 - signInBtn.width/2;
 			signInBtn.y = passwordTI.y + passwordTI.height + 2*gap;
 			
-			debugText.y = signInBtn.y + 100;
-			debugText.width = actualWidth;
-			debugText.height = actualHeight - debugText.y;
 		}
 		
 		private function loginResult(result:ResultEvent):void
