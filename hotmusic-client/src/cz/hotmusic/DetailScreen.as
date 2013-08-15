@@ -74,9 +74,9 @@ package cz.hotmusic
 		private var _shareLabel:Label;
 		private var _shareTwitterButton:starling.display.Button;
 		private var _shareFacebookButton:starling.display.Button;
-		private var _shareGooglePlusButton:starling.display.Button;
+//		private var _shareGooglePlusButton:starling.display.Button;
 		private var _shareEmailButton:starling.display.Button;
-		private var _shareSmsButton:starling.display.Button;
+//		private var _shareSmsButton:starling.display.Button;
 
 		private var _itunesIcon:Image;
 		private var _itunesLabel:Label;
@@ -251,23 +251,23 @@ package cz.hotmusic
 				else
 					navigateToURL(new URLRequest('http://facebook.com/?'), '_blank');
 			});
-			_shareGooglePlusButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.GooglePlus()));
-			_shareGooglePlusButton.addEventListener(Event.TRIGGERED, function onGooglePlus(event:Event):void {
-				navigateToURL(new URLRequest('https://plus.google.com/'), '_blank');
-			});
+//			_shareGooglePlusButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.GooglePlus()));
+//			_shareGooglePlusButton.addEventListener(Event.TRIGGERED, function onGooglePlus(event:Event):void {
+//				navigateToURL(new URLRequest('https://plus.google.com/'), '_blank');
+//			});
 			_shareEmailButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Email()));
 			_shareEmailButton.addEventListener(Event.TRIGGERED, function onEmail(event:Event):void {
 				var subjmail:String = "hotmusic testing message";
 				var msgmail:String = "I recommend song "+song.name+" from "+ song.artist.name;
 				navigateToURL(new URLRequest('mailto:aaa@bbb.cc?subject='+encodeURIComponent(subjmail)+'&body='+encodeURIComponent(msgmail)), '_blank');
 			});
-			_shareSmsButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Sms()));
+//			_shareSmsButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Sms()));
 			_scrollContainer.addChild(_shareLabel);
 			_scrollContainer.addChild(_shareTwitterButton);
 			_scrollContainer.addChild(_shareFacebookButton);
-			_scrollContainer.addChild(_shareGooglePlusButton);
+//			_scrollContainer.addChild(_shareGooglePlusButton);
 			_scrollContainer.addChild(_shareEmailButton);
-			_scrollContainer.addChild(_shareSmsButton);
+//			_scrollContainer.addChild(_shareSmsButton);
 			
 			// ---------------------------------------------------------
 			
@@ -468,17 +468,17 @@ package cz.hotmusic
 			_line6.height = _lineHeight;
 			_line6.width = actualWidth - 2*_leftPadding;;
 			
-			var iconspace:int = 14;
+			var iconspace:int = 40;
 			_shareTwitterButton.x = _space - iconBlackborder;
 			_shareTwitterButton.y = _line6.y + _lineHeight + _linePadding*3;
 			_shareFacebookButton.x = _shareTwitterButton.x + _shareTwitterButton.width + iconspace;
 			_shareFacebookButton.y = _line6.y + _lineHeight + _linePadding*3;
-			_shareGooglePlusButton.x = _shareFacebookButton.x + _shareFacebookButton.width + iconspace;
-			_shareGooglePlusButton.y = _line6.y + _lineHeight + _linePadding*3;
-			_shareEmailButton.x = _shareGooglePlusButton.x + _shareGooglePlusButton.width + iconspace;
+//			_shareGooglePlusButton.x = _shareFacebookButton.x + _shareFacebookButton.width + iconspace;
+//			_shareGooglePlusButton.y = _line6.y + _lineHeight + _linePadding*3;
+			_shareEmailButton.x = _shareFacebookButton.x + _shareFacebookButton.width + iconspace;
 			_shareEmailButton.y = _line6.y + _lineHeight + _linePadding*3;
-			_shareSmsButton.x = _shareEmailButton.x + _shareEmailButton.width + iconspace;
-			_shareSmsButton.y = _line6.y + _lineHeight + _linePadding*3;
+//			_shareSmsButton.x = _shareEmailButton.x + _shareEmailButton.width + iconspace;
+//			_shareSmsButton.y = _line6.y + _lineHeight + _linePadding*3;
 			
 			_shareLabel.validate();
 			 _shareLabel.x = _leftPadding;
