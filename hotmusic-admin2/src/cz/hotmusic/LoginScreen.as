@@ -111,7 +111,7 @@ package cz.hotmusic
 		
 		private function loginResult(result:ResultEvent):void
 		{
-			if (result.result == null)
+			if (result.result == null || !User(result.result).adminRights)
 				return;
 			
 			Model.getInstance().user = User(result.result);
