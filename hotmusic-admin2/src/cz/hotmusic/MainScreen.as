@@ -3,6 +3,7 @@ package cz.hotmusic
 	import cz.hotmusic.component.ActionButton;
 	import cz.hotmusic.component.Header;
 	import cz.hotmusic.component.Menu;
+	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -92,7 +93,7 @@ package cz.hotmusic
 			screenNavigator.addEventListener(Event.CHANGE, screenNavigatorChangeHandler);
 			
 			menu = new Menu(screenNavigator);
-			menu.setAuthorization(true, true, true);
+			menu.setAuthorization(Model.getInstance().user.genresAuthorized, Model.getInstance().user.usersAuthorized, Model.getInstance().user.addArtistAuthorized);
 			
 //			var transitionManager:ScreenSlidingStackTransitionManager = new ScreenSlidingStackTransitionManager(screenNavigator);
 //			transitionManager.duration = 0.5;
