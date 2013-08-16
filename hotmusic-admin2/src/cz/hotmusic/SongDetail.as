@@ -111,8 +111,9 @@ package cz.hotmusic
 		public function clear():void
 		{
 			songname.value = "";
-			albumname.value = "";
-			genre.value = "";
+			artistname.selectedItem = null;
+			albumname.selectedItem = null;
+			genre.selectedItem = null;
 			releasedate.value = "";
 			itunes.value = "";
 			google.value = "";

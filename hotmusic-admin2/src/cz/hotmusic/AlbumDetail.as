@@ -90,8 +90,8 @@ package cz.hotmusic
 		public function clear():void
 		{
 			albumname.value = "";
-			artistname.value = "";
-			genre.value = "";
+			artistname.selectedItem = null;
+			genre.selectedItem = null;
 			releasedate.value = "";
 			itunes.value = "";
 			google.value = "";
