@@ -108,7 +108,7 @@ package cz.hotmusic
 			{
 				users.push(u);
 			}
-			dispatchEventWith(Event.CLOSE);
+			dispatchEventWith("closeDetail");
 			
 		}
 		

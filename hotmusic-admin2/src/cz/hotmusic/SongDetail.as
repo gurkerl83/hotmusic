@@ -98,7 +98,7 @@ package cz.hotmusic
 		{
 			DataHelper.getInstance().addEventListener(DataHelper.SONGS_COMPLETE, function sch(event:flash.events.Event):void {
 				removeEventListener(DataHelper.SONGS_COMPLETE, sch);
-				dispatchEventWith(starling.events.Event.CLOSE);
+				dispatchEventWith("closeDetail");
 			});
 			DataHelper.getInstance().getSongs();
 		}

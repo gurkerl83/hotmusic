@@ -67,7 +67,7 @@ package cz.hotmusic
 				if (event.data != null)
 					SongDetail(scr).songData = Song(event.data);
 			}}));
-			screenNavigator.addScreen(SONG_DETAIL, new ScreenNavigatorItem(SongDetail,{close: SONGS_LIST}));
+			screenNavigator.addScreen(SONG_DETAIL, new ScreenNavigatorItem(SongDetail,{closeDetail: SONGS_LIST}));
 			
 			// ARTISTS
 			
@@ -77,7 +77,7 @@ package cz.hotmusic
 				if (event.data != null)
 					ArtistDetail(scr).artistData = Artist(event.data);
 			}}));
-			screenNavigator.addScreen(ARTIST_DETAIL, new ScreenNavigatorItem(ArtistDetail,{close: ARTISTS_LIST}));
+			screenNavigator.addScreen(ARTIST_DETAIL, new ScreenNavigatorItem(ArtistDetail,{closeDetail: ARTISTS_LIST}));
 			
 			// ALBUMS
 			
@@ -87,7 +87,7 @@ package cz.hotmusic
 				if (event.data != null)
 					AlbumDetail(scr).data = Album(event.data);
 			}}));
-			screenNavigator.addScreen(ALBUM_DETAIL, new ScreenNavigatorItem(AlbumDetail,{close: ALBUMS_LIST}));
+			screenNavigator.addScreen(ALBUM_DETAIL, new ScreenNavigatorItem(AlbumDetail,{closeDetail: ALBUMS_LIST}));
 			
 			// GENRES
 			
@@ -97,7 +97,7 @@ package cz.hotmusic
 				if (event.data != null)
 					GenreDetail(scr).data = Genre(event.data);
 			}}));
-			screenNavigator.addScreen(GENRE_DETAIL, new ScreenNavigatorItem(GenreDetail,{close: GENRES_LIST}));
+			screenNavigator.addScreen(GENRE_DETAIL, new ScreenNavigatorItem(GenreDetail,{closeDetail: GENRES_LIST}));
 			
 			// USERS
 			
@@ -107,7 +107,7 @@ package cz.hotmusic
 				if (event.data != null)
 					UserDetail(scr).data = User(event.data);
 			}}));
-			screenNavigator.addScreen(USER_DETAIL, new ScreenNavigatorItem(UserDetail,{close: USERS_LIST}));
+			screenNavigator.addScreen(USER_DETAIL, new ScreenNavigatorItem(UserDetail,{closeDetail: USERS_LIST}));
 			
 			// ADD ARTIST
 			
@@ -117,7 +117,7 @@ package cz.hotmusic
 //				if (event.data != null)
 //					AddArtistDetail(scr).artistData = Artist(event.data);
 			}}));
-			screenNavigator.addScreen(ADD_ARTIST_DETAIL, new ScreenNavigatorItem(AddArtistDetail,{close: ADD_ARTISTS_LIST}));
+			screenNavigator.addScreen(ADD_ARTIST_DETAIL, new ScreenNavigatorItem(AddArtistDetail,{closeDetail: ADD_ARTISTS_LIST}));
 
 			screenNavigator.addEventListener(Event.CHANGE, screenNavigatorChangeHandler);
 			
@@ -155,7 +155,7 @@ package cz.hotmusic
 		
 		private function cancelButtonTriggeredHandler(event:Event):void 
 		{
-			screenNavigator.activeScreen.dispatchEventWith(Event.CLOSE);
+			screenNavigator.activeScreen.dispatchEventWith("closeDetail");
 		}
 
 		private function clearButtonTriggeredHandler(event:Event):void 
