@@ -63,10 +63,12 @@ package cz.hotmusic
 			_passwordTI = new TextInput();
 			_passwordTI.prompt = "password";
 			_passwordTI.name = "textinputblack";
+			_passwordTI.displayAsPassword = true;
 			
 			_password2TI = new TextInput();
 			_password2TI.prompt = "re-password";
 			_password2TI.name = "textinputblack";
+			_password2TI.displayAsPassword = true;
 			
 			_createAccountBtn = new Button();
 			_createAccountBtn.label = "Create new account";
