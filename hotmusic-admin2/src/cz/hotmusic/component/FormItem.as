@@ -1,7 +1,7 @@
 package cz.hotmusic.component
 {
-	import cz.hotmusic.lib.event.ServiceEvent;
 	import cz.hotmusic.helper.ObjectHelper;
+	import cz.hotmusic.lib.event.ServiceEvent;
 	
 	import feathers.controls.Label;
 	import feathers.controls.TextInput;
@@ -22,10 +22,14 @@ package cz.hotmusic.component
 
 		public var isAutocomplete:Boolean;
 		public var serviceEvent:ServiceEvent;
+		
 		public function get selectedItem():Object {
 			if (autocomplete && autocomplete.selectedItem)
 				return autocomplete.selectedItem;
 			return null;
+		}
+		public function set selectedItem(value:Object):void {
+			autocomplete.selectedItem = value;
 		}
 		
 		private var _label:String;

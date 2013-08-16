@@ -2,12 +2,12 @@ package cz.hotmusic
 {
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
-	import cz.hotmusic.lib.event.SongServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
-	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.helper.MockDataHelper;
-	import cz.hotmusic.model.Model;
+	import cz.hotmusic.lib.data.DataHelper;
+	import cz.hotmusic.lib.event.SongServiceEvent;
 	import cz.hotmusic.lib.model.Song;
+	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.SongRenderer;
 	
 	import feathers.controls.Button;
@@ -65,6 +65,9 @@ package cz.hotmusic
 				se.sid = Model.getInstance().user.session;
 				se.song = Song(SongRenderer(event.target).data);
 				CairngormEventDispatcher.getInstance().dispatchEvent(se);
+			});
+			list.addEventListener(starling.events.Event.CHANGE, function onChange(event:Event):void {
+				dispatchEventWith("showDetail", false, List(event.target).selectedItem);
 			});
 			
 			addChild(list);

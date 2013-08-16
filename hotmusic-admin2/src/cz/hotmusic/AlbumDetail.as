@@ -3,11 +3,11 @@ package cz.hotmusic
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
 	import cz.hotmusic.component.FormItem;
+	import cz.hotmusic.helper.ButtonHelper;
+	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.AlbumServiceEvent;
 	import cz.hotmusic.lib.event.ArtistServiceEvent;
 	import cz.hotmusic.lib.event.GenreServiceEvent;
-	import cz.hotmusic.helper.ButtonHelper;
-	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.model.Album;
 	import cz.hotmusic.lib.model.Artist;
 	import cz.hotmusic.lib.model.Genre;
@@ -40,6 +40,17 @@ package cz.hotmusic
 			return _actionButtons;
 		}
 		
+		private var _data:Object;
+		public function get data():Object
+		{
+			return _data;
+		}
+		public function set data(value:Object):void
+		{
+			_data = value;
+			invalidate(INVALIDATION_FLAG_DATA);
+		}
+		
 		public function save():void
 		{
 			if (!albumname.value || !artistname.selectedItem || !genre.selectedItem )
@@ -54,7 +65,9 @@ package cz.hotmusic
 			album.amazon = amazon.value;
 			album.beatport = beatport.value;
 			
-			var se:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.CREATE, createResult, createFault);
+			var se:AlbumServiceEvent = new AlbumServiceEvent(data == null ? AlbumServiceEvent.CREATE:AlbumServiceEvent.UPDATE, createResult, createFault);
+			if (data != null) // modify
+				album.id = data.id;
 			se.album = album;
 			se.sid = Model.getInstance().user.session;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
@@ -214,6 +227,25 @@ package cz.hotmusic
 			beatport.x = padding;
 			beatport.y = amazon.y + amazon.height + formgap;
 			beatport.width = actualWidth - 2*padding;
+			
+			if (isInvalid(INVALIDATION_FLAG_DATA)) {
+				if (data && data.name)
+					albumname.value = data.name;
+				if (data && data.artist)
+					artistname.selectedItem = data.artist;
+				if (data && data.genre)
+					genre.selectedItem = data.genre;
+//				if (data && data.releaseDate)
+//					releasedate.value = data.releaseDate;
+				if (data && data.itunes)
+					itunes.value = data.itunes;
+				if (data && data.googlePlay)
+					google.value = data.googlePlay;
+				if (data && data.amazon)
+					amazon.value = data.amazon;
+				if (data && data.beatport)
+					beatport.value = data.beatport;
+			}
 		}
 	}
 }

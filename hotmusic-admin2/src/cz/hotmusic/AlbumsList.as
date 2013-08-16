@@ -67,6 +67,9 @@ package cz.hotmusic
 				se.album = Album(AlbumRenderer(event.target).data);
 				CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			});
+			list.addEventListener(starling.events.Event.CHANGE, function onChange(event:Event):void {
+				dispatchEventWith("showDetail", false, List(event.target).selectedItem);
+			});
 			
 			addChild(list);
 		}

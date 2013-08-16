@@ -2,15 +2,8 @@ package cz.hotmusic.lib.model
 {
 	public class Album
 	{
-		public function Album(name:String=null, artist:Artist=null, date:Date=null)
+		public function Album()
 		{
-			if (name != null)
-				this.name = name;
-			if (artist != null)
-				this.artist = artist;
-			if (date != null)
-				this.addedDate = date;
-					
 		}
 		
 		public var id:String;
@@ -18,6 +11,7 @@ package cz.hotmusic.lib.model
 		public var name:String;
 		public var artist:Artist;
 		public var genre:Genre;
+		public var releaseDate:Date;
 		public var itunes:String;
 		public var googlePlay:String;
 		public var amazon:String;

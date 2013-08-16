@@ -38,7 +38,27 @@ package cz.hotmusic.component
 		}
 		
 		private var _se:ServiceEvent;
-		public var selectedItem:Object;
+		private var _selectedItem:Object;
+
+		public function get selectedItem():Object
+		{
+			return _selectedItem;
+		}
+
+		public function set selectedItem(value:Object):void
+		{
+			_selectedItem = value;
+
+			textinput.removeEventListener(Event.CHANGE, tiChangeHandler);
+			
+			if (value == null) {
+				textinput.text = null;
+			}	else
+				textinput.text = value.name;
+			
+			textinput.addEventListener(Event.CHANGE, tiChangeHandler);
+		}
+
 		public var textinput:TextInput;
 		private var _list:List;
 		
@@ -68,7 +88,7 @@ package cz.hotmusic.component
 				
 				textinput.removeEventListener(Event.CHANGE, tiChangeHandler);
 				textinput.text = _list.selectedItem.name;
-				selectedItem = _list.selectedItem;
+				_selectedItem = _list.selectedItem;
 //				_textinput.setFocus();
 //				_textinput.selectRange(_textinput.text.length, _textinput.text.length);
 				textinput.addEventListener(Event.CHANGE, tiChangeHandler);
@@ -93,7 +113,7 @@ package cz.hotmusic.component
 		
 		private function tiFocusOutHandler(event:Event):void {
 			trace("tiFocusOutHandler" + ObjectHelper.getId(this));
-			if (selectedItem == null) {
+			if (_selectedItem == null) {
 				textinput.removeEventListener(Event.CHANGE, tiChangeHandler);
 				textinput.text = "";
 				textinput.addEventListener(Event.CHANGE, tiChangeHandler);
@@ -136,7 +156,7 @@ package cz.hotmusic.component
 		private function tiChangeHandler(event:Event):void
 		{
 			trace("tiChangeHandler");
-			selectedItem = null;
+			_selectedItem = null;
 			if (textinput.text.length < 3)
 			{
 				_list.selectedIndex = -1;

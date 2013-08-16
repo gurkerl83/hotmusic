@@ -3,9 +3,9 @@ package cz.hotmusic
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
 	import cz.hotmusic.component.FormItem;
-	import cz.hotmusic.lib.event.GenreServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.lib.data.DataHelper;
+	import cz.hotmusic.lib.event.GenreServiceEvent;
 	import cz.hotmusic.lib.model.Genre;
 	import cz.hotmusic.model.Model;
 	
@@ -36,6 +36,17 @@ package cz.hotmusic
 			return _actionButtons;
 		}
 		
+		private var _data:Object;
+		public function get data():Object
+		{
+			return _data;
+		}
+		public function set data(value:Object):void
+		{
+			_data = value;
+			invalidate(INVALIDATION_FLAG_DATA);
+		}
+		
 		private var genre:FormItem;
 		
 		public function save():void
@@ -45,7 +56,9 @@ package cz.hotmusic
 			
 			var genre:Genre = new Genre(this.genre.value);
 			
-			var se:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.CREATE, createResult, createFault);
+			var se:GenreServiceEvent = new GenreServiceEvent(data == null ? GenreServiceEvent.CREATE:GenreServiceEvent.UPDATE, createResult, createFault);
+			if (data != null) // modify
+				genre.id = data.id;
 			se.genre = genre;
 			se.sid = Model.getInstance().user.session;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
@@ -100,6 +113,11 @@ package cz.hotmusic
 			genre.x = padding;
 			genre.y = padding;
 			genre.width = actualWidth - 2*padding;
+			
+			if (isInvalid(INVALIDATION_FLAG_DATA)) {
+				if (data && data.name)
+					genre.value = data.name;
+			}
 		}
 	}
 }

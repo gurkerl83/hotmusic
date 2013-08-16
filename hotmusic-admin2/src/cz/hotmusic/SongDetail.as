@@ -4,18 +4,18 @@ package cz.hotmusic
 	
 	import cz.hotmusic.component.Autocomplete;
 	import cz.hotmusic.component.FormItem;
+	import cz.hotmusic.helper.ButtonHelper;
+	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.AlbumServiceEvent;
 	import cz.hotmusic.lib.event.ArtistServiceEvent;
 	import cz.hotmusic.lib.event.GenreServiceEvent;
 	import cz.hotmusic.lib.event.ServiceEvent;
 	import cz.hotmusic.lib.event.SongServiceEvent;
-	import cz.hotmusic.helper.ButtonHelper;
-	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.model.Album;
 	import cz.hotmusic.lib.model.Artist;
 	import cz.hotmusic.lib.model.Genre;
-	import cz.hotmusic.model.Model;
 	import cz.hotmusic.lib.model.Song;
+	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -44,6 +44,17 @@ package cz.hotmusic
 			return _actionButtons;
 		}
 		
+		private var _songData:Song;
+		public function get songData():Song
+		{
+			return _songData;
+		}
+		public function set songData(value:Song):void
+		{
+			_songData = value;
+			invalidate(INVALIDATION_FLAG_DATA);
+		}
+		
 		private var songname:FormItem;
 		private var artistname:FormItem;
 		private var albumname:FormItem;
@@ -67,6 +78,7 @@ package cz.hotmusic
 			song.artist = Artist(artistname.selectedItem);
 			song.album = Album(albumname.selectedItem);
 			song.genre = Genre(genre.selectedItem);
+//			song.releaseDate = releasedate.
 			song.itunes = itunes.value;
 			song.googlePlay = google.value;
 			song.amazon = amazon.value;
@@ -74,7 +86,9 @@ package cz.hotmusic
 			song.soundcloud = soundcloud.value;
 			song.youtube = youtube.value;
 			
-			var se:SongServiceEvent = new SongServiceEvent(SongServiceEvent.CREATE, createResult, createFault);
+			var se:SongServiceEvent = new SongServiceEvent(songData == null ? SongServiceEvent.CREATE:SongServiceEvent.UPDATE, createResult, createFault);
+			if (songData != null) // modify song
+				song.id = songData.id;
 			se.song = song;
 			se.sid = Model.getInstance().user.session;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
@@ -120,6 +134,7 @@ package cz.hotmusic
 			songname = new FormItem();
 			songname.orderNumber = "1.";
 			songname.label = "Song name";
+			
 //			songname.value = "The Adventure Of Rain Dancce Maggie";
 			
 			var ase:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.AUTOCOMPLETE, null, null);
@@ -267,9 +282,31 @@ package cz.hotmusic
 			youtube.y = soundcloud.y + soundcloud.height + gap;
 			youtube.width = actualWidth - 2*padding;
 			
-//			autocomplete.x = padding;
-//			autocomplete.y = youtube.y + youtube.height + gap;
-//			autocomplete.width = actualWidth - 2*padding;
+			if (isInvalid(INVALIDATION_FLAG_DATA)) {
+				if (songData && songData.name)
+					songname.value = songData.name;
+				if (songData && songData.artist)
+					artistname.selectedItem = songData.artist;
+				if (songData && songData.album)
+					albumname.selectedItem = songData.album;
+				if (songData && songData.genre)
+					genre.selectedItem = songData.genre;
+//				if (songData && songData.releaseDate)
+//					releasedate.selectedItem = songData.releaseDate;
+				if (songData && songData.itunes)
+					itunes.value = songData.itunes;
+				if (songData && songData.googlePlay)
+					google.value = songData.googlePlay;
+				if (songData && songData.amazon)
+					amazon.value = songData.amazon;
+				if (songData && songData.beatport)
+					beatport.value = songData.beatport;
+				if (songData && songData.soundcloud)
+					soundcloud.value = songData.soundcloud;
+				if (songData && songData.youtube)
+					youtube.value = songData.youtube;
+				
+			}
 		}
 	}
 }

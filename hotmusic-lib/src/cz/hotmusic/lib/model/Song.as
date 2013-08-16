@@ -12,9 +12,9 @@ package cz.hotmusic.lib.model
 		public var artist			:Artist;
 		public var album			:Album;
 		public var genre			:Genre;
-//		public var hotstatus		:int;
 		public var rateUp			:int;
 		public var rateDown			:int;
+		public var releaseDate		:Date;
 		public var addedDate		:Date;
 		public var addedByUser		:User;
 		public var addedBySession	:String;

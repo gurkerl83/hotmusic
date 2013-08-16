@@ -3,10 +3,10 @@ package cz.hotmusic
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
 	import cz.hotmusic.component.FormItem;
-	import cz.hotmusic.lib.event.ProfileServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
-	import cz.hotmusic.model.Model;
+	import cz.hotmusic.lib.event.ProfileServiceEvent;
 	import cz.hotmusic.lib.model.User;
+	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Check;
@@ -36,6 +36,17 @@ package cz.hotmusic
 			return _actionButtons;
 		}
 		
+		private var _data:Object;
+		public function get data():Object
+		{
+			return _data;
+		}
+		public function set data(value:Object):void
+		{
+			_data = value;
+			invalidate(INVALIDATION_FLAG_DATA);
+		}
+		
 		public function save():void
 		{
 			if (!firstname.value || !surname.value || !email.value)
@@ -50,7 +61,9 @@ package cz.hotmusic
 			user.usersAuthorized = usersCB.isSelected;
 			user.addArtistAuthorized = addArtistCB.isSelected;
 			
-			var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.REGISTER, registerResult, registerFault);
+			var se:ProfileServiceEvent = new ProfileServiceEvent(data == null ? ProfileServiceEvent.REGISTER:ProfileServiceEvent.UPDATE, registerResult, registerFault);
+			if (data != null) // modify
+				user.id = data.id;
 			se.user = user;
 			se.sid = Model.getInstance().user.session;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
@@ -218,7 +231,21 @@ package cz.hotmusic
 			addArtistCB.y = genresCB.y;
 			addArtistCB.validate();
 			
-			
+			if (isInvalid(INVALIDATION_FLAG_DATA)) {
+				if (data && data.firstname)
+					firstname.value = data.firstname;
+				if (data && data.surname)
+					surname.value = data.surname;
+				if (data && data.email)
+					email.value = data.email;
+				if (data) {
+					adminRightCB.isSelected = User(data).adminRights;
+					userRightCB.isSelected = !User(data).adminRights;
+					genresCB.isSelected = User(data).genresAuthorized;
+					usersCB.isSelected = User(data).usersAuthorized;
+					addArtistCB.isSelected = User(data).addArtistAuthorized;
+				}
+			}
 		}
 	}
 }

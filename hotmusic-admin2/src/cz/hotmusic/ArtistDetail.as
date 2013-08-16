@@ -3,9 +3,9 @@ package cz.hotmusic
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
 	import cz.hotmusic.component.FormItem;
-	import cz.hotmusic.lib.event.ArtistServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.lib.data.DataHelper;
+	import cz.hotmusic.lib.event.ArtistServiceEvent;
 	import cz.hotmusic.lib.model.Artist;
 	import cz.hotmusic.model.Model;
 	
@@ -36,6 +36,17 @@ package cz.hotmusic
 			return _actionButtons;
 		}
 		
+		private var _artistData:Artist;
+		public function get artistData():Artist
+		{
+			return _artistData;
+		}
+		public function set artistData(value:Artist):void
+		{
+			_artistData = value;
+			invalidate(INVALIDATION_FLAG_DATA);
+		}
+		
 		private var artist:FormItem;
 		
 		public function save():void
@@ -45,7 +56,9 @@ package cz.hotmusic
 			
 			var artist:Artist = new Artist(this.artist.value);
 			
-			var se:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.CREATE, createResult, createFault);
+			var se:ArtistServiceEvent = new ArtistServiceEvent(artistData == null ? ArtistServiceEvent.CREATE:ArtistServiceEvent.UPDATE, createResult, createFault);
+			if (artistData != null) // modify artist
+				artist.id = artistData.id;
 			se.artist = artist;
 			se.sid = Model.getInstance().user.session;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
@@ -100,6 +113,11 @@ package cz.hotmusic
 			artist.x = padding;
 			artist.y = padding;
 			artist.width = actualWidth - 2*padding;
+			
+			if (isInvalid(INVALIDATION_FLAG_DATA)) {
+				if (artistData && artistData.name)
+					artist.value = artistData.name;
+			}
 		}
 	}
 }

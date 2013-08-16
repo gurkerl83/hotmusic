@@ -61,6 +61,9 @@ package cz.hotmusic
 				se.user = User(UserRenderer(event.target).data);
 				CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			});
+			list.addEventListener(starling.events.Event.CHANGE, function onChange(event:Event):void {
+				dispatchEventWith("showDetail", false, List(event.target).selectedItem);
+			});
 			
 			addChild(list);
 		}

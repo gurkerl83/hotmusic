@@ -6,22 +6,27 @@ package cz.hotmusic.lib.controller
 	import cz.hotmusic.lib.command.album.CreateAlbumCommand;
 	import cz.hotmusic.lib.command.album.ListAlbumCommand;
 	import cz.hotmusic.lib.command.album.RemoveAlbumCommand;
+	import cz.hotmusic.lib.command.album.UpdateAlbumCommand;
 	import cz.hotmusic.lib.command.artist.AutocompleteArtistCommand;
 	import cz.hotmusic.lib.command.artist.CreateArtistCommand;
 	import cz.hotmusic.lib.command.artist.ListArtistCommand;
 	import cz.hotmusic.lib.command.artist.RemoveArtistCommand;
+	import cz.hotmusic.lib.command.artist.UpdateArtistCommand;
 	import cz.hotmusic.lib.command.genre.AutocompleteGenreCommand;
 	import cz.hotmusic.lib.command.genre.CreateGenreCommand;
 	import cz.hotmusic.lib.command.genre.ListGenreCommand;
 	import cz.hotmusic.lib.command.genre.RemoveGenreCommand;
+	import cz.hotmusic.lib.command.genre.UpdateGenreCommand;
 	import cz.hotmusic.lib.command.profile.ListUserCommand;
 	import cz.hotmusic.lib.command.profile.LoginUserCommand;
 	import cz.hotmusic.lib.command.profile.RegisterUserCommand;
 	import cz.hotmusic.lib.command.profile.RemoveUserCommand;
+	import cz.hotmusic.lib.command.profile.UpdateUserCommand;
 	import cz.hotmusic.lib.command.song.AutocompleteSongCommand;
 	import cz.hotmusic.lib.command.song.CreateSongCommand;
 	import cz.hotmusic.lib.command.song.ListSongCommand;
 	import cz.hotmusic.lib.command.song.RemoveSongCommand;
+	import cz.hotmusic.lib.command.song.UpdateSongCommand;
 	import cz.hotmusic.lib.event.AlbumServiceEvent;
 	import cz.hotmusic.lib.event.ArtistServiceEvent;
 	import cz.hotmusic.lib.event.GenreServiceEvent;
@@ -58,8 +63,9 @@ package cz.hotmusic.lib.controller
 			addCommand(ProfileServiceEvent.LOGIN, LoginUserCommand);
 			addCommand(ProfileServiceEvent.LIST, ListUserCommand);
 			addCommand(ProfileServiceEvent.REMOVE, RemoveUserCommand);
-//			addCommand(ProfileServiceEvent.LIST_COUNT, UpdateProfileCommand);
+			addCommand(ProfileServiceEvent.UPDATE, UpdateUserCommand);
 //			addCommand(ProfileServiceEvent.UPDATE, GetScoreCommand);
+//			addCommand(ProfileServiceEvent.LIST_COUNT, UpdateProfileCommand);
 //			addCommand(ProfileServiceEvent.DELETE, ValidatePromoCodeCommand);
 //			addCommand(ProfileServiceEvent.AUTOCOMPLETE, ValidatePromoCodeCommand);
 			
@@ -67,21 +73,25 @@ package cz.hotmusic.lib.controller
 			addCommand(SongServiceEvent.CREATE, CreateSongCommand);
 			addCommand(SongServiceEvent.LIST, ListSongCommand);
 			addCommand(SongServiceEvent.REMOVE, RemoveSongCommand);
+			addCommand(SongServiceEvent.UPDATE, UpdateSongCommand);
 			
 			addCommand(ArtistServiceEvent.AUTOCOMPLETE, AutocompleteArtistCommand);
 			addCommand(ArtistServiceEvent.CREATE, CreateArtistCommand);
 			addCommand(ArtistServiceEvent.LIST, ListArtistCommand);
 			addCommand(ArtistServiceEvent.REMOVE, RemoveArtistCommand);
+			addCommand(ArtistServiceEvent.UPDATE, UpdateArtistCommand);
 			
 			addCommand(AlbumServiceEvent.AUTOCOMPLETE, AutocompleteAlbumCommand);
 			addCommand(AlbumServiceEvent.CREATE, CreateAlbumCommand);
 			addCommand(AlbumServiceEvent.LIST, ListAlbumCommand);
 			addCommand(AlbumServiceEvent.REMOVE, RemoveAlbumCommand);
+			addCommand(AlbumServiceEvent.UPDATE, UpdateAlbumCommand);
 			
 			addCommand(GenreServiceEvent.AUTOCOMPLETE, AutocompleteGenreCommand);
 			addCommand(GenreServiceEvent.CREATE, CreateGenreCommand);
 			addCommand(GenreServiceEvent.LIST, ListGenreCommand);
 			addCommand(GenreServiceEvent.REMOVE, RemoveGenreCommand);
+			addCommand(GenreServiceEvent.UPDATE, UpdateGenreCommand);
 			
 		}
 	}
