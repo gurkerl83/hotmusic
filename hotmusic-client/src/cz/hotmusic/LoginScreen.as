@@ -85,7 +85,7 @@ package cz.hotmusic
 			_createAccountBtn.label = "Create new account";
 			_createAccountBtn.addEventListener(starling.events.Event.TRIGGERED, function (event:starling.events.Event):void {
 //				LoginHelper.getInstance().createAccount(_emailTI.text, _passwordTI.text);
-//				dispatchEventWith("login");
+				dispatchEventWith("create");
 			});
 			
 			addChild(_logo);

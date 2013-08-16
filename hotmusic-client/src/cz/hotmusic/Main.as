@@ -20,6 +20,7 @@ package cz.hotmusic
 	public class Main extends Sprite
 	{
 		private static const LOGIN_SCREEN:String = "loginScreen";
+		private static const CREATE_ACCOUNT_SCREEN:String = "createAccountScreen";
 		private static const MAIN_LIST:String = "mainList";
 		private static const DETAIL_SCREEN:String = "detailScreen";
 		
@@ -42,7 +43,8 @@ package cz.hotmusic
 			
 			this._navigator.addScreen(LOGIN_SCREEN, new ScreenNavigatorItem(LoginScreen,
 				{
-					login: MAIN_LIST
+					login: MAIN_LIST,
+					create: CREATE_ACCOUNT_SCREEN
 				}));
 
 			this._navigator.addScreen(MAIN_LIST, new ScreenNavigatorItem(MainListScreen,
@@ -53,6 +55,11 @@ package cz.hotmusic
 			this._navigator.addScreen(DETAIL_SCREEN, new ScreenNavigatorItem(DetailScreen,
 				{
 					complete: MAIN_LIST
+				}));
+
+			this._navigator.addScreen(CREATE_ACCOUNT_SCREEN, new ScreenNavigatorItem(CreateAccountScreen,
+				{
+					login: MAIN_LIST
 				}));
 
 			autologin(mainScreen, loginScreen);
