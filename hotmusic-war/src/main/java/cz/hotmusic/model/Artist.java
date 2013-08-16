@@ -26,7 +26,7 @@ public class Artist {
 	public String objectUUID;
 	public String name;
 	public Date addedDate;
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	public User addedByUser;
 	public String addedBySession;
 	

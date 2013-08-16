@@ -31,9 +31,9 @@ public class Album {
 		@Transient
 		public String objectUUID;
 		public String name;
-		@OneToOne(cascade=CascadeType.ALL)
+		@OneToOne
 		public Artist artist;
-		@OneToOne(cascade=CascadeType.ALL)
+		@OneToOne
 		public Genre genre;
 		public Date releaseDate;
 		public String itunes;

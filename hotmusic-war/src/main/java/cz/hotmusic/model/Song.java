@@ -27,11 +27,11 @@ public class Song {
 	@Transient
 	public String objectUUID;
 	public String name;
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	public Artist artist;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	public Album album;
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	public Genre genre;
 	public Date releaseDate;
 	public String itunes;
@@ -41,7 +41,7 @@ public class Song {
 	public String soundcloud;
 	public String youtube;
 	public Date addedDate;
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	public User addedByUser;
 	public String addedBySession;
 	
