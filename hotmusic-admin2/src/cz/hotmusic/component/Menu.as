@@ -1,6 +1,7 @@
 package cz.hotmusic.component
 {
 	import cz.hotmusic.MainScreen;
+	import cz.hotmusic.lib.data.DataHelper;
 	
 	import feathers.controls.List;
 	import feathers.controls.ScreenNavigator;
@@ -88,10 +89,14 @@ package cz.hotmusic.component
 			return lc;
 		}
 		
+		private var listChangePage:String;
 		private function listChangeHandler(event:Event):void
 		{
 //			dispatchEventWith(String(event.currentTarget));
-			screenNavigator.showScreen(List(event.currentTarget).selectedItem.page);
+			listChangePage = List(event.currentTarget).selectedItem.page;
+			DataHelper.getInstance().getData(String(List(event.target).selectedItem.label), function onData():void {
+				screenNavigator.showScreen(listChangePage);
+			});
 		}
 		
 	}

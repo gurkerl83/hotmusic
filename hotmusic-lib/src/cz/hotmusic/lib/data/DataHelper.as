@@ -16,6 +16,7 @@ package cz.hotmusic.lib.data
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
+	import mx.controls.Menu;
 	import mx.rpc.events.ResultEvent;
 
 	public class DataHelper extends EventDispatcher
@@ -247,6 +248,22 @@ package cz.hotmusic.lib.data
 		private function userFault(info:Object):void
 		{
 			
+		}
+		
+		public function getData(type:String, cb:Function=null):void
+		{
+			if (type == "Songs")
+				getSongs(cb);
+			else if (type == "Artists")
+				getArtists(cb);
+			else if (type == "Albums")
+				getAlbums(cb);
+			else if (type == "Genres")
+				getGenres(cb);
+			else if (type == "Users")
+				getUsers(cb);
+			else if (type == "+Artists")
+				getArtists(cb);
 		}
 	}
 }
