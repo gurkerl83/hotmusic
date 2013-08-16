@@ -43,6 +43,7 @@ package cz.hotmusic
 		
 		// INITIALIZE
 		private var list:List;
+		private var skipOpenDetail:Boolean;
 		
 		override protected function initialize():void
 		{
@@ -56,13 +57,18 @@ package cz.hotmusic
 			}
 			list.hasElasticEdges = false;
 			list.addEventListener("delete", function onDelete(event:Event):void {
+				skipOpenDetail = true;
 				var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.REMOVE, removeResult, removeFault);
 				se.sid = Model.getInstance().user.session;
 				se.user = User(UserRenderer(event.target).data);
 				CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			});
 			list.addEventListener(starling.events.Event.CHANGE, function onChange(event:Event):void {
-				dispatchEventWith("showDetail", false, List(event.target).selectedItem);
+				if (!skipOpenDetail && list.selectedIndex >= 0)
+					dispatchEventWith("showDetail", false, List(event.target).selectedItem);
+				skipOpenDetail = false;
+				if (list.selectedIndex > -1)
+					list.selectedIndex = -1;
 			});
 			
 			addChild(list);

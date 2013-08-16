@@ -157,7 +157,7 @@ package cz.hotmusic.component
 		{
 			trace("tiChangeHandler");
 			_selectedItem = null;
-			if (textinput.text.length < 3)
+			if (textinput.text.length <= 0)
 			{
 				_list.selectedIndex = -1;
 				removeChild(_list);
