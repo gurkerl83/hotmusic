@@ -18,7 +18,7 @@ package cz.hotmusic.lib.event
 		public static const REMOVE			:String = "REMOVE_USER";
 		public static const AUTOCOMPLETE	:String = "AUTOCOMPLETE_USER";
 		
-		public function ProfileServiceEvent(type:String, resultCallback:Function, faultCallback:Function)
+		public function ProfileServiceEvent(type:String, resultCallback:Function=null, faultCallback:Function=null)
 		{
 			super(type);
 			this.resultCallback = resultCallback;

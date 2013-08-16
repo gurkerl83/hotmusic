@@ -52,30 +52,30 @@ package cz.hotmusic.helper
 		
 		private var user:String;
 		private var pass:String;
-		private var isFB:Boolean;
+		private var facebookId:String;
 		private var successCall:Function;
 		private var failCall:Function;
 		
-		public function login(user:String, pass:String, isFB:Boolean=false, successCall:Function=null, failCall:Function=null):void
+		public function login(user:String, pass:String, facebookId:String=null, successCall:Function=null, failCall:Function=null):void
 		{
-			if (user == null || user == "")
+			if ((user == null || user == "" || pass == null || pass == "") && 
+				(facebookId == null || facebookId == "")) {
 				if (failCall != null) failCall.call();
-			if (!isFB && (pass == null || pass == ""))
-				if (failCall != null) failCall.call();
-			
+				return;
+			}
+				
 			this.user = user;
 			this.pass = pass;
-			this.isFB = isFB;
+			this.facebookId = facebookId;
 			this.successCall = successCall;
 			this.failCall = failCall;
 
-//			var result:Boolean;
-			
 			// server call
 			var pse:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LOGIN, loginProfileServiceResult, loginProfileServiceFault);
 			pse.user = new User();
 			pse.user.email = user;
 			pse.user.password = pass;
+			pse.user.facebookId = facebookId;
 			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
 			
 //			if (user == TEST_USER && pass == TEST_PASS && !isFB)
@@ -96,7 +96,7 @@ package cz.hotmusic.helper
 			
 			// login ok, save to SO
 			if (!isLoginSO())
-				setLoginSO(user, pass, isFB);
+				setLoginSO(user, pass, facebookId);
 			
 			// call callback
 			if (successCall != null) successCall.call(this, result);
@@ -116,14 +116,20 @@ package cz.hotmusic.helper
 			FacebookMobile.init(HOTMUSIC_FB_ID, onInitFB);
 		}
 		
-		public function createAccount(user:String, pass:String, isFB:Boolean=false):void
+		public function createAccount(user:String, pass:String, firstname:String, surname:String, resultCall:Function=null, faultCall:Function=null):void
 		{
-			if (user == null || user == "")
-				return;
-			if (!isFB && (pass == null || pass == ""))
+			if ((user == null || user == "") || (pass == null || pass == "") || 
+				(firstname == null || firstname == "") || (surname == null || surname == "")) 
 				return;
 			
-			// TODO server call
+			// server call
+			var pse:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.REGISTER, resultCall, faultCall);
+			pse.user = new User();
+			pse.user.email = user;
+			pse.user.password = pass;
+			pse.user.firstname = firstname;
+			pse.user.surname = surname;
+			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
 		}
 		
 		public function getLoginSO():Object
@@ -132,23 +138,23 @@ package cz.hotmusic.helper
 			var loginObj:Object = new Object();
 			loginObj.user = so.data.user;
 			loginObj.pass = so.data.pass;
-			loginObj.isFB = so.data.isFB;
+			loginObj.facebookId = so.data.facebookId;
 			return loginObj;
 		}
 		
-		public function setLoginSO(user:String, pass:String, isFB:Boolean):void
+		public function setLoginSO(user:String, pass:String, facebookId:String):void
 		{
 			var so:SharedObject = SharedObject.getLocal(SO_NAME);
 			var loginObj:Object = new Object();
 			so.data.user = user;
 			so.data.pass = pass;
-			so.data.isFB = isFB;
+			so.data.facebookId = facebookId;
 			so.flush();
 		}
 		
 		public function isLoginSO():Boolean
 		{	var so:SharedObject = SharedObject.getLocal(SO_NAME);
-			if (so.data.user == null)
+			if (so.data == null || (so.data.user == null && so.data.facebookId == null))
 				return false;
 			return true;
 		}
@@ -171,17 +177,25 @@ package cz.hotmusic.helper
 			var stage:Stage = Starling.current.nativeStage;
 			webView = new StageWebView();
 			webView.viewPort = new Rectangle(0, 0, facebookWidth, facebookHeight);
-			FacebookMobile.login(onLoginFB, stage, ["read_stream"], webView);
+			FacebookMobile.login(onLoginFB, stage, ["email","read_stream"], webView);
 		}
 		
 		private function onLoginFB(sessionFB:FacebookSession, err:Object):void
 		{
 			if (sessionFB && sessionFB.uid) 
 			{
-				createAccount(sessionFB.uid, "", true);
-//				setLoginSO(sessionFB.uid, "", true);
-				login(sessionFB.uid, "", true, this.successFBCall, this.failFBCall);
-				// else TODO nepodarilo se vytvorit ucet
+				// register user
+				var pse:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.REGISTER, function onRegister(e:ResultEvent):void {
+					// login after registration
+					login("", "", sessionFB.uid, successFBCall, failFBCall);
+				});
+				pse.user = new User();
+				pse.user.email = sessionFB.user.email;
+				pse.user.password = null;
+				pse.user.facebookId = sessionFB.uid;
+				pse.user.firstname = sessionFB.user.first_name;
+				pse.user.surname = sessionFB.user.last_name;
+				CairngormEventDispatcher.getInstance().dispatchEvent(pse);
 			}
 		}
 	}

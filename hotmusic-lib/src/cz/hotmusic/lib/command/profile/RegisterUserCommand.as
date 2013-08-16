@@ -27,20 +27,12 @@ package cz.hotmusic.lib.command.profile
 		}
 		
 		public function result(data:Object):void {
-			pse.resultCallback.call(this, data);
-//			logger(this).debug("got result");
-//			var se:SimpleStatusEvent = new SimpleStatusEvent(SimpleStatusEvent.FORGET_PASSWORD_EVENT);
-//			se.success = true;
-//			GameHelper.getInstance().dispatchEvent(se);
+			if (pse.resultCallback != null)
+				pse.resultCallback.call(this, data);
 		}
 		public function fault(info:Object):void {
-			pse.faultCallback.call(this, info);
-//			var faultEvent:FaultEvent = info as FaultEvent;
-//			var se:SimpleStatusEvent = new SimpleStatusEvent(SimpleStatusEvent.FORGET_PASSWORD_EVENT);
-//			se.success = false;
-//			se.message = faultEvent.fault.faultString + faultEvent.fault.faultDetail;
-//			GameHelper.getInstance().dispatchEvent(se);
-			
+			if (pse.faultCallback != null)
+				pse.faultCallback.call(this, info);
 		}
 	}
 }

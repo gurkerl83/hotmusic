@@ -19,7 +19,6 @@ package cz.hotmusic.lib.model
 		public var version:int;
 		public var male:Boolean;
 		public var password:String;
-		public var facebook:Boolean;
 		public var facebookId:String;
 		public var session:String;
 		public var lastSession:String;

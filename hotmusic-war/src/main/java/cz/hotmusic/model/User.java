@@ -32,7 +32,6 @@ public class User {
 	public int version;
 	public Boolean male;
 	public String password;
-	public Boolean facebook;
 	public String facebookId;
 	public String session;
 	public String lastSession;
@@ -70,12 +69,6 @@ public class User {
 	}
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-	public Boolean getFacebook() {
-		return facebook;
-	}
-	public void setFacebook(Boolean facebook) {
-		this.facebook = facebook;
 	}
 	public void setId(String id) {
 		this.id = id;

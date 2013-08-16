@@ -1,11 +1,18 @@
 package cz.hotmusic
 {
 	import cz.hotmusic.helper.LoginHelper;
+	import cz.hotmusic.lib.data.DataHelper;
+	import cz.hotmusic.lib.model.User;
+	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.themes.MetalWorksMobileTheme;
+	
+	import flash.events.Event;
+	
+	import mx.rpc.events.ResultEvent;
 	
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -19,14 +26,14 @@ package cz.hotmusic
 		public function Main()
 		{
 			super();
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
 		private var _theme:MetalWorksMobileTheme;
 		private var _navigator:ScreenNavigator;
 		private var _transitionManager:ScreenSlidingStackTransitionManager;
 		
-		private function addedToStageHandler(event:Event):void
+		private function addedToStageHandler(event:starling.events.Event):void
 		{
 			this._theme = new MetalWorksMobileTheme(this.stage);
 			
@@ -54,14 +61,20 @@ package cz.hotmusic
 			this._transitionManager.duration = 0.5;
 		}
 		
-		private function loginScreen():void
+		private function loginScreen(fault:Object=null):void
 		{
 			_navigator.showScreen(LOGIN_SCREEN);
 		}
 		
-		private function mainScreen():void
+		private function mainScreen(result:ResultEvent=null):void
 		{
-			_navigator.showScreen(MAIN_LIST);
+			Model.getInstance().user = User(result.result);
+			
+			DataHelper.getInstance().addEventListener(DataHelper.INIT_COMPLETE, function ich(e:flash.events.Event):void {
+				removeEventListener(DataHelper.INIT_COMPLETE, ich);
+				_navigator.showScreen(MAIN_LIST);
+			});
+			DataHelper.getInstance().initModel(Model.getInstance());
 		}
 		
 		private function autologin(successCall:Function, failCall:Function):void {
@@ -73,7 +86,7 @@ package cz.hotmusic
 			}
 			
 			var loginSO:Object = lh.getLoginSO();
-			lh.login(loginSO.user, loginSO.pass, loginSO.isFB, successCall, failCall)
+			lh.login(loginSO.user, loginSO.pass, loginSO.facebookId, successCall, failCall)
 		}
 	}
 }

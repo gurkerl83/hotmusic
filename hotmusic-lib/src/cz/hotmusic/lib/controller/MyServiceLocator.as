@@ -15,8 +15,8 @@ package cz.hotmusic.lib.controller
 		private static var serviceLocator 				:MyServiceLocator;
 //		public static const AMF_ENDPOINT				:String = "http://" + URLUtil.SERVER_NAME_TOKEN +":"+ URLUtil.SERVER_PORT_TOKEN +"/envi-war/messagebroker/amf";
 		
-		public static const AMF_ENDPOINT				:String = "http://www.hotmusic-app.com:8080/hotmusic-war/messagebroker/amf";
-//		public static const AMF_ENDPOINT				:String = "http://localhost:8080/hotmusic-war/messagebroker/amf";
+//		public static const AMF_ENDPOINT				:String = "http://www.hotmusic-app.com:8080/hotmusic-war/messagebroker/amf";
+		public static const AMF_ENDPOINT				:String = "http://localhost:8080/hotmusic-war/messagebroker/amf";
 		public static const version						:String = "0.0.15";
 
 		public static const PROFILE_SERVICE				:String = "profileService";

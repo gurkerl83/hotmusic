@@ -59,7 +59,7 @@ package cz.hotmusic
 			
 			_loginBtn = new Button();
 			_loginBtn.addEventListener(starling.events.Event.TRIGGERED, function (event:starling.events.Event):void {
-				LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, false, function(result:ResultEvent):void
+				LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, null, function(result:ResultEvent):void
 				{
 					Model.getInstance().user = User(result.result);
 					
@@ -84,7 +84,7 @@ package cz.hotmusic
 			_createAccountBtn = new Button();
 			_createAccountBtn.label = "Create new account";
 			_createAccountBtn.addEventListener(starling.events.Event.TRIGGERED, function (event:starling.events.Event):void {
-				LoginHelper.getInstance().createAccount(_emailTI.text, _passwordTI.text);
+//				LoginHelper.getInstance().createAccount(_emailTI.text, _passwordTI.text);
 //				dispatchEventWith("login");
 			});
 			
@@ -100,9 +100,15 @@ package cz.hotmusic
 		
 		private function loginFBBtn_triggeredHandler(event:starling.events.Event):void
 		{
-			LoginHelper.getInstance().facebook(actualWidth, actualHeight, function():void
+			LoginHelper.getInstance().facebook(actualWidth, actualHeight, function(result:ResultEvent):void
 			{
-				dispatchEventWith("login");
+				Model.getInstance().user = User(result.result);
+				
+				DataHelper.getInstance().addEventListener(DataHelper.INIT_COMPLETE, function ich(e:flash.events.Event):void {
+					removeEventListener(DataHelper.INIT_COMPLETE, ich);
+					dispatchEventWith("login");
+				});
+				DataHelper.getInstance().initModel(Model.getInstance());
 			});
 		}
 		
