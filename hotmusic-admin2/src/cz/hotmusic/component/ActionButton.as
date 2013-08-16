@@ -22,6 +22,8 @@ package cz.hotmusic.component
 		
 		private function actionButtonTriggeredHandler(event:Event):void
 		{
+			if (focusManager)
+				focusManager.focus = null;
 			event.stopImmediatePropagation();
 			dispatchEventWith(buttonType, true);
 		}

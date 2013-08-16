@@ -4,6 +4,8 @@ package cz.hotmusic.helper
 	
 	import feathers.controls.Button;
 	import feathers.themes.Theme;
+	
+	import starling.events.Event;
 
 	public class ButtonHelper
 	{
@@ -49,7 +51,7 @@ package cz.hotmusic.helper
 			}
 			return _cancelButton;
 		}
-
+		
 		public function get clearButton():ActionButton
 		{
 			if (_clearButton == null)
