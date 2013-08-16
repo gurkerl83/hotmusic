@@ -289,10 +289,13 @@ package feathers.themes
 		protected var pageIndicatorSelectedSkinTexture:Texture;
 		protected var itemRendererMainUpSkinTextures:Scale9Textures;
 		protected var itemRendererMainSelectedSkinTextures:Scale9Textures;
+		protected var itemRendererMainHoverSkinTextures:Scale9Textures;
 		protected var itemRendererMenuUpSkinTextures:Scale9Textures;
 		protected var itemRendererMenuSelectedSkinTextures:Scale9Textures;
+		protected var itemRendererMenuHoverSkinTextures:Scale9Textures;
 		protected var itemRendererAutocompleteUpSkinTextures:Scale9Textures;
 		protected var itemRendererAutocompleteSelectedSkinTextures:Scale9Textures;
+		protected var itemRendererAutocompleteHoverSkinTextures:Scale9Textures;
 		protected var itemRendererUpSkinTextures:Scale9Textures;
 		protected var itemRendererSelectedSkinTextures:Scale9Textures;
 		protected var insetItemRendererMiddleUpSkinTextures:Scale9Textures;
@@ -490,10 +493,13 @@ package feathers.themes
 
 			this.itemRendererMainUpSkinTextures = new Scale9Textures(atlas.getTexture("list-item-main-up-skin"), ITEM_RENDERER_MAIN_SCALE9_GRID);
 			this.itemRendererMainSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-main-selected-skin"), ITEM_RENDERER_MAIN_SCALE9_GRID);
+			this.itemRendererMainHoverSkinTextures = new Scale9Textures(atlas.getTexture("list-item-main-hover-skin"), ITEM_RENDERER_MAIN_SCALE9_GRID);
 			this.itemRendererMenuUpSkinTextures = new Scale9Textures(atlas.getTexture("list-item-menu-up-skin"), ITEM_RENDERER_MENU_SCALE9_GRID);
 			this.itemRendererMenuSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-menu-selected-skin"), ITEM_RENDERER_MENU_SCALE9_GRID);
+			this.itemRendererMenuHoverSkinTextures = new Scale9Textures(atlas.getTexture("list-item-menu-hover-skin"), ITEM_RENDERER_MENU_SCALE9_GRID);
 			this.itemRendererAutocompleteUpSkinTextures = itemRendererMainUpSkinTextures;
 			this.itemRendererAutocompleteSelectedSkinTextures = itemRendererMainSelectedSkinTextures;
+			this.itemRendererAutocompleteHoverSkinTextures = itemRendererMainSelectedSkinTextures;
 			this.itemRendererUpSkinTextures = new Scale9Textures(atlas.getTexture("list-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.itemRendererSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.insetItemRendererMiddleUpSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-middle-up-skin"), INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID);
@@ -772,7 +778,8 @@ package feathers.themes
 			button.paddingLeft = button.paddingRight = 16 * this.scale;
 			button.gap = 12 * this.scale;
 			button.minWidth = button.minHeight = 40 * this.scale;
-			button.minTouchWidth = button.minTouchHeight = 88 * this.scale;
+			button.minTouchWidth = button.minTouchHeight = 40 * this.scale;
+			button.useHandCursor = true;
 		}
 
 		protected function buttonGroupButtonInitializer(button:Button):void
@@ -862,6 +869,7 @@ package feathers.themes
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
 			var skinDefault:Scale9Textures;
 			var skinSelected:Scale9Textures;
+			var skinHover:Scale9Textures;
 			var height:int;
 			var defaultTF:TextFormat;
 			var selectedTF:TextFormat;
@@ -870,6 +878,7 @@ package feathers.themes
 			if (renderer.name == "autocomplete") {
 				skinDefault = itemRendererAutocompleteUpSkinTextures;
 				skinSelected = itemRendererAutocompleteSelectedSkinTextures;
+				skinHover = itemRendererAutocompleteHoverSkinTextures;
 				defaultTF = selectedTF = smallBoldBlackTextFormat;
 				height = 30;
 				padding = 0;
@@ -877,6 +886,7 @@ package feathers.themes
 			} else {
 				skinDefault = itemRendererMenuUpSkinTextures;
 				skinSelected = itemRendererMenuSelectedSkinTextures;
+				skinHover = itemRendererMenuHoverSkinTextures;
 				defaultTF = smallNormalBlackTextFormat;
 				selectedTF = smallBoldBlackTextFormat;
 				height = 50;
@@ -887,6 +897,7 @@ package feathers.themes
 			skinSelector.defaultValue = skinDefault;
 			skinSelector.defaultSelectedValue = skinSelected;
 			skinSelector.setValueForState(skinSelected, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(skinHover, Button.STATE_HOVER, false);
 			skinSelector.imageProperties =
 			{
 				width: 50 * this.scale,
@@ -915,6 +926,7 @@ package feathers.themes
 
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
+			renderer.useHandCursor = true;
 		}
 
 		protected function itemRendererMainInitializer(renderer:BaseDefaultItemRenderer):void
@@ -923,6 +935,7 @@ package feathers.themes
 			skinSelector.defaultValue = this.itemRendererMainUpSkinTextures;
 			skinSelector.defaultSelectedValue = this.itemRendererMainSelectedSkinTextures;
 			skinSelector.setValueForState(this.itemRendererMainSelectedSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.itemRendererMainHoverSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.imageProperties =
 			{
 				width: 50 * this.scale,
@@ -951,6 +964,7 @@ package feathers.themes
 
 			renderer.accessoryLoaderFactory = this.imageLoaderFactory;
 			renderer.iconLoaderFactory = this.imageLoaderFactory;
+			renderer.useHandCursor = true;
 		}
 
 		protected function pickerListItemRendererInitializer(renderer:BaseDefaultItemRenderer):void
@@ -1155,6 +1169,7 @@ package feathers.themes
 
 			check.gap = 12 * this.scale;
 			check.minTouchWidth = check.minTouchHeight = 40 * this.scale;
+			check.useHandCursor = true;
 		}
 
 		protected function sliderInitializer(slider:Slider):void
