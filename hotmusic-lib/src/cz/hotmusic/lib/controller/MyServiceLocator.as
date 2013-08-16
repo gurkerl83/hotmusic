@@ -17,7 +17,7 @@ package cz.hotmusic.lib.controller
 		
 //		public static const AMF_ENDPOINT				:String = "http://www.hotmusic-app.com:8080/hotmusic-war/messagebroker/amf";
 		public static const AMF_ENDPOINT				:String = "http://localhost:8080/hotmusic-war/messagebroker/amf";
-		public static const version						:String = "0.0.15";
+		public static const version						:String = "0.0.16";
 
 		public static const PROFILE_SERVICE				:String = "profileService";
 		public static const GENRE_SERVICE				:String = "genreService";
