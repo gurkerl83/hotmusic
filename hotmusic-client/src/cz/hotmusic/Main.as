@@ -47,7 +47,7 @@ package cz.hotmusic
 					create: CREATE_ACCOUNT_SCREEN
 				}));
 
-			this._navigator.addScreen(MAIN_LIST, new ScreenNavigatorItem(MainListScreen,
+			this._navigator.addScreen(MAIN_LIST, new ScreenNavigatorItem(new MainListScreen(),
 				{
 					showDetail: DETAIL_SCREEN
 				}));
@@ -81,7 +81,7 @@ package cz.hotmusic
 				removeEventListener(DataHelper.INIT_COMPLETE, ich);
 				_navigator.showScreen(MAIN_LIST);
 			});
-			DataHelper.getInstance().initModel(Model.getInstance());
+			DataHelper.getInstance().initModel(Model.getInstance(), true);
 		}
 		
 		private function autologin(successCall:Function, failCall:Function):void {

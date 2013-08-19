@@ -237,6 +237,10 @@ package cz.hotmusic
 			TestFlight.passCheckpoint("Song Selected: " + Song(_list.selectedItem).name);
 			
 			dispatchEventWith("showDetail");
+			
+			_list.removeEventListener(Event.CHANGE, list_changeHandler);
+			_list.selectedItem = null;
+			_list.addEventListener(Event.CHANGE, list_changeHandler);
 		}
 
 		private function leftlist_changeHandler(event:Event):void

@@ -67,7 +67,7 @@ package cz.hotmusic
 						removeEventListener(DataHelper.INIT_COMPLETE, ich);
 						dispatchEventWith("login");
 					});
-					DataHelper.getInstance().initModel(Model.getInstance());
+					DataHelper.getInstance().initModel(Model.getInstance(), true);
 				})
 			});
 			_loginBtn.label = "Sign in";
@@ -108,7 +108,7 @@ package cz.hotmusic
 					removeEventListener(DataHelper.INIT_COMPLETE, ich);
 					dispatchEventWith("login");
 				});
-				DataHelper.getInstance().initModel(Model.getInstance());
+				DataHelper.getInstance().initModel(Model.getInstance(), true);
 			});
 		}
 		

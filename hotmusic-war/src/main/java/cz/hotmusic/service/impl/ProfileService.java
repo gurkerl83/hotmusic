@@ -70,7 +70,8 @@ public class ProfileService implements IProfileService{
 			List<User> list = query.list();
 			
 			if (list != null && list.size() > 0) {
-				throw new Exception("user already registered. User.facebookId=" + user.facebookId);
+				return list.get(0).id;
+//				throw new Exception("user already registered. User.facebookId=" + user.facebookId);
 			}
 		} 
 		
