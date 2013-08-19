@@ -119,6 +119,21 @@ public class SongService implements ISongService{
 		int count = ((Long)session.createQuery("select count(*) from Song").uniqueResult()).intValue();;
 		return count;
 	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
+	public int listLastMonth(String sid) throws Throwable {
+		Assert.assertNotNull(sid);
+		sessionHelper.checkSession(sid);
+		Session session = sessionFactory.getCurrentSession();
+		Date now = new Date();
+		Long nowMs = now.getTime();
+		Long monthMs = 1000L*60L*60L*24L*30L;
+		Date monthBefore = new Date(nowMs - monthMs);
+		int count = ((Long)session.createQuery("select count(*) from Song where addedDate > :monthbefore").setParameter("monthbefore", monthBefore).uniqueResult()).intValue();;
+		return count;
+	}
 
 	@Override
 	@RemotingInclude

@@ -12,4 +12,5 @@ public interface IAlbumService {
 	int listCount(String sid) throws Throwable;
 	void remove(String sid, Album album) throws Throwable;
 	void update(String sid, Album album) throws Throwable;
+	int listLastMonth(String sid) throws Throwable;
 }

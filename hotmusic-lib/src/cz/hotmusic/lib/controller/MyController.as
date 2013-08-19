@@ -5,11 +5,15 @@ package cz.hotmusic.lib.controller
 	import cz.hotmusic.lib.command.album.AutocompleteAlbumCommand;
 	import cz.hotmusic.lib.command.album.CreateAlbumCommand;
 	import cz.hotmusic.lib.command.album.ListAlbumCommand;
+	import cz.hotmusic.lib.command.album.ListCountAlbumCommand;
+	import cz.hotmusic.lib.command.album.ListLastMonthAlbumCommand;
 	import cz.hotmusic.lib.command.album.RemoveAlbumCommand;
 	import cz.hotmusic.lib.command.album.UpdateAlbumCommand;
 	import cz.hotmusic.lib.command.artist.AutocompleteArtistCommand;
 	import cz.hotmusic.lib.command.artist.CreateArtistCommand;
 	import cz.hotmusic.lib.command.artist.ListArtistCommand;
+	import cz.hotmusic.lib.command.artist.ListCountArtistCommand;
+	import cz.hotmusic.lib.command.artist.ListLastMonthArtistCommand;
 	import cz.hotmusic.lib.command.artist.RemoveArtistCommand;
 	import cz.hotmusic.lib.command.artist.UpdateArtistCommand;
 	import cz.hotmusic.lib.command.genre.AutocompleteGenreCommand;
@@ -24,6 +28,8 @@ package cz.hotmusic.lib.controller
 	import cz.hotmusic.lib.command.profile.UpdateUserCommand;
 	import cz.hotmusic.lib.command.song.AutocompleteSongCommand;
 	import cz.hotmusic.lib.command.song.CreateSongCommand;
+	import cz.hotmusic.lib.command.song.ListCountSongCommand;
+	import cz.hotmusic.lib.command.song.ListLastMonthSongCommand;
 	import cz.hotmusic.lib.command.song.ListSongCommand;
 	import cz.hotmusic.lib.command.song.RemoveSongCommand;
 	import cz.hotmusic.lib.command.song.UpdateSongCommand;
@@ -72,18 +78,24 @@ package cz.hotmusic.lib.controller
 			addCommand(SongServiceEvent.AUTOCOMPLETE, AutocompleteSongCommand);
 			addCommand(SongServiceEvent.CREATE, CreateSongCommand);
 			addCommand(SongServiceEvent.LIST, ListSongCommand);
+			addCommand(SongServiceEvent.LIST_COUNT, ListCountSongCommand);
+			addCommand(SongServiceEvent.LIST_LAST_MONTH, ListLastMonthSongCommand);
 			addCommand(SongServiceEvent.REMOVE, RemoveSongCommand);
 			addCommand(SongServiceEvent.UPDATE, UpdateSongCommand);
 			
 			addCommand(ArtistServiceEvent.AUTOCOMPLETE, AutocompleteArtistCommand);
 			addCommand(ArtistServiceEvent.CREATE, CreateArtistCommand);
 			addCommand(ArtistServiceEvent.LIST, ListArtistCommand);
+			addCommand(ArtistServiceEvent.LIST_COUNT, ListCountArtistCommand);
+			addCommand(ArtistServiceEvent.LIST_LAST_MONTH, ListLastMonthArtistCommand);
 			addCommand(ArtistServiceEvent.REMOVE, RemoveArtistCommand);
 			addCommand(ArtistServiceEvent.UPDATE, UpdateArtistCommand);
 			
 			addCommand(AlbumServiceEvent.AUTOCOMPLETE, AutocompleteAlbumCommand);
 			addCommand(AlbumServiceEvent.CREATE, CreateAlbumCommand);
 			addCommand(AlbumServiceEvent.LIST, ListAlbumCommand);
+			addCommand(AlbumServiceEvent.LIST_COUNT, ListCountAlbumCommand);
+			addCommand(AlbumServiceEvent.LIST_LAST_MONTH, ListLastMonthAlbumCommand);
 			addCommand(AlbumServiceEvent.REMOVE, RemoveAlbumCommand);
 			addCommand(AlbumServiceEvent.UPDATE, UpdateAlbumCommand);
 			

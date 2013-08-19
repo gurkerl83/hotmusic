@@ -43,11 +43,32 @@ package cz.hotmusic
 		
 		// INITIALIZE
 		private var list:List;
+		private var lastMonthLbl:Label;
+		private var lastMonthVal:Label;
+		private var totalLbl:Label;
+		private var totalVal:Label;
+		
 		private var skipOpenDetail:Boolean;
 		
 		override protected function initialize():void
 		{
 			super.initialize();
+			
+			lastMonthLbl = new Label();
+			lastMonthLbl.text = "Last month added artists:";
+			lastMonthLbl.name = Theme.SMALL_NORMAL_ORANGE;
+			
+			lastMonthVal = new Label();
+			lastMonthVal.text = Model.getInstance().albumsLastMonth.toString();
+			lastMonthVal.name = Theme.LARGE_BOLD_WHITE;
+			
+			totalLbl = new Label();
+			totalLbl.text = "Total added artists:";
+			totalLbl.name = Theme.SMALL_NORMAL_ORANGE;
+			
+			totalVal = new Label();
+			totalVal.text = Model.getInstance().albumsTotal.toString();
+			totalVal.name = Theme.LARGE_BOLD_WHITE;
 			
 			list = new List();
 			list.itemRendererType = ArtistRenderer;
@@ -69,6 +90,10 @@ package cz.hotmusic
 					list.selectedIndex = -1;
 			});
 			
+			addChild(lastMonthLbl);
+			addChild(lastMonthVal);
+			addChild(totalLbl);
+			addChild(totalVal);
 			addChild(list);
 		}
 		
@@ -89,6 +114,23 @@ package cz.hotmusic
 		{
 			super.draw();
 			
+			var gap:int = 20;
+			var baseline:int = 4;
+			
+			lastMonthLbl.validate();
+			
+			lastMonthVal.x = lastMonthLbl.width;
+			lastMonthVal.validate();
+			lastMonthVal.y = baseline - lastMonthVal.height + lastMonthLbl.height;
+			
+			totalLbl.x = lastMonthVal.x + lastMonthVal.width + gap;
+			totalLbl.validate();
+			
+			totalVal.x = totalLbl.x + totalLbl.width;
+			totalVal.validate();
+			totalVal.y = baseline - totalVal.height + totalLbl.height;
+			
+			list.y = totalLbl.y + totalLbl.height + gap;
 			list.width = actualWidth;
 		}
 		

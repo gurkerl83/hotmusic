@@ -16,6 +16,7 @@ package cz.hotmusic.lib.event
 		public static const LOGIN			:String = "LOGIN_ALBUM";
 		public static const LIST			:String = "LIST_ALBUM";
 		public static const LIST_COUNT		:String = "LIST_COUNT_ALBUM";
+		public static const LIST_LAST_MONTH	:String = "LIST_LAST_MONTH_ALBUM";
 		public static const UPDATE			:String = "UPDATE_ALBUM";
 		public static const REMOVE			:String = "REMOVE_ALBUM";
 		public static const AUTOCOMPLETE	:String = "AUTOCOMPLETE_ALBUM";

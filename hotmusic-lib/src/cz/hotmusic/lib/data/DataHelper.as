@@ -38,7 +38,7 @@ package cz.hotmusic.lib.data
 		public function initModel(model:Object):void
 		{
 			this.model = model;
-			_songsComplete = _artistsComplete = _albumsComplete = _genresComplete = _usersComplete = false;
+//			_songsComplete = _artistsComplete = _albumsComplete = _genresComplete = _usersComplete = false;
 			getSongs();
 			getArtists();
 			getAlbums();
@@ -47,8 +47,14 @@ package cz.hotmusic.lib.data
 		}
 		
 		private var _songsComplete:Boolean;
+		private var _songsTotalComplete:Boolean;
+		private var _songsLastMonthComplete:Boolean;
 		private var _artistsComplete:Boolean;
+		private var _artistsTotalComplete:Boolean;
+		private var _artistsLastMonthComplete:Boolean;
 		private var _albumsComplete:Boolean;
+		private var _albumsTotalComplete:Boolean;
+		private var _albumsLastMonthComplete:Boolean;
 		private var _genresComplete:Boolean;
 		private var _usersComplete:Boolean;
 		
@@ -61,8 +67,29 @@ package cz.hotmusic.lib.data
 		
 		private function dispatchInitComplete():void
 		{
-			if (_songsComplete && _artistsComplete && _albumsComplete && _genresComplete && _usersComplete)
+			if (_songsComplete && _songsTotalComplete && _songsLastMonthComplete && 
+				_albumsComplete && _albumsLastMonthComplete && _albumsTotalComplete && 
+				_artistsComplete && _artistsLastMonthComplete && _artistsTotalComplete && 
+				_genresComplete && _usersComplete)
 				dispatchEvent(new Event(INIT_COMPLETE));
+		}
+		
+		private function dispatchSongsComplete():void
+		{
+			if (_songsComplete && _songsTotalComplete && _songsLastMonthComplete)
+				dispatchEvent(new Event(SONGS_COMPLETE));
+		}
+		
+		private function dispatchAlbumsComplete():void
+		{
+			if (_albumsComplete && _albumsLastMonthComplete && _albumsTotalComplete)
+				dispatchEvent(new Event(ALBUMS_COMPLETE));
+		}
+		
+		private function dispatchArtistsComplete():void
+		{
+			if (_artistsComplete && _artistsLastMonthComplete && _artistsTotalComplete)
+				dispatchEvent(new Event(ARTISTS_COMPLETE));
 		}
 		
 		//-------------------------------
@@ -74,12 +101,45 @@ package cz.hotmusic.lib.data
 		private var songsCallback:Function;
 		public function getSongs(callback:Function=null):void
 		{
+			_songsComplete = _songsTotalComplete = _songsLastMonthComplete = false;
+			
 			songsCallback = null;
 			if (callback != null)
 				songsCallback = callback;
+			
+			// List
 			var sse:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST,songResult,songFault);
 			sse.sid = model.user.session;
 			CairngormEventDispatcher.getInstance().dispatchEvent(sse);
+			sse = null;
+			
+			// Total
+			var ssecount:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
+				if (result && result.result) {
+					model.songsTotal = result.result;
+					_songsTotalComplete = true;
+					dispatchSongsComplete();
+					dispatchInitComplete();
+				}
+			},function listCountFault(info:Object):void {
+				
+			});
+			ssecount.sid = model.user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
+
+			// Last month
+			var sselastmonth:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST_LAST_MONTH,function listLastMonth(result:ResultEvent):void {
+				if (result && result.result) {
+					model.songsLastMonth = result.result;
+					_songsLastMonthComplete = true;
+					dispatchSongsComplete();
+					dispatchInitComplete();
+				}
+			},function listCountFault(info:Object):void {
+				
+			});
+			sselastmonth.sid = model.user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(sselastmonth);
 		}
 		
 		private function songResult(result:ResultEvent):void
@@ -90,13 +150,14 @@ package cz.hotmusic.lib.data
 			{
 				songs.push(song);
 			}
-			dispatchEvent(new Event(SONGS_COMPLETE));
+			
 			_songsComplete = true;
+			dispatchSongsComplete();
 			dispatchInitComplete();
+			
 			if (songsCallback != null)
 				songsCallback.call();
 		}
-		
 		private function songFault(info:Object):void
 		{
 			
@@ -111,12 +172,43 @@ package cz.hotmusic.lib.data
 		private var artistsCallback:Function;
 		public function getArtists(callback:Function=null):void
 		{
+			_artistsComplete = _artistsTotalComplete = _artistsLastMonthComplete = false;
+			
 			artistsCallback = null;
 			if (callback != null)
 				artistsCallback = callback;
 			var se:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST,artistResult,artistFault);
 			se.sid = model.user.session;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+			
+			// Total
+			var ssecount:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
+				if (result && result.result) {
+					model.artistsTotal = result.result;
+					_artistsTotalComplete = true;
+					dispatchArtistsComplete();
+					dispatchInitComplete();
+				}
+			},function listCountFault(info:Object):void {
+				
+			});
+			ssecount.sid = model.user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
+			
+			// Last month
+			var sselastmonth:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST_LAST_MONTH,function listLastMonth(result:ResultEvent):void {
+				if (result && result.result) {
+					model.artistsLastMonth = result.result;
+					_artistsLastMonthComplete = true;
+					dispatchArtistsComplete();
+					dispatchInitComplete();
+				}
+			},function listCountFault(info:Object):void {
+				
+			});
+			sselastmonth.sid = model.user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(sselastmonth);
+			
 		}
 		
 		private function artistResult(result:ResultEvent):void
@@ -148,12 +240,42 @@ package cz.hotmusic.lib.data
 		private var albumsCallback:Function;
 		public function getAlbums(callback:Function=null):void
 		{
+			_albumsComplete = _albumsTotalComplete = _albumsLastMonthComplete = false;
+			
 			albumsCallback = null;
 			if (callback != null)
 				albumsCallback = callback;
 			var se:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST,albumResult,albumFault);
 			se.sid = model.user.session;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+			
+			// Total
+			var ssecount:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
+				if (result && result.result) {
+					model.albumsTotal = result.result;
+					_albumsTotalComplete = true;
+					dispatchAlbumsComplete();
+					dispatchInitComplete();
+				}
+			},function listCountFault(info:Object):void {
+				
+			});
+			ssecount.sid = model.user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
+			
+			// Last month
+			var sselastmonth:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST_LAST_MONTH,function listLastMonth(result:ResultEvent):void {
+				if (result && result.result) {
+					model.albumsLastMonth = result.result;
+					_albumsLastMonthComplete = true;
+					dispatchAlbumsComplete();
+					dispatchInitComplete();
+				}
+			},function listCountFault(info:Object):void {
+				
+			});
+			sselastmonth.sid = model.user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(sselastmonth);
 		}
 		
 		private function albumResult(result:ResultEvent):void

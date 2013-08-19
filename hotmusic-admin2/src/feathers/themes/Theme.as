@@ -670,6 +670,12 @@ package feathers.themes
 					
 				} else if (label.name == LARGE_BOLD_GRAY) {
 					label.textRendererProperties.textFormat = this.largeBoldGrayTextFormat;
+				} else if (label.name == LARGE_BOLD_GREEN) {
+					label.textRendererProperties.textFormat = this.largeBoldGreenTextFormat;
+				} else if (label.name == LARGE_BOLD_RED) {
+					label.textRendererProperties.textFormat = this.largeBoldRedTextFormat;
+				} else if (label.name == LARGE_BOLD_WHITE) {
+					label.textRendererProperties.textFormat = this.largeBoldWhiteTextFormat;
 					
 				} else if (label.name == TINY_NORMAL_GRAY) {
 					label.textRendererProperties.textFormat = this.tinyNormalGrayTextFormat;

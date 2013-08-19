@@ -26,6 +26,15 @@ package cz.hotmusic.model
 		public var genres:Array;
 		public var users:Array;
 		
+		public var songsLastMonth:int;
+		public var songsTotal:int;
+		
+		public var albumsLastMonth:int;
+		public var albumsTotal:int;
+		
+		public var artistsLastMonth:int;
+		public var artistsTotal:int;
+		
 		public function resetModel():void
 		{
 			user = new User();

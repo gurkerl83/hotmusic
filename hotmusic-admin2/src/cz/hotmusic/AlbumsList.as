@@ -2,10 +2,10 @@ package cz.hotmusic
 {
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
-	import cz.hotmusic.lib.event.AlbumServiceEvent;
 	import cz.hotmusic.helper.ButtonHelper;
-	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.helper.MockDataHelper;
+	import cz.hotmusic.lib.data.DataHelper;
+	import cz.hotmusic.lib.event.AlbumServiceEvent;
 	import cz.hotmusic.lib.model.Album;
 	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.AlbumRenderer;
@@ -43,11 +43,32 @@ package cz.hotmusic
 		
 		// INITIALIZE
 		private var list:List;
+		private var lastMonthLbl:Label;
+		private var lastMonthVal:Label;
+		private var totalLbl:Label;
+		private var totalVal:Label;
+		
 		private var skipOpenDetail:Boolean;
 		
 		override protected function initialize():void
 		{
 			super.initialize();
+			
+			lastMonthLbl = new Label();
+			lastMonthLbl.text = "Last month added albums:";
+			lastMonthLbl.name = Theme.SMALL_NORMAL_ORANGE;
+			
+			lastMonthVal = new Label();
+			lastMonthVal.text = Model.getInstance().albumsLastMonth.toString();
+			lastMonthVal.name = Theme.LARGE_BOLD_WHITE;
+			
+			totalLbl = new Label();
+			totalLbl.text = "Total added albums:";
+			totalLbl.name = Theme.SMALL_NORMAL_ORANGE;
+			
+			totalVal = new Label();
+			totalVal.text = Model.getInstance().albumsTotal.toString();
+			totalVal.name = Theme.LARGE_BOLD_WHITE;
 			
 			list = new List();
 			list.itemRendererType = AlbumRenderer;
@@ -77,6 +98,10 @@ package cz.hotmusic
 					list.selectedIndex = -1;
 			});
 			
+			addChild(lastMonthLbl);
+			addChild(lastMonthVal);
+			addChild(totalLbl);
+			addChild(totalVal);
 			addChild(list);
 		}
 		
@@ -98,6 +123,23 @@ package cz.hotmusic
 		{
 			super.draw();
 			
+			var gap:int = 20;
+			var baseline:int = 4;
+			
+			lastMonthLbl.validate();
+			
+			lastMonthVal.x = lastMonthLbl.width;
+			lastMonthVal.validate();
+			lastMonthVal.y = baseline - lastMonthVal.height + lastMonthLbl.height;
+			
+			totalLbl.x = lastMonthVal.x + lastMonthVal.width + gap;
+			totalLbl.validate();
+			
+			totalVal.x = totalLbl.x + totalLbl.width;
+			totalVal.validate();
+			totalVal.y = baseline - totalVal.height + totalLbl.height;
+			
+			list.y = totalLbl.y + totalLbl.height + gap;
 			list.width = actualWidth;
 		}
 		
