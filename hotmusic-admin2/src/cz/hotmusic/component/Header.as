@@ -57,8 +57,8 @@ package cz.hotmusic.component
 		private var userLbl:Label;
 		private var rightsLbl:Label;
 		private var logoutBtn:starling.display.Button;
-		private var updateLbl:Label;
-		private var updateValue:Label;
+//		private var updateLbl:Label;
+//		private var updateValue:Label;
 		
 		override protected function initialize():void 
 		{
@@ -81,21 +81,21 @@ package cz.hotmusic.component
 			logoutBtn = new starling.display.Button(Texture.fromBitmap(new FontAssets.Logout()));
 			logoutBtn.addEventListener(Event.TRIGGERED, logout);
 			
-			updateLbl = new Label();
-			updateLbl.text = "For the next update:";
-			updateLbl.name = Theme.SMALL_NORMAL_GRAY;
-			
-			updateValue = new Label();
-			updateValue.text = "47:55:14";
-			updateValue.name = Theme.LARGE_BOLD_GRAY;
+//			updateLbl = new Label();
+//			updateLbl.text = "For the next update:";
+//			updateLbl.name = Theme.SMALL_NORMAL_GRAY;
+//			
+//			updateValue = new Label();
+//			updateValue.text = "47:55:14";
+//			updateValue.name = Theme.LARGE_BOLD_GRAY;
 			
 			addChildAt(bg,0);
 			addChild(logo);
 			addChild(userLbl);
 			addChild(rightsLbl);
 			addChild(logoutBtn);
-			addChild(updateLbl);
-			addChild(updateValue);
+//			addChild(updateLbl);
+//			addChild(updateValue);
 			
 			
 		}
@@ -130,13 +130,13 @@ package cz.hotmusic.component
 			logoutBtn.x = rightsLbl.x + Math.max(rightsLbl.width, userLbl.width)  + gap;
 			logoutBtn.y = actualHeight/2 - logoutBtn.height/2;
 
-			updateLbl.validate();
-			updateLbl.x = logoutBtn.x + logoutBtn.width + gap;
-			updateLbl.y = actualHeight/2 - updateLbl.height/2 - baseline;
-
-			updateValue.validate();
-			updateValue.x = updateLbl.x + updateLbl.width +gap ;
-			updateValue.y = actualHeight/2 - updateValue.height/2 - baseline;
+//			updateLbl.validate();
+//			updateLbl.x = logoutBtn.x + logoutBtn.width + gap;
+//			updateLbl.y = actualHeight/2 - updateLbl.height/2 - baseline;
+//
+//			updateValue.validate();
+//			updateValue.x = updateLbl.x + updateLbl.width +gap ;
+//			updateValue.y = actualHeight/2 - updateValue.height/2 - baseline;
 			
 			if (buttons && buttons.length > 0)
 			{
