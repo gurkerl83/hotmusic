@@ -141,6 +141,8 @@ package cz.hotmusic.helper
 				return 0;
 		}
 		
+		public var defaultSort:Object = { sortby: "newest first", sortbykey: SortHelper.INTERPRET_NEWEST}; 
+		
 		private function createSorts():void 
 		{
 			sorts =	[
@@ -149,7 +151,7 @@ package cz.hotmusic.helper
 					children: [
 						{ sortby: "A-Z", sortbykey: SortHelper.INTERPRET_AZ},
 						{ sortby: "Z-A", sortbykey: SortHelper.INTERPRET_ZA},
-						{ sortby: "newest first", sortbykey: SortHelper.INTERPRET_NEWEST},
+						defaultSort,
 						{ sortby: "oldest first", sortbykey: SortHelper.INTERPRET_OLDEST}
 					]
 				},{

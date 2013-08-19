@@ -96,8 +96,8 @@ package cz.hotmusic
 		{
 			
 			initMainList();
-			initLeftMenu();
-			initRightMenu();
+			leftMenuInit();
+			rightMenuInit();
 			initBottomMenu();
 			initDebugPanel();
 //
@@ -241,6 +241,13 @@ package cz.hotmusic
 			_list.removeEventListener(Event.CHANGE, list_changeHandler);
 			_list.selectedItem = null;
 			_list.addEventListener(Event.CHANGE, list_changeHandler);
+		}
+		
+		private function rightlist_changeHandler(event:Event):void
+		{
+			if (_rightList.selectedItem == null)
+				return;
+			
 		}
 
 		private function leftlist_changeHandler(event:Event):void
@@ -414,7 +421,7 @@ package cz.hotmusic
 			
 		}
 		
-		private function initLeftMenu():void
+		private function leftMenuInit():void
 		{
 			this._filterLeftButton = new feathers.controls.Button();
 			this._filterLeftButton.label = "Filter";
@@ -450,7 +457,7 @@ package cz.hotmusic
 			_leftList.visible = false;
 		}
 		
-		private function initRightMenu():void
+		private function rightMenuInit():void
 		{
 			this._rightHeader = new Header();
 			this._rightHeader.title = "Filter";
@@ -470,10 +477,11 @@ package cz.hotmusic
 			this._rightList.verticalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
 			this._rightList.itemRendererType = RightListRenderer;
 			this._rightList.dataProvider = new HierarchicalCollection(SortHelper.getInstance().sorts);
+			this._rightList.selectedItem = SortHelper.getInstance().defaultSort; // newest first 
 			this._rightList.nameList.add(GroupedList.ALTERNATE_NAME_INSET_GROUPED_LIST);
 			this._rightList.itemRendererProperties.labelField = "sortby";
 			this._rightList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
-			this._rightList.addEventListener(Event.CHANGE, list_changeHandler);
+			this._rightList.addEventListener(Event.CHANGE, rightlist_changeHandler);
 			
 			// BUTTON
 			
