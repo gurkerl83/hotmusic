@@ -24,7 +24,7 @@ package
 	[SWF(width="960",height="640",frameRate="60",backgroundColor="#2f2f2f")]
 	public class Hotmusic extends Sprite
 	{
-		[Embed (source="assets/1-loading.png")]
+		[Embed (source="assets/Default-568h@2x.png")]
 		private var Splash:Class;
 		private var splash:Bitmap;
 		
