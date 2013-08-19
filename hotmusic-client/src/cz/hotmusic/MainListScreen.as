@@ -245,8 +245,21 @@ package cz.hotmusic
 
 		private function leftlist_changeHandler(event:Event):void
 		{
-			if (_list.selectedItem == null)
+			if (_leftList.selectedItem == null || _leftList.selectedIndices == null)
 				return;
+			
+			_leftList.removeEventListener(Event.CHANGE, leftlist_changeHandler);
+			
+			if (_leftList.selectedIndices[_leftList.selectedIndices.length -1] > 0) {
+				if (_leftList.selectedIndices.indexOf(0) > -1)
+					_leftList.selectedIndices.splice(_leftList.selectedIndices.indexOf(0), 1);
+			} else {
+				_leftList.selectedIndices[0] = 0;
+				_leftList.selectedIndices.splice(1, _leftList.selectedIndices.length - 1);
+			}
+			
+			_leftList.addEventListener(Event.CHANGE, leftlist_changeHandler);
+			
 		}
 		
 		
@@ -340,19 +353,22 @@ package cz.hotmusic
 			if (_leftList.selectedItem == null)
 				return;
 				
-			filterGenreBy = _leftList.selectedItem.name;
-			TestFlight.passCheckpoint("Genre Filter Button: by " + filterGenreBy);
+//			filterGenreBy = _leftList.selectedItem.name;
+//			TestFlight.passCheckpoint("Genre Filter Button: by " + filterGenreBy);
 			var filteredArr:Array;
 			filteredArr = Model.getInstance().songs.filter(filterGenre); 
 			this._list.dataProvider = new ListCollection(filteredArr);
 			leftButton_triggeredHandler(null);
 		}
-		private var filterGenreBy:String;
+//		private var filterGenreBy:String;
 		private function filterGenre(item:Object, index:int, arr:Array):Boolean
 		{
-			if (filterGenreBy == item.genre.name || filterGenreBy == "All genres")
-				return true;
-			return false;
+			var f:Boolean;
+			for each (var selItem:Genre in _leftList.selectedItems) {
+				if (selItem.name == item.genre.name || selItem.name == "All genres")
+					f= true;
+			}
+			return f;
 		}
 		
 		private function initMainList():void
@@ -415,7 +431,7 @@ package cz.hotmusic
 			
 			// LIST
 			this._leftList = new List();
-//			this._leftList.allowMultipleSelection = true;
+			this._leftList.allowMultipleSelection = true;
 			this._leftList.itemRendererType = LeftListRenderer;
 
 			var allGenres:Genre = new Genre("All genres");
@@ -426,6 +442,7 @@ package cz.hotmusic
 			genresArr = genresArr.concat(Model.getInstance().genres);
 			
 			this._leftList.dataProvider = new ListCollection(genresArr);
+			this._leftList.selectedIndex = 0;
 				
 			this._leftList.itemRendererProperties.labelField = "name";
 			this._leftList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
