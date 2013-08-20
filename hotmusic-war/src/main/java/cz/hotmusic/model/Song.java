@@ -33,6 +33,10 @@ public class Song {
 	public Album album;
 	@OneToOne
 	public Genre genre;
+	public Integer rateUp;
+	public Integer rateDown;
+	@Transient
+	public Boolean canVote;
 	public Date releaseDate;
 	public String itunes;
 	public String googlePlay;
@@ -146,5 +150,23 @@ public class Song {
 	}
 	public void setAddedBySession(String addedBySession) {
 		this.addedBySession = addedBySession;
+	}
+	public Integer getRateUp() {
+		return rateUp;
+	}
+	public void setRateUp(Integer rateUp) {
+		this.rateUp = rateUp;
+	}
+	public Integer getRateDown() {
+		return rateDown;
+	}
+	public void setRateDown(Integer rateDown) {
+		this.rateDown = rateDown;
+	}
+	public Boolean getCanVote() {
+		return canVote;
+	}
+	public void setCanVote(Boolean canVote) {
+		this.canVote = canVote;
 	}
 }

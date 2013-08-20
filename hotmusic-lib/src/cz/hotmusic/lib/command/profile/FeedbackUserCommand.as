@@ -27,12 +27,12 @@ package cz.hotmusic.lib.command.profile
 		}
 		
 		public function result(data:Object):void {
-			if (pse.resultCallback) 
+			if (pse.resultCallback != null) 
 				pse.resultCallback.call(this, data);
 		}
 		
 		public function fault(info:Object):void {
-			if (pse.faultCallback)
+			if (pse.faultCallback != null)
 				pse.faultCallback.call(this, info);
 		}
 	}

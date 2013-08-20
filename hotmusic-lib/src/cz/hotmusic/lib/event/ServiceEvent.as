@@ -6,7 +6,7 @@ package cz.hotmusic.lib.event
 	{
 		
 		public var sid:String;
-		public var sedata:String;
+		public var sedata:Object;
 		public var response:Object;
 		public var resultCallback:Function;
 		public var faultCallback:Function;

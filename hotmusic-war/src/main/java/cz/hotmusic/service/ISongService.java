@@ -3,6 +3,7 @@ package cz.hotmusic.service;
 import java.util.List;
 
 import cz.hotmusic.model.Song;
+import cz.hotmusic.model.Vote;
 
 public interface ISongService {
 	String create(String sid, Song song) throws Exception, Throwable;
@@ -13,4 +14,5 @@ public interface ISongService {
 	void update(String sid, Song song) throws Throwable;
 	List<Song> autocomplete(String sid, String text) throws Throwable;
 	int listLastMonth(String sid) throws Throwable;
+	void vote(String sid, Vote vote_) throws Throwable;
 }

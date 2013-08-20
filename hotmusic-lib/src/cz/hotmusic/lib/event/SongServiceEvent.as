@@ -21,6 +21,7 @@ package cz.hotmusic.lib.event
 		public static const UPDATE			:String = "UPDATE_SONG";
 		public static const REMOVE			:String = "REMOVE_SONG";
 		public static const AUTOCOMPLETE	:String = "AUTOCOMPLETE_SONG";
+		public static const VOTE			:String = "VOTE_SONG";
 		
 		public function SongServiceEvent(type:String, resultCallback:Function, faultCallback:Function)
 		{

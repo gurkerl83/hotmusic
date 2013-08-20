@@ -34,6 +34,7 @@ package cz.hotmusic.lib.controller
 	import cz.hotmusic.lib.command.song.ListSongCommand;
 	import cz.hotmusic.lib.command.song.RemoveSongCommand;
 	import cz.hotmusic.lib.command.song.UpdateSongCommand;
+	import cz.hotmusic.lib.command.song.VoteSongCommand;
 	import cz.hotmusic.lib.event.AlbumServiceEvent;
 	import cz.hotmusic.lib.event.ArtistServiceEvent;
 	import cz.hotmusic.lib.event.GenreServiceEvent;
@@ -44,6 +45,7 @@ package cz.hotmusic.lib.controller
 	import cz.hotmusic.lib.model.Genre;
 	import cz.hotmusic.lib.model.Song;
 	import cz.hotmusic.lib.model.User;
+	import cz.hotmusic.lib.model.Vote;
 	
 	import flash.net.registerClassAlias;
 	
@@ -64,6 +66,7 @@ package cz.hotmusic.lib.controller
 			registerClassAlias("cz.hotmusic.model.Genre", Genre);
 			registerClassAlias("cz.hotmusic.model.Song", Song);
 			registerClassAlias("cz.hotmusic.model.User", User);
+			registerClassAlias("cz.hotmusic.model.Vote", Vote);
 			
 			// RPC PROFIL SERVICE
 			addCommand(ProfileServiceEvent.REGISTER, RegisterUserCommand);
@@ -84,6 +87,7 @@ package cz.hotmusic.lib.controller
 			addCommand(SongServiceEvent.LIST_LAST_MONTH, ListLastMonthSongCommand);
 			addCommand(SongServiceEvent.REMOVE, RemoveSongCommand);
 			addCommand(SongServiceEvent.UPDATE, UpdateSongCommand);
+			addCommand(SongServiceEvent.VOTE, VoteSongCommand);
 			
 			addCommand(ArtistServiceEvent.AUTOCOMPLETE, AutocompleteArtistCommand);
 			addCommand(ArtistServiceEvent.CREATE, CreateArtistCommand);

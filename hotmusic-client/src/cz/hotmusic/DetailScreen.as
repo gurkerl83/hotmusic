@@ -1,10 +1,14 @@
 package cz.hotmusic
 {
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	import com.sticksports.nativeExtensions.social.Social;
 	import com.sticksports.nativeExtensions.social.SocialService;
 	
 	import cz.hotmusic.helper.TextHelper;
+	import cz.hotmusic.lib.event.ServiceEvent;
+	import cz.hotmusic.lib.event.SongServiceEvent;
 	import cz.hotmusic.lib.model.Song;
+	import cz.hotmusic.lib.model.Vote;
 	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.MainListRenderer;
 	
@@ -185,12 +189,20 @@ package cz.hotmusic
 			_rateLabel = new Label();
 			_rateLabel.text = "Rate now:";
 			_rateUpButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.RateUp()));
-			_rateUpButton.addEventListener(TouchEvent.TOUCH, onRateUp);
+			if (song.canVote) {
+				_rateUpButton.addEventListener(TouchEvent.TOUCH, onRateUp);
+			} else {
+				_rateUpButton.enabled = false;
+			}
 			_rateUpValue = new Label();
 			_rateUpValue.text = song.rateUp.toString();
 			_rateUpValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_rateDownButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.RateDown()));
-			_rateDownButton.addEventListener(TouchEvent.TOUCH, onRateDown);
+			if (song.canVote) {
+				_rateDownButton.addEventListener(TouchEvent.TOUCH, onRateDown);
+			} else {
+				_rateDownButton.enabled = false;
+			}
 			_rateDownValue = new Label();
 			_rateDownValue.text = song.rateDown.toString();
 			_rateDownValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
@@ -440,9 +452,15 @@ package cz.hotmusic
 			trace("onRateUp()");
 			if (_rateUpButton.enabled) {
 				song.rateUp++;
+				song.canVote = false;
 				_rateUpValue.text = song.rateUp.toString();
 				_rateDownButton.enabled = false;
 				_rateUpButton.enabled = false;
+				
+				_rateUpButton.removeEventListener(Event.TRIGGERED, onRateUp);
+				_rateDownButton.removeEventListener(Event.TRIGGERED, onRateDown);
+				
+				callRateService(1);
 			}
 		}
 		private function onRateDown(event:TouchEvent):void
@@ -463,9 +481,15 @@ package cz.hotmusic
 			trace("onRateDown()");
 			if (_rateDownButton.enabled) {
 				song.rateDown++;
+				song.canVote = false;
 				_rateDownValue.text = song.rateDown.toString();
 				_rateDownButton.enabled = false;
 				_rateUpButton.enabled = false;
+				
+				_rateUpButton.removeEventListener(Event.TRIGGERED, onRateUp);
+				_rateDownButton.removeEventListener(Event.TRIGGERED, onRateDown);
+				
+				callRateService(-1);
 			}
 			
 		}
@@ -487,6 +511,19 @@ package cz.hotmusic
 				dp.push({icon: new Image(Texture.fromBitmap(new FontAssets.YouTube())), label: "Watch on YouTube", url: song.youtube});
 			
 			return dp;
+		}
+		
+		private function callRateService(rate:int):void
+		{
+			var vote:Vote = new Vote();
+			vote.rate = rate;
+			vote.user = Model.getInstance().user;
+			vote.song = song;
+			
+			var se:ServiceEvent = new SongServiceEvent(SongServiceEvent.VOTE, null, null);
+			se.sid = Model.getInstance().user.session;
+			se.sedata = vote;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 		}
 	}
 }

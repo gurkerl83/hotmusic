@@ -18,8 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cz.hotmusic.model.Album;
 import cz.hotmusic.model.Artist;
+import cz.hotmusic.model.Feedback;
 import cz.hotmusic.model.Genre;
 import cz.hotmusic.model.Song;
+import cz.hotmusic.model.User;
+import cz.hotmusic.model.Vote;
 import cz.hotmusic.service.ISongService;
 
 @Repository
@@ -65,6 +68,8 @@ public class SongService implements ISongService{
 		Session session = sessionFactory.getCurrentSession();
 		Query query = null;
 		
+		// seznam songu
+		
 		query = session.createQuery("from Song");
 		
 		if (count == 0 ) count = 10;
@@ -73,9 +78,29 @@ public class SongService implements ISongService{
 		query.setMaxResults(count);
 
 		@SuppressWarnings("unchecked")
-		List<Song> list = query.list();
+		List<Song> listSong = query.list();
 		
-		return list;
+		// prihlasenej user
+		
+		
+		
+		@SuppressWarnings("unchecked")
+		List<User> listUser = (List<User>)session.createQuery("from User where session = :sid").setParameter("sid", sid).list();
+		if (listUser.size() != 1)
+			throw new Exception("Can't find the user");
+		User foundUser = listUser.get(0);
+		
+		// nastaveni canVote pro prihlasenyho usera
+		
+		for (Song song : listSong) {
+			List<Vote> listVote = session.createQuery("from Vote where song_song_id = :songId and user_user_id = :userId").setParameter("songId", song.id).setParameter("userId", foundUser.id).list();
+			if (listVote.size() == 0)
+				song.canVote = true;
+			else
+				song.canVote = false;
+		}
+		
+		return listSong;
 	}
 	
 	@Override
@@ -201,6 +226,57 @@ public class SongService implements ISongService{
 		session.update(foundSong);
 //		tr.commit();
 //		session.close();
+		session.flush();
+	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
+	public void vote(String sid, Vote vote_) throws Throwable {
+		Assert.assertNotNull(sid);
+		Assert.assertNotNull(vote_);
+		Assert.assertNotNull(vote_.song);
+		Assert.assertNotNull(vote_.song.id);
+		Assert.assertTrue(vote_.rate == -1 || vote_.rate == 1);
+		sessionHelper.checkSession(sid);
+		
+		// LOAD USER
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from User where session = :sid");
+		query.setParameter("sid", sid);
+		
+		@SuppressWarnings("unchecked")
+		List<User> list = (List<User>)query.list();
+		if (list.size() != 1)
+			throw new Exception("Can't find the user");
+		User foundUser = list.get(0);
+		
+		// RATE SONG
+		@SuppressWarnings("unchecked")
+		List<Song> listSong = (List<Song>)session.createQuery("from Song where song_id = :songId").setParameter("songId", vote_.song.id).list();
+		if (listSong.size() != 1)
+			throw new Exception("Can't find the song");
+		Song foundSong = listSong.get(0);
+		
+		// SAVE USER VOTE
+		Vote v = new Vote();
+		v.addedDate = new Date();
+		v.rate = vote_.rate;
+		v.user = foundUser; 
+		v.song = foundSong;
+		
+		session.save(v);
+		
+		if (vote_.rate.intValue() > 0) {
+			if (foundSong.rateUp == null) foundSong.rateUp = 0;
+			foundSong.rateUp++;
+		} else {
+			if (foundSong.rateDown == null) foundSong.rateDown = 0;			
+			foundSong.rateDown++;
+		}
+		
+		session.save(foundSong);
+		
 		session.flush();
 	}
 	
