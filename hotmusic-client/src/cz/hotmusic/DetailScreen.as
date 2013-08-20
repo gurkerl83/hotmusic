@@ -4,8 +4,8 @@ package cz.hotmusic
 	import com.sticksports.nativeExtensions.social.SocialService;
 	
 	import cz.hotmusic.helper.TextHelper;
-	import cz.hotmusic.model.Model;
 	import cz.hotmusic.lib.model.Song;
+	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.MainListRenderer;
 	
 	import feathers.controls.Button;
@@ -14,6 +14,7 @@ package cz.hotmusic
 	import feathers.controls.List;
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
+	import feathers.controls.Scroller;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.skins.StandardIcons;
@@ -78,25 +79,6 @@ package cz.hotmusic
 		private var _shareEmailButton:starling.display.Button;
 //		private var _shareSmsButton:starling.display.Button;
 
-		private var _itunesIcon:Image;
-		private var _itunesLabel:Label;
-		private var _itunesRight:Image;
-		private var _googleMusicIcon:Image;
-		private var _googleMusicLabel:Label;
-		private var _googleMusicRight:Image;
-		private var _amazonIcon:Image;
-		private var _amazonLabel:Label;
-		private var _amazonRight:Image;
-		private var _beatportIcon:Image;
-		private var _beatportLabel:Label;
-		private var _beatportRight:Image;
-		private var _soundcloudIcon:Image;
-		private var _soundcloudLabel:Label;
-		private var _soundcloudRight:Image;
-		private var _youtubeIcon:Image;
-		private var _youtubeLabel:Label;
-		private var _youtubeRight:Image;
-		
 		private var _line1:Quad;
 		private var _line2:Quad;
 		private var _line3:Quad;
@@ -104,14 +86,8 @@ package cz.hotmusic
 		private var _line5:Quad;
 		private var _line6:Quad;
 		private var _line7:Quad;
-		private var _line8:Quad;
-		private var _line9:Quad;
-		private var _line10:Quad;
-		private var _line11:Quad;
-		private var _line12:Quad;
-		private var _line13:Quad;
-//		private var _backgroundQuad:Quad;
-//		public var songData:Song;
+		
+		private var _list:List;
 		
 		private var _space:int = 150;
 		private var _leftPadding:int = 15;
@@ -276,84 +252,20 @@ package cz.hotmusic
 			
 			var rightbm:Bitmap = new FontAssets.Right();
 			
-			var itunesbm:Bitmap = new FontAssets.ITunes();
-			_itunesIcon = new Image(Texture.fromBitmap(itunesbm));
-			_itunesLabel = new Label();
-			_itunesLabel.text = "Buy on iTunes";
-			_itunesLabel.textRendererFactory = TextHelper.getInstance().detailLinks;
-			_itunesRight = new Image(Texture.fromBitmap(rightbm));
-			_scrollContainer.addChild(_itunesIcon);
-			_scrollContainer.addChild(_itunesLabel);
-			_scrollContainer.addChild(_itunesRight);
-
-			_line8 = new Quad(1,1,0x333235);
-			_scrollContainer.addChild(_line8);
+			this._list = new List();
+			this._list.verticalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
+//			this._list.itemRendererType = ListRenderer;
+			this._list.dataProvider = new ListCollection(getURLDataProvider());
+			this._list.itemRendererProperties.labelField = "label";
+			this._list.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
+			this._list.addEventListener(Event.CHANGE, list_changeHandler);
 			
-			var googlemusicbm:Bitmap = new FontAssets.GoogleMusic();
-			_googleMusicIcon = new Image(Texture.fromBitmap(googlemusicbm));
-			_googleMusicLabel = new Label();
-			_googleMusicLabel.text = "Buy on Google Play Music";
-			_googleMusicLabel.textRendererFactory = TextHelper.getInstance().detailLinks;
-			_googleMusicRight = new Image(Texture.fromBitmap(rightbm));
-			_scrollContainer.addChild(_googleMusicIcon);
-			_scrollContainer.addChild(_googleMusicLabel);
-			_scrollContainer.addChild(_googleMusicRight);
-			
-			_line9 = new Quad(1,1,0x333235);
-			_scrollContainer.addChild(_line9);
-			
-			var amazonbm:Bitmap = new FontAssets.Amazon();
-			_amazonIcon = new Image(Texture.fromBitmap(amazonbm));
-			_amazonLabel = new Label();
-			_amazonLabel.text = "Buy on Amazon Music";
-			_amazonLabel.textRendererFactory = TextHelper.getInstance().detailLinks;
-			_amazonRight = new Image(Texture.fromBitmap(rightbm));
-			_scrollContainer.addChild(_amazonIcon);
-			_scrollContainer.addChild(_amazonLabel);
-			_scrollContainer.addChild(_amazonRight);
-			
-			_line10 = new Quad(1,1,0x333235);
-			_scrollContainer.addChild(_line10);
-			
-			var beatportbm:Bitmap = new FontAssets.Beatport();
-			_beatportIcon = new Image(Texture.fromBitmap(beatportbm));
-			_beatportLabel = new Label();
-			_beatportLabel.text = "Buy on Beatport";
-			_beatportLabel.textRendererFactory = TextHelper.getInstance().detailLinks;
-			_beatportRight = new Image(Texture.fromBitmap(rightbm));
-			_scrollContainer.addChild(_beatportIcon);
-			_scrollContainer.addChild(_beatportLabel);
-			_scrollContainer.addChild(_beatportRight);
-			
-			_line11 = new Quad(1,1,0x333235);
-			_scrollContainer.addChild(_line11);
-			
-			var soundcloudbm:Bitmap = new FontAssets.SoundCloud();
-			_soundcloudIcon = new Image(Texture.fromBitmap(soundcloudbm));
-			_soundcloudLabel = new Label();
-			_soundcloudLabel.text = "Listen on Soundcloud";
-			_soundcloudLabel.textRendererFactory = TextHelper.getInstance().detailLinks;
-			_soundcloudRight = new Image(Texture.fromBitmap(rightbm));
-			_scrollContainer.addChild(_soundcloudIcon);
-			_scrollContainer.addChild(_soundcloudLabel);
-			_scrollContainer.addChild(_soundcloudRight);
-			
-			_line12 = new Quad(1,1,0x333235);
-			_scrollContainer.addChild(_line12);
-			
-			var youtubebm:Bitmap = new FontAssets.YouTube();
-			_youtubeIcon = new Image(Texture.fromBitmap(youtubebm));
-			_youtubeLabel = new Label();
-			_youtubeLabel.text = "Watch on YouTube";
-			_youtubeLabel.textRendererFactory = TextHelper.getInstance().detailLinks;
-			_youtubeRight = new Image(Texture.fromBitmap(rightbm));
-			_scrollContainer.addChild(_youtubeIcon);
-			_scrollContainer.addChild(_youtubeLabel);
-			_scrollContainer.addChild(_youtubeRight);
-			
-			_line13 = new Quad(1,1,0x333235);
-			_scrollContainer.addChild(_line13);
-			
+			_scrollContainer.addChild(_list);
+		}
+		
+		private function accessorySourceFunction(item:Object):Texture
+		{
+			return StandardIcons.listDrillDownAccessoryTexture;
 		}
 		
 		override protected function draw():void
@@ -361,9 +273,6 @@ package cz.hotmusic
 			this._header.paddingTop = this._header.paddingBottom = this._header.paddingLeft = this._header.paddingRight = 0;
 			this._header.width = this.actualWidth;
 			this._header.validate();
-			
-//			_backgroundQuad.width = actualWidth;
-//			_backgroundQuad.height = actualHeight;
 			
 			_scrollContainer.width = actualWidth;
 			_scrollContainer.height = actualHeight - _header.height;
@@ -492,82 +401,17 @@ package cz.hotmusic
 			_line7.height = _lineHeight*2;
 			_line7.width = actualWidth;
 			
-			_itunesIcon.x = _space/2 - _itunesIcon.width/2;
-			_itunesIcon.y = _line7.y + _lineHeight + _linePadding*2;
-			_itunesLabel.x = _space;
-			_itunesLabel.y = _line7.y + _lineHeight + _linePadding*2;
-			_itunesRight.x = actualWidth - _itunesRight.width - _leftPadding;
-			_itunesRight.y = _line7.y + _lineHeight + _linePadding*2;
-
-			_line8.y = _itunesIcon.y + _itunesIcon.height + _linePadding*2;
-			_line8.height = _lineHeight;
-			_line8.width = actualWidth;
+			_list.y = _line7.y + 2;
+			_list.width = actualWidth;
 			
-			_googleMusicIcon.x = _space/2 - _googleMusicIcon.width/2;
-			_googleMusicIcon.y = _line8.y + _lineHeight + _linePadding*2;
-			_googleMusicLabel.x = _space;
-			_googleMusicLabel.y = _line8.y + _lineHeight + _linePadding*2;
-			_googleMusicRight.x = actualWidth - _googleMusicRight.width - _leftPadding;
-			_googleMusicRight.y = _line8.y + _lineHeight + _linePadding*2;
-
-			_line9.y = _googleMusicIcon.y + _googleMusicIcon.height + _linePadding*2;
-			_line9.height = _lineHeight;
-			_line9.width = actualWidth;
-			
-			_amazonIcon.x = _space/2 - _amazonIcon.width/2;
-			_amazonIcon.y = _line9.y + _lineHeight + _linePadding*2;
-			_amazonLabel.x = _space;
-			_amazonLabel.y = _line9.y + _lineHeight + _linePadding*2;
-			_amazonRight.x = actualWidth - _amazonRight.width - _leftPadding;
-			_amazonRight.y = _line9.y + _lineHeight + _linePadding*2;
-
-			_line10.y = _amazonIcon.y + _amazonIcon.height + _linePadding*2;
-			_line10.height = _lineHeight;
-			_line10.width = actualWidth;
-			
-			_beatportIcon.x = _space/2 - _beatportIcon.width/2;
-			_beatportIcon.y = _line10.y + _lineHeight + _linePadding*2;
-			_beatportLabel.x = _space;
-			_beatportLabel.y = _line10.y + _lineHeight + _linePadding*2;
-			_beatportRight.x = actualWidth - _beatportRight.width - _leftPadding;
-			_beatportRight.y = _line10.y + _lineHeight + _linePadding*2;
-
-			_line11.y = _beatportIcon.y + _beatportIcon.height + _linePadding*2;
-			_line11.height = _lineHeight;
-			_line11.width = actualWidth;
-			
-			_soundcloudIcon.x = _space/2 - _soundcloudIcon.width/2;
-			_soundcloudIcon.y = _line11.y + _lineHeight + _linePadding*2;
-			_soundcloudLabel.x = _space;
-			_soundcloudLabel.y = _line11.y + _lineHeight + _linePadding*2;
-			_soundcloudRight.x = actualWidth - _soundcloudRight.width - _leftPadding;
-			_soundcloudRight.y = _line11.y + _lineHeight + _linePadding*2;
-
-			_line12.y = _soundcloudIcon.y + _soundcloudIcon.height + _linePadding*2;
-			_line12.height = _lineHeight;
-			_line12.width = actualWidth;
-			
-			_youtubeIcon.x = _space/2 - _youtubeIcon.width/2;
-			_youtubeIcon.y = _line12.y + _lineHeight + _linePadding*2;
-			_youtubeLabel.x = _space;
-			_youtubeLabel.y = _line12.y + _lineHeight + _linePadding*2;
-			_youtubeRight.x = actualWidth - _youtubeRight.width - _leftPadding;
-			_youtubeRight.y = _line12.y + _lineHeight + _linePadding*2;
-			
-			_line13.y = _youtubeIcon.y + _youtubeIcon.height + _linePadding*2;
-			_line13.height = _lineHeight;
-			_line13.width = actualWidth;
-		}
-		
-		private function accessorySourceFunction(item:Object):Texture
-		{
-			return StandardIcons.listDrillDownAccessoryTexture;
 		}
 		
 		private function list_changeHandler(event:Event):void
 		{
-			//			const eventType:String = this._list.selectedItem.event as String;
-			//			this.dispatchEventWith(eventType);
+			_list.removeEventListener(Event.CHANGE, list_changeHandler);
+			navigateToURL(new URLRequest(_list.selectedItem.url),"_blank");
+			_list.selectedIndex = -1;
+			_list.addEventListener(Event.CHANGE, list_changeHandler);
 		}
 		
 		private function backButton_triggeredHandler(event:Event):void 
@@ -624,6 +468,25 @@ package cz.hotmusic
 				_rateUpButton.enabled = false;
 			}
 			
+		}
+		
+		private function getURLDataProvider():Array
+		{
+			var dp:Array = [];
+			if (song.itunes && song.itunes.length > 0)
+				dp.push({icon: new Image(Texture.fromBitmap(new FontAssets.ITunes())), label: "Buy on iTunes", url: song.itunes});
+			if (song.googlePlay && song.googlePlay.length > 0)
+				dp.push({icon: new Image(Texture.fromBitmap(new FontAssets.GoogleMusic())), label: "Buy on Google Play Music", url: song.googlePlay});
+			if (song.amazon && song.amazon.length > 0)
+				dp.push({icon: new Image(Texture.fromBitmap(new FontAssets.Amazon())), label: "Buy on Amazon Music", url: song.amazon});
+			if (song.beatport && song.beatport.length > 0)
+				dp.push({icon: new Image(Texture.fromBitmap(new FontAssets.Beatport())), label: "Buy on Beatport", url: song.beatport});
+			if (song.soundcloud && song.soundcloud.length > 0)
+				dp.push({icon: new Image(Texture.fromBitmap(new FontAssets.SoundCloud())), label: "Listen on Soundcloud", url: song.soundcloud});
+			if (song.youtube && song.youtube.length > 0)
+				dp.push({icon: new Image(Texture.fromBitmap(new FontAssets.YouTube())), label: "Watch on YouTube", url: song.youtube});
+			
+			return dp;
 		}
 	}
 }

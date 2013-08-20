@@ -236,6 +236,12 @@ package cz.hotmusic
 			Model.getInstance().selectedSong.genre.name = Song(_list.selectedItem).genre ? Song(_list.selectedItem).genre.name : "no genre";
 			Model.getInstance().selectedSong.rateUp = Song(_list.selectedItem).rateUp;
 			Model.getInstance().selectedSong.rateDown = Song(_list.selectedItem).rateDown;
+			Model.getInstance().selectedSong.itunes = Song(_list.selectedItem).itunes;
+			Model.getInstance().selectedSong.googlePlay = Song(_list.selectedItem).googlePlay;
+			Model.getInstance().selectedSong.amazon = Song(_list.selectedItem).amazon;
+			Model.getInstance().selectedSong.beatport = Song(_list.selectedItem).beatport;
+			Model.getInstance().selectedSong.soundcloud = Song(_list.selectedItem).soundcloud;
+			Model.getInstance().selectedSong.youtube = Song(_list.selectedItem).youtube;
 //			Model.getInstance().selectedSong.hotstatus = Song(_list.selectedItem).hotstatus;
 			
 			TestFlight.passCheckpoint("Song Selected: " + Song(_list.selectedItem).name);
