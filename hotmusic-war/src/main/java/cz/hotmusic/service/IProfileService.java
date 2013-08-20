@@ -15,4 +15,5 @@ public interface IProfileService {
 	int listCount(String sid) throws Throwable;
 	void remove(String sid, User user) throws Throwable;
 	void update(String sid, User user) throws Throwable;
+	void feedback(String sid, String text) throws Throwable;
 }

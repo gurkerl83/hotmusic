@@ -21,6 +21,7 @@ package cz.hotmusic.lib.controller
 	import cz.hotmusic.lib.command.genre.ListGenreCommand;
 	import cz.hotmusic.lib.command.genre.RemoveGenreCommand;
 	import cz.hotmusic.lib.command.genre.UpdateGenreCommand;
+	import cz.hotmusic.lib.command.profile.FeedbackUserCommand;
 	import cz.hotmusic.lib.command.profile.ListUserCommand;
 	import cz.hotmusic.lib.command.profile.LoginUserCommand;
 	import cz.hotmusic.lib.command.profile.RegisterUserCommand;
@@ -70,6 +71,7 @@ package cz.hotmusic.lib.controller
 			addCommand(ProfileServiceEvent.LIST, ListUserCommand);
 			addCommand(ProfileServiceEvent.REMOVE, RemoveUserCommand);
 			addCommand(ProfileServiceEvent.UPDATE, UpdateUserCommand);
+			addCommand(ProfileServiceEvent.FEEDBACK, FeedbackUserCommand);
 //			addCommand(ProfileServiceEvent.UPDATE, GetScoreCommand);
 //			addCommand(ProfileServiceEvent.LIST_COUNT, UpdateProfileCommand);
 //			addCommand(ProfileServiceEvent.DELETE, ValidatePromoCodeCommand);

@@ -1,5 +1,6 @@
 package cz.hotmusic.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -23,6 +24,7 @@ import org.springframework.flex.remoting.RemotingInclude;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import cz.hotmusic.model.Feedback;
 import cz.hotmusic.model.User;
 import cz.hotmusic.service.IProfileService;
 
@@ -333,6 +335,36 @@ public class ProfileService implements IProfileService{
 		session.update(foundUser);
 		tr.commit();
 //		session.close();
+	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
+	public void feedback(String sid, String text) throws Throwable {
+		Assert.assertNotNull(sid);
+		Assert.assertNotNull(text);
+		sessionHelper.checkSession(sid);
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from User where session = :sid");
+		query.setParameter("sid", sid);
+		
+		@SuppressWarnings("unchecked")
+		List<User> list = (List<User>)query.list();
+		if (list.size() != 1)
+			throw new Exception("Can't find the user");
+		User foundUser = list.get(0);
+		
+		Feedback fb = new Feedback();
+		fb.addedDate = new Date();
+		fb.text = text;
+		fb.user = foundUser; 
+		
+		session = sessionFactory.openSession();
+		Transaction tr = session.beginTransaction();
+		tr.begin();
+		session.save(fb);
+		tr.commit();
 	}
 	
 	//---------------------------------------------------

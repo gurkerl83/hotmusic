@@ -31,7 +31,7 @@ package cz.hotmusic.lib.event
 			var upe:GenreServiceEvent = new GenreServiceEvent(type, resultCallback, faultCallback);
 			upe.genre = genre;
 			upe.sid = sid;
-			upe.autocomplete = autocomplete;
+			upe.sedata = sedata;
 			upe.resultCallback = resultCallback;
 			upe.faultCallback = faultCallback;
 			upe.response = response;

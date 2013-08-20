@@ -33,7 +33,7 @@ package cz.hotmusic.lib.event
 			var upe:ArtistServiceEvent = new ArtistServiceEvent(type, resultCallback, faultCallback);
 			upe.artist = artist;
 			upe.sid = sid;
-			upe.autocomplete = autocomplete;
+			upe.sedata = sedata;
 			upe.resultCallback = resultCallback;
 			upe.faultCallback = faultCallback;
 			upe.response = response;

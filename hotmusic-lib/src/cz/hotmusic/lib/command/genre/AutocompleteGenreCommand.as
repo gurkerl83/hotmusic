@@ -23,7 +23,7 @@ package cz.hotmusic.lib.command.genre
 		{
 			se = GenreServiceEvent(event);
 			var service:RemoteObject = MyServiceLocator.getInstance().getService(MyServiceLocator.GENRE_SERVICE);
-			var call:AsyncToken = service.autocomplete(se.sid, se.autocomplete);
+			var call:AsyncToken = service.autocomplete(se.sid, se.sedata);
 			call.addResponder(this);
 		}
 		

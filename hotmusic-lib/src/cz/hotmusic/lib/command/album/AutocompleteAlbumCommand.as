@@ -24,7 +24,7 @@ package cz.hotmusic.lib.command.album
 		{
 			se = AlbumServiceEvent(event);
 			var service:RemoteObject = MyServiceLocator.getInstance().getService(MyServiceLocator.ALBUM_SERVICE);
-			var call:AsyncToken = service.autocomplete(se.sid, se.autocomplete);
+			var call:AsyncToken = service.autocomplete(se.sid, se.sedata);
 			call.addResponder(this);
 		}
 		

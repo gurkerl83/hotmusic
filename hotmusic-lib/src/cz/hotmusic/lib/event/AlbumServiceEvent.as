@@ -33,7 +33,7 @@ package cz.hotmusic.lib.event
 			var upe:AlbumServiceEvent = new AlbumServiceEvent(type, resultCallback, faultCallback);
 			upe.album = album;
 			upe.sid = sid;
-			upe.autocomplete = autocomplete;
+			upe.sedata = sedata;
 			upe.resultCallback = resultCallback;
 			upe.faultCallback = faultCallback;
 			upe.response = response;

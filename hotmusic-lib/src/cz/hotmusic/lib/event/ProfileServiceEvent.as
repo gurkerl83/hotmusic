@@ -17,6 +17,7 @@ package cz.hotmusic.lib.event
 		public static const UPDATE			:String = "UPDATE_USER";
 		public static const REMOVE			:String = "REMOVE_USER";
 		public static const AUTOCOMPLETE	:String = "AUTOCOMPLETE_USER";
+		public static const FEEDBACK		:String = "FEEDBACK_USER";
 		
 		public function ProfileServiceEvent(type:String, resultCallback:Function=null, faultCallback:Function=null)
 		{
@@ -30,7 +31,7 @@ package cz.hotmusic.lib.event
 			var upe:ProfileServiceEvent = new ProfileServiceEvent(type, resultCallback, faultCallback);
 			upe.user = user;
 			upe.sid = sid;
-			upe.autocomplete = autocomplete;
+			upe.sedata = sedata;
 			upe.resultCallback = resultCallback;
 			upe.faultCallback = faultCallback;
 			upe.response = response;

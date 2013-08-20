@@ -30,7 +30,7 @@ package cz.hotmusic.components
 		public static const ADD_ARTIST_STATE:String = "ADD_ARTIST_STATE";
 		public static const FEEDBACK_STATE:String = "FEEDBACK_STATE";
 		
-		private var currentState:String;
+		public var currentState:String;
 		private var shifted:Boolean = false;
 		
 		private var line1:Quad;
@@ -42,23 +42,25 @@ package cz.hotmusic.components
 		private var addArtistBtn:starling.display.Button;
 		private var label:Label;
 		private var text:Label;
-		private var artistTI:TextInput;
+		public var textinput:TextInput;
 		private var sendBtn:feathers.controls.Button;
 		
 		public function state(state:String):void {
 			if (state == currentState)
 				return;
 			
+			currentState = state;
+			
 			if (state == ADD_ARTIST_STATE) {
 				label.text = "Do you miss any artist here?";
 				text.text = "So write it here and we will follow him. Are you the artist? Visit our website for more info.";
-				artistTI.prompt = "artist name";
+				textinput.prompt = "artist name";
 				addArtistBtn.upState = Texture.fromBitmap(new FontAssets.AddArtist());
 				addArtistBtn.downState = Texture.fromBitmap(new FontAssets.AddArtist());;
 			} else {
 				label.text = "We love your feedback!";
 				text.text = "Tell us what you think about HotMusic so we can make it even better.";
-				artistTI.prompt = "so write to us";
+				textinput.prompt = "so write to us";
 				addArtistBtn.upState = Texture.fromBitmap(new FontAssets.AddFeedback());
 				addArtistBtn.downState = Texture.fromBitmap(new FontAssets.AddFeedback());
 			}
@@ -69,7 +71,7 @@ package cz.hotmusic.components
 		{
 			super.visible = value;
 			if (value)
-				artistTI.setFocus();
+				textinput.setFocus();
 		}
 		
 		override protected function initialize():void
@@ -92,7 +94,7 @@ package cz.hotmusic.components
 //			label.text = "Do you miss any artist here?";
 			text = new Label();
 //			text.text = "So write it here and we will follow him. Are you the artist? Visit our website for more info.";
-			artistTI = new TextInput();
+			textinput = new TextInput();
 //			artistTI.addEventListener(FocusEvent.FOCUS_IN, function onTIFocus(event:Event):void {
 //				shiftUp();
 //			});
@@ -105,8 +107,8 @@ package cz.hotmusic.components
 			sendBtn.addEventListener(Event.TRIGGERED, function onClose(event:Event):void {
 //				shiftDown();
 				enterHandler(null);
-				artistTI.text = null;
 				dispatchEventWith(Event.CLOSE);
+				textinput.text = null;
 			});
 			
 			state(ADD_ARTIST_STATE);
@@ -120,7 +122,7 @@ package cz.hotmusic.components
 			addChild(addArtistBtn);
 			addChild(label);
 			addChild(text);
-			addChild(artistTI);
+			addChild(textinput);
 			addChild(sendBtn);
 		}
 		
@@ -152,14 +154,14 @@ package cz.hotmusic.components
 			sendBtn.validate();
 			sendBtn.x = actualWidth - sendBtn.width - gap;
 			
-			artistTI.y = line3.y + line3.height + gap;
-			artistTI.x = gap;
-			artistTI.width = actualWidth - 3*gap - sendBtn.width;
+			textinput.y = line3.y + line3.height + gap;
+			textinput.x = gap;
+			textinput.width = actualWidth - 3*gap - sendBtn.width;
 			
-			sendBtn.y = artistTI.y + artistTI.height/2 - sendBtn.height/2;
+			sendBtn.y = textinput.y + textinput.height/2 - sendBtn.height/2;
 			
 			line4.width = actualWidth;
-			line4.y = artistTI.y + artistTI.height + gap;
+			line4.y = textinput.y + textinput.height + gap;
 			
 			bg.width = actualWidth;
 			bg.height = line4.y + line4.height;

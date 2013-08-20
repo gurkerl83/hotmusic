@@ -164,7 +164,7 @@ package cz.hotmusic.component
 				return;
 			}
 			
-			_se.autocomplete = textinput.text;
+			_se.sedata = textinput.text;
 			_se.resultCallback = function onResult(result:ResultEvent):void {
 				var items:Array = [];
 				for each (var item:Object in result.result)
