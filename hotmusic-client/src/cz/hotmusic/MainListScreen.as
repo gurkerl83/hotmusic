@@ -165,6 +165,8 @@ package cz.hotmusic
 
 			// RIGHT
 			
+			this._rightHeader.paddingRight = 50;
+			this._rightHeader.paddingLeft = 50;
 			this._rightHeader.width = actualWidth - _space;
 			this._rightHeader.x = _space;
 			_rightHeader.validate();
@@ -459,8 +461,17 @@ package cz.hotmusic
 		
 		private function rightMenuInit():void
 		{
+			_filterRightButton = new feathers.controls.Button();
+			_filterRightButton.label = "Filter";
+			_filterRightButton.addEventListener(Event.TRIGGERED, filterRightButton_triggeredHandler);
+			
 			this._rightHeader = new Header();
 			this._rightHeader.title = "Filter";
+			this._rightHeader.titleAlign = Header.TITLE_ALIGN_PREFER_RIGHT;
+			this._rightHeader.leftItems = new <DisplayObject>
+				[
+					this._filterRightButton
+				];
 			
 			// Search
 			_searchTI = new TextInput();
@@ -482,12 +493,6 @@ package cz.hotmusic
 			this._rightList.itemRendererProperties.labelField = "sortby";
 			this._rightList.itemRendererProperties.accessorySourceFunction = accessorySourceFunction;
 			this._rightList.addEventListener(Event.CHANGE, rightlist_changeHandler);
-			
-			// BUTTON
-			
-			_filterRightButton = new feathers.controls.Button();
-			_filterRightButton.label = "Filter";
-			_filterRightButton.addEventListener(Event.TRIGGERED, filterRightButton_triggeredHandler);
 			
 			_endLine = new Quad(1,1,0x1A171B);
 			
