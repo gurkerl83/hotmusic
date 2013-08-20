@@ -148,7 +148,7 @@ package cz.hotmusic
 			_albumLabel = new Label();
 			_albumLabel.text = "Album:";
 			_albumValue = new Label();
-			_albumValue.text = song.album.name;
+			_albumValue.text = song.album == null ? "no album" : song.album.name;
 			_albumValue.textRendererFactory = TextHelper.getInstance().detailOtherValue;
 			_scrollContainer.addChild(_albumLabel);
 			_scrollContainer.addChild(_albumValue);
