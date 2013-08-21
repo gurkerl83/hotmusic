@@ -1,35 +1,29 @@
-package cz.hotmusic.lib.command.artist
+package cz.hotmusic.lib.command.profile
 {
 	import com.adobe.cairngorm.commands.ICommand;
 	import com.adobe.cairngorm.control.CairngormEvent;
 	
 	import cz.hotmusic.lib.controller.MyServiceLocator;
-	import cz.hotmusic.lib.event.ArtistServiceEvent;
-	import cz.hotmusic.lib.event.GenreServiceEvent;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
 	
 	import mx.rpc.AsyncToken;
 	import mx.rpc.IResponder;
 	import mx.rpc.remoting.RemoteObject;
 	
-	public class ListArtistCommand implements ICommand, IResponder
+	public class ListCountUserCommand implements ICommand, IResponder
 	{
-		public function ListArtistCommand()
+		public function ListCountUserCommand()
 		{
 		}
 		
-		public var se:ArtistServiceEvent;
+		public var se:ProfileServiceEvent;
 		
 		public function execute(event:CairngormEvent):void
 		{
-			se = ArtistServiceEvent(event);
-			var service:RemoteObject = MyServiceLocator.getInstance().getService(MyServiceLocator.ARTIST_SERVICE);
+			se = ProfileServiceEvent(event);
+			var service:RemoteObject = MyServiceLocator.getInstance().getService(MyServiceLocator.PROFILE_SERVICE);
 			var call:AsyncToken;
-			if (se.data != null) {
-				call = service.list(se.sid, se.data.page, se.data.count);
-			} else {
-				call = service.list(se.sid);
-			}
+			var call:AsyncToken = service.listCount(se.sid);
 			call.addResponder(this);
 		}
 		

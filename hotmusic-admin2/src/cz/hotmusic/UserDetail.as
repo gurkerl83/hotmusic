@@ -244,6 +244,8 @@ package cz.hotmusic
 					genresCB.isSelected = User(data).genresAuthorized;
 					usersCB.isSelected = User(data).usersAuthorized;
 					addArtistCB.isSelected = User(data).addArtistAuthorized;
+				} else {
+					clear();
 				}
 			}
 		}

@@ -114,6 +114,9 @@ package feathers.themes
 		public static const TINY_NORMAL_GRAY		:String = "TINY_NORMAL_GRAY";
 		public static const TINY_BOLD_WHITE			:String = "TINY_BOLD_WHITE";
 		
+		public static const PAGE_BUTTON_DARK		:String = "PAGE_BUTTON_DARK";
+		public static const PAGE_BUTTON_LIGHT		:String = "PAGE_BUTTON_LIGHT";
+		
 		// barvy
 		
 		public static const BLACK_TEXT_COLOR		:uint = 0x000004;
@@ -148,6 +151,7 @@ package feathers.themes
 		protected static const DEFAULT_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 22, 22);
 		protected static const BUTTON_SCALE9_GRID:Rectangle = new Rectangle(5, 5, 50, 50);
 		protected static const BUTTON2_SCALE9_GRID:Rectangle = new Rectangle(15, 15, 4, 47);
+		protected static const BUTTON_PAGE_SCALE9_GRID:Rectangle = new Rectangle(0, 0, 25, 25);
 		protected static const ITEM_RENDERER_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 1, 82);
 		protected static const ITEM_RENDERER_MAIN_SCALE9_GRID:Rectangle = new Rectangle(1, 5, 10, 40);
 		protected static const ITEM_RENDERER_MENU_SCALE9_GRID:Rectangle = new Rectangle(1, 1, 26, 50);
@@ -269,6 +273,9 @@ package feathers.themes
 		protected var buttonDisabledSkinTextures:Scale9Textures;
 		protected var buttonSelectedUpSkinTextures:Scale9Textures;
 		protected var buttonSelectedDisabledSkinTextures:Scale9Textures;
+		protected var buttonPageOrangeSkinTextures:Scale9Textures;
+		protected var buttonPageLightSkinTextures:Scale9Textures;
+		protected var buttonPageDarkSkinTextures:Scale9Textures;
 		protected var pickerListButtonIconTexture:Texture;
 		protected var tabDownSkinTextures:Scale9Textures;
 		protected var tabSelectedSkinTextures:Scale9Textures;
@@ -467,6 +474,9 @@ package feathers.themes
 //			this.buttonDisabledSkinTextures = new Scale9Textures(atlas.getTexture("button-disabled-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedUpSkinTextures = new Scale9Textures(atlas.getTexture("button-selected-up-skin"), BUTTON_SCALE9_GRID);
 			this.buttonSelectedDisabledSkinTextures = new Scale9Textures(atlas.getTexture("button-selected-disabled-skin"), BUTTON_SCALE9_GRID);
+			this.buttonPageOrangeSkinTextures = new Scale9Textures(atlas.getTexture("buttonPage-orange-skin"), BUTTON_PAGE_SCALE9_GRID);
+			this.buttonPageLightSkinTextures = new Scale9Textures(atlas.getTexture("buttonPage-light-skin"), BUTTON_PAGE_SCALE9_GRID);
+			this.buttonPageDarkSkinTextures = new Scale9Textures(atlas.getTexture("buttonPage-dark-skin"), BUTTON_PAGE_SCALE9_GRID);
 
 			this.tabDownSkinTextures = new Scale9Textures(atlas.getTexture("tab-down-skin"), TAB_SCALE9_GRID);
 			this.tabSelectedSkinTextures = new Scale9Textures(atlas.getTexture("tab-selected-skin"), TAB_SCALE9_GRID);
@@ -727,6 +737,10 @@ package feathers.themes
 			var myDefaultLabelTextFormat:TextFormat;
 			var myDisabledLabelTextFormat:TextFormat;
 			var mySelectedDisabledLabelTextFormat:TextFormat;
+			var width:int = 60;
+			var height:int = 40;
+			var paddingVertical:int = 8;
+			var paddingHorizontal:int = 16;
 
 			if (button.name == SMALL_BOLD_RED)
 			{
@@ -748,6 +762,30 @@ package feathers.themes
 				myDefaultLabelTextFormat = smallBoldBlueTextFormat;
 				myDisabledLabelTextFormat = smallUIDisabledTextFormat;
 				mySelectedDisabledLabelTextFormat = smallUIDisabledTextFormat;
+
+			} else if (button.name == PAGE_BUTTON_DARK) {
+				myButtonUpSkinTextures = buttonPageDarkSkinTextures;
+				myButtonSelectedUpSkinTextures = buttonPageOrangeSkinTextures;
+				myButtonDownSkinTextures = buttonPageOrangeSkinTextures;
+				myButtonDisabledSkinTextures = buttonPageDarkSkinTextures;
+				myButtonSelectedDisabledSkinTextures = buttonPageDarkSkinTextures;
+				myDefaultLabelTextFormat = smallBoldBlackTextFormat;
+				myDisabledLabelTextFormat = smallBoldBlackTextFormat;
+				mySelectedDisabledLabelTextFormat = smallBoldBlackTextFormat;
+				width = height = 25;
+				paddingHorizontal = paddingVertical = 0;
+
+			} else if (button.name == PAGE_BUTTON_LIGHT) {
+				myButtonUpSkinTextures = buttonPageLightSkinTextures;
+				myButtonSelectedUpSkinTextures = buttonPageOrangeSkinTextures;
+				myButtonDownSkinTextures = buttonPageOrangeSkinTextures;
+				myButtonDisabledSkinTextures = buttonPageOrangeSkinTextures;
+				myButtonSelectedDisabledSkinTextures = buttonPageOrangeSkinTextures;
+				myDefaultLabelTextFormat = smallBoldBlackTextFormat;
+				myDisabledLabelTextFormat = smallBoldBlackTextFormat;
+				mySelectedDisabledLabelTextFormat = smallBoldBlackTextFormat;
+				width = height = 25;
+				paddingHorizontal = paddingVertical = 0;
 				
 			} else {
 				myButtonUpSkinTextures = buttonUpSkinTextures;
@@ -767,8 +805,8 @@ package feathers.themes
 			skinSelector.setValueForState(myButtonSelectedDisabledSkinTextures, Button.STATE_DISABLED, true);
 			skinSelector.imageProperties =
 			{
-				width: 60 * this.scale,
-				height: 40 * this.scale,
+				width: width * this.scale,
+				height: height * this.scale,
 				textureScale: this.scale
 			};
 			button.stateToSkinFunction = skinSelector.updateValue;
@@ -780,11 +818,13 @@ package feathers.themes
 			button.selectedDisabledLabelProperties.textFormat = mySelectedDisabledLabelTextFormat;
 			button.selectedDisabledLabelProperties.embedFonts = true;
 
-			button.paddingTop = button.paddingBottom = 8 * this.scale;
-			button.paddingLeft = button.paddingRight = 16 * this.scale;
+			button.paddingTop = button.paddingBottom = paddingVertical * this.scale;
+			button.paddingLeft = button.paddingRight = paddingHorizontal * this.scale;
 			button.gap = 12 * this.scale;
-			button.minWidth = button.minHeight = 40 * this.scale;
-			button.minTouchWidth = button.minTouchHeight = 40 * this.scale;
+			button.minWidth = width * this.scale;
+			button.minHeight = height * this.scale;
+			button.minTouchWidth = width * this.scale;
+			button.minTouchHeight = height * this.scale;
 			button.useHandCursor = true;
 		}
 

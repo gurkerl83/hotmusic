@@ -16,22 +16,27 @@ package cz.hotmusic.lib.command.profile
 		{
 		}
 		
-		public var pse:ProfileServiceEvent;
+		public var se:ProfileServiceEvent;
 		
 		public function execute(event:CairngormEvent):void
 		{
-			pse = ProfileServiceEvent(event);
+			se = ProfileServiceEvent(event);
 			var service:RemoteObject = MyServiceLocator.getInstance().getService(MyServiceLocator.PROFILE_SERVICE);
-			var call:AsyncToken = service.list(pse.sid);
+			var call:AsyncToken;
+			if (se.data != null) {
+				call = service.list(se.sid, se.data.page, se.data.count);
+			} else {
+				call = service.list(se.sid);
+			}
 			call.addResponder(this);
 		}
 		
 		public function result(data:Object):void {
-			pse.resultCallback.call(this, data);
+			se.resultCallback.call(this, data);
 		}
 		
 		public function fault(info:Object):void {
-			pse.faultCallback.call(this, info);
+			se.faultCallback.call(this, info);
 		}
 	}
 }

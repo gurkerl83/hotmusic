@@ -85,12 +85,6 @@ public class Song {
 	public void setGenre(Genre genre) {
 		this.genre = genre;
 	}
-	public Date getRelease() {
-		return releaseDate;
-	}
-	public void setRelease(Date release) {
-		this.releaseDate = release;
-	}
 	public String getItunes() {
 		return itunes;
 	}

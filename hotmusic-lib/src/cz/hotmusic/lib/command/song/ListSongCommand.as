@@ -25,7 +25,12 @@ package cz.hotmusic.lib.command.song
 		{
 			se = SongServiceEvent(event);
 			var service:RemoteObject = MyServiceLocator.getInstance().getService(MyServiceLocator.SONG_SERVICE);
-			var call:AsyncToken = service.list(se.sid);
+			var call:AsyncToken;
+			if (se.data != null) {
+				call = service.list(se.sid, se.data.page, se.data.count);
+			} else {
+				call = service.list(se.sid);
+			}
 			call.addResponder(this);
 		}
 		

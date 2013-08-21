@@ -306,7 +306,8 @@ package cz.hotmusic
 					soundcloud.value = songData.soundcloud;
 				if (songData && songData.youtube)
 					youtube.value = songData.youtube;
-				
+				if (songData == null)
+					clear();
 			}
 		}
 	}

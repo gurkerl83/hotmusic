@@ -42,8 +42,8 @@ package cz.hotmusic.lib.data
 			getSongs(null, skipCounts);
 			getArtists(null, skipCounts);
 			getAlbums(null, skipCounts);
-			getGenres();
-			getUsers();
+			getGenres(null, skipCounts);
+			getUsers(null, skipCounts);
 		}
 		
 		private var _songsComplete:Boolean;
@@ -56,7 +56,9 @@ package cz.hotmusic.lib.data
 		private var _albumsTotalComplete:Boolean;
 		private var _albumsLastMonthComplete:Boolean;
 		private var _genresComplete:Boolean;
+		private var _genresTotalComplete:Boolean;
 		private var _usersComplete:Boolean;
+		private var _usersTotalComplete:Boolean;
 		
 		public static const INIT_COMPLETE		:String = "INIT_COMPLETE";
 		public static const SONGS_COMPLETE		:String = "SONGS_COMPLETE";
@@ -70,7 +72,8 @@ package cz.hotmusic.lib.data
 			if (_songsComplete && _songsTotalComplete && _songsLastMonthComplete && 
 				_albumsComplete && _albumsLastMonthComplete && _albumsTotalComplete && 
 				_artistsComplete && _artistsLastMonthComplete && _artistsTotalComplete && 
-				_genresComplete && _usersComplete)
+				_genresComplete && _genresTotalComplete && 
+				_usersComplete && _usersTotalComplete)
 				dispatchEvent(new Event(INIT_COMPLETE));
 		}
 		
@@ -92,6 +95,18 @@ package cz.hotmusic.lib.data
 				dispatchEvent(new Event(ARTISTS_COMPLETE));
 		}
 		
+		private function dispatchGenresComplete():void
+		{
+			if (_genresComplete && _genresTotalComplete)
+				dispatchEvent(new Event(GENRES_COMPLETE));
+		}
+		
+		private function dispatchUsersComplete():void
+		{
+			if (_usersComplete && _usersTotalComplete)
+				dispatchEvent(new Event(USERS_COMPLETE));
+		}
+		
 		//-------------------------------
 		//
 		// SONGS
@@ -99,7 +114,7 @@ package cz.hotmusic.lib.data
 		//-------------------------------
 		
 		private var songsCallback:Function;
-		public function getSongs(callback:Function=null,skipCounts:Boolean=false):void
+		public function getSongs(callback:Function=null,skipCounts:Boolean=false,paging:Object=null):void
 		{
 			_songsComplete = _songsTotalComplete = _songsLastMonthComplete = false;
 			
@@ -110,6 +125,8 @@ package cz.hotmusic.lib.data
 			// List
 			var sse:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST,songResult,songFault);
 			sse.sid = model.user.session;
+			if (paging != null)
+				sse.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(sse);
 			sse = null;
 			
@@ -176,7 +193,7 @@ package cz.hotmusic.lib.data
 		//-------------------------------
 		
 		private var artistsCallback:Function;
-		public function getArtists(callback:Function=null, skipCounts:Boolean=false):void
+		public function getArtists(callback:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_artistsComplete = _artistsTotalComplete = _artistsLastMonthComplete = false;
 			
@@ -185,6 +202,8 @@ package cz.hotmusic.lib.data
 				artistsCallback = callback;
 			var se:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST,artistResult,artistFault);
 			se.sid = model.user.session;
+			if (paging != null)
+				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			
 			if (skipCounts) {
@@ -250,7 +269,7 @@ package cz.hotmusic.lib.data
 		//-------------------------------
 		
 		private var albumsCallback:Function;
-		public function getAlbums(callback:Function=null, skipCounts:Boolean=false):void
+		public function getAlbums(callback:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_albumsComplete = _albumsTotalComplete = _albumsLastMonthComplete = false;
 			
@@ -259,6 +278,8 @@ package cz.hotmusic.lib.data
 				albumsCallback = callback;
 			var se:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST,albumResult,albumFault);
 			se.sid = model.user.session;
+			if (paging != null)
+				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			
 			if (skipCounts) {
@@ -323,14 +344,37 @@ package cz.hotmusic.lib.data
 		//-------------------------------
 		
 		private var genresCallback:Function;
-		public function getGenres(callback:Function=null):void
+		public function getGenres(callback:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
+			_genresComplete = _genresTotalComplete = false;
+			
 			genresCallback = null;
 			if (callback != null)
 				genresCallback = callback;
 			var se:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.LIST,genreResult,genreFault);
 			se.sid = model.user.session;
+			if (paging != null)
+				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+			
+			if (skipCounts) {
+				_genresTotalComplete = true;
+				return;
+			}
+			
+			// Total
+			var ssecount:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
+				if (result && result.result) {
+					model.genresTotal = result.result;
+					_genresTotalComplete = true;
+					dispatchGenresComplete();
+					dispatchInitComplete();
+				}
+			},function listCountFault(info:Object):void {
+				trace("listCountFault genre");
+			});
+			ssecount.sid = model.user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
 		}
 		
 		private function genreResult(result:ResultEvent):void
@@ -360,14 +404,37 @@ package cz.hotmusic.lib.data
 		//-------------------------------
 		
 		private var usersCallback:Function;
-		public function getUsers(callback:Function=null):void
+		public function getUsers(callback:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
+			_usersComplete = _usersTotalComplete = false;
+			
 			usersCallback = null;
 			if (callback != null)
 				usersCallback = callback;
 			var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST,userResult,userFault);
 			se.sid = model.user.session;
+			if (paging != null)
+				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+			
+			if (skipCounts) {
+				_usersTotalComplete = true;
+				return;
+			}
+			
+			// Total
+			var ssecount:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
+				if (result && result.result) {
+					model.usersTotal = result.result;
+					_usersTotalComplete = true;
+					dispatchUsersComplete();
+					dispatchInitComplete();
+				}
+			},function listCountFault(info:Object):void {
+				trace("listCountFault users");
+			});
+			ssecount.sid = model.user.session;
+			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
 		}
 		
 		private function userResult(result:ResultEvent):void

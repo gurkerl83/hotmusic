@@ -245,6 +245,8 @@ package cz.hotmusic
 					amazon.value = data.amazon;
 				if (data && data.beatport)
 					beatport.value = data.beatport;
+				if (data == null)
+					clear();
 			}
 		}
 	}

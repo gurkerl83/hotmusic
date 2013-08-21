@@ -117,6 +117,8 @@ package cz.hotmusic
 			if (isInvalid(INVALIDATION_FLAG_DATA)) {
 				if (artistData && artistData.name)
 					artist.value = artistData.name;
+				if (artistData == null)
+					clear();
 			}
 		}
 	}

@@ -2,12 +2,13 @@ package cz.hotmusic
 {
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
-	import cz.hotmusic.lib.event.ProfileServiceEvent;
+	import cz.hotmusic.component.PageJumper;
 	import cz.hotmusic.helper.ButtonHelper;
-	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.helper.MockDataHelper;
-	import cz.hotmusic.model.Model;
+	import cz.hotmusic.lib.data.DataHelper;
+	import cz.hotmusic.lib.event.ProfileServiceEvent;
 	import cz.hotmusic.lib.model.User;
+	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.UserRenderer;
 	
 	import feathers.controls.Button;
@@ -27,6 +28,14 @@ package cz.hotmusic
 		public function UsersList()
 		{
 			super();
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+		
+		private function onAddedToStage(event:Event):void {
+			// reload data
+			list.dataProvider = new ListCollection(Model.getInstance().users);
+			pageJumper.totalItems = Model.getInstance().usersTotal;
+			pageJumper.actualPage = 0;
 		}
 		
 		// ACTION BUTTONS
@@ -43,6 +52,7 @@ package cz.hotmusic
 		
 		// INITIALIZE
 		private var list:List;
+		private var pageJumper:PageJumper;
 		private var skipOpenDetail:Boolean;
 		
 		override protected function initialize():void
@@ -71,7 +81,17 @@ package cz.hotmusic
 					list.selectedIndex = -1;
 			});
 			
+			pageJumper = new PageJumper();
+			pageJumper.totalItems = Model.getInstance().songsTotal;
+			pageJumper.addEventListener(PageJumper.PAGE_JUMP, function onPageJump(event:Event):void {
+				DataHelper.getInstance().getUsers(function onUsers():void {
+					list.dataProvider = new ListCollection(Model.getInstance().users);
+				}
+					, false, event.data);
+			});
+			
 			addChild(list);
+			addChild(pageJumper);
 		}
 		
 		private function removeResult(result:ResultEvent):void
@@ -79,6 +99,7 @@ package cz.hotmusic
 			DataHelper.getInstance().getUsers(function onData():void {
 				list.selectedIndex = -1;
 				list.dataProvider = new ListCollection(Model.getInstance().users);
+				pageJumper.actualPage = 0;
 				invalidate();
 			});
 		}
@@ -93,6 +114,9 @@ package cz.hotmusic
 			super.draw();
 			
 			list.width = actualWidth;
+			
+			pageJumper.validate();
+			pageJumper.y = actualHeight - pageJumper.height;
 		}
 	}
 }

@@ -67,6 +67,7 @@ package cz.hotmusic
 		public function clear():void
 		{
 			genre.value = "";
+			genre.textinput.focusManager.focus = genre.textinput;
 		}
 		
 		public function remove():void
@@ -117,6 +118,8 @@ package cz.hotmusic
 			if (isInvalid(INVALIDATION_FLAG_DATA)) {
 				if (data && data.name)
 					genre.value = data.name;
+				if (data == null)
+					clear();
 			}
 		}
 	}

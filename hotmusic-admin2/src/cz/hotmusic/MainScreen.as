@@ -61,63 +61,63 @@ package cz.hotmusic
 			
 			// SONGS
 			
-			screenNavigator.addScreen(SONGS_LIST, new ScreenNavigatorItem(SongsList,{showDetail: function onSongDetail(event:Event):void
+			screenNavigator.addScreen(SONGS_LIST, new ScreenNavigatorItem(new SongsList(),{showDetail: function onSongDetail(event:Event):void
 			{
 				scr = screenNavigator.showScreen(SONG_DETAIL)
-				if (event.data != null)
+//				if (event.data != null)
 					SongDetail(scr).songData = Song(event.data);
 			}}));
-			screenNavigator.addScreen(SONG_DETAIL, new ScreenNavigatorItem(SongDetail,{closeDetail: SONGS_LIST}));
+			screenNavigator.addScreen(SONG_DETAIL, new ScreenNavigatorItem(new SongDetail(),{closeDetail: SONGS_LIST}));
 			
 			// ARTISTS
 			
-			screenNavigator.addScreen(ARTISTS_LIST, new ScreenNavigatorItem(ArtistsList,{showDetail: function onSongDetail(event:Event):void
+			screenNavigator.addScreen(ARTISTS_LIST, new ScreenNavigatorItem(new ArtistsList(),{showDetail: function onSongDetail(event:Event):void
 			{
 				scr = screenNavigator.showScreen(ARTIST_DETAIL)
-				if (event.data != null)
+//				if (event.data != null)
 					ArtistDetail(scr).artistData = Artist(event.data);
 			}}));
-			screenNavigator.addScreen(ARTIST_DETAIL, new ScreenNavigatorItem(ArtistDetail,{closeDetail: ARTISTS_LIST}));
+			screenNavigator.addScreen(ARTIST_DETAIL, new ScreenNavigatorItem(new ArtistDetail(),{closeDetail: ARTISTS_LIST}));
 			
 			// ALBUMS
 			
-			screenNavigator.addScreen(ALBUMS_LIST, new ScreenNavigatorItem(AlbumsList,{showDetail: function onSongDetail(event:Event):void
+			screenNavigator.addScreen(ALBUMS_LIST, new ScreenNavigatorItem(new AlbumsList(),{showDetail: function onSongDetail(event:Event):void
 			{
 				scr = screenNavigator.showScreen(ALBUM_DETAIL)
-				if (event.data != null)
+//				if (event.data != null)
 					AlbumDetail(scr).data = Album(event.data);
 			}}));
-			screenNavigator.addScreen(ALBUM_DETAIL, new ScreenNavigatorItem(AlbumDetail,{closeDetail: ALBUMS_LIST}));
+			screenNavigator.addScreen(ALBUM_DETAIL, new ScreenNavigatorItem(new AlbumDetail(),{closeDetail: ALBUMS_LIST}));
 			
 			// GENRES
 			
-			screenNavigator.addScreen(GENRES_LIST, new ScreenNavigatorItem(GenresList,{showDetail: function onSongDetail(event:Event):void
+			screenNavigator.addScreen(GENRES_LIST, new ScreenNavigatorItem(new GenresList(),{showDetail: function onSongDetail(event:Event):void
 			{
 				scr = screenNavigator.showScreen(GENRE_DETAIL)
-				if (event.data != null)
+//				if (event.data != null)
 					GenreDetail(scr).data = Genre(event.data);
 			}}));
-			screenNavigator.addScreen(GENRE_DETAIL, new ScreenNavigatorItem(GenreDetail,{closeDetail: GENRES_LIST}));
+			screenNavigator.addScreen(GENRE_DETAIL, new ScreenNavigatorItem(new GenreDetail(),{closeDetail: GENRES_LIST}));
 			
 			// USERS
 			
-			screenNavigator.addScreen(USERS_LIST, new ScreenNavigatorItem(UsersList,{showDetail: function onSongDetail(event:Event):void
+			screenNavigator.addScreen(USERS_LIST, new ScreenNavigatorItem(new UsersList(),{showDetail: function onSongDetail(event:Event):void
 			{
 				scr = screenNavigator.showScreen(USER_DETAIL)
-				if (event.data != null)
+//				if (event.data != null)
 					UserDetail(scr).data = User(event.data);
 			}}));
-			screenNavigator.addScreen(USER_DETAIL, new ScreenNavigatorItem(UserDetail,{closeDetail: USERS_LIST}));
+			screenNavigator.addScreen(USER_DETAIL, new ScreenNavigatorItem(new UserDetail(),{closeDetail: USERS_LIST}));
 			
 			// ADD ARTIST
 			
-			screenNavigator.addScreen(ADD_ARTISTS_LIST, new ScreenNavigatorItem(AddArtistsList,{showDetail: function onSongDetail(event:Event):void
+			screenNavigator.addScreen(ADD_ARTISTS_LIST, new ScreenNavigatorItem(new AddArtistsList(),{showDetail: function onSongDetail(event:Event):void
 			{
 //				scr = screenNavigator.showScreen(ADD_ARTIST_DETAIL)
 //				if (event.data != null)
 //					AddArtistDetail(scr).artistData = Artist(event.data);
 			}}));
-			screenNavigator.addScreen(ADD_ARTIST_DETAIL, new ScreenNavigatorItem(AddArtistDetail,{closeDetail: ADD_ARTISTS_LIST}));
+			screenNavigator.addScreen(ADD_ARTIST_DETAIL, new ScreenNavigatorItem(new AddArtistDetail(),{closeDetail: ADD_ARTISTS_LIST}));
 
 			screenNavigator.addEventListener(Event.CHANGE, screenNavigatorChangeHandler);
 			

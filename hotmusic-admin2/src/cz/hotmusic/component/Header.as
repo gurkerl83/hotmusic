@@ -26,14 +26,14 @@ package cz.hotmusic.component
 		
 		public function actionButtons(buttons:Array):void
 		{
-			if (this.buttons == buttons)
-				return;
+//			if (this.buttons == buttons)
+//				return;
 			
 			if (this.buttons && this.buttons.length > 0)
 			{
-				for each (var button:feathers.controls.Button in this.buttons)
+				for each (var buttonRemoved:feathers.controls.Button in this.buttons)
 				{
-					removeChild(button);
+					removeChild(buttonRemoved);
 				}
 			}
 			
@@ -41,9 +41,9 @@ package cz.hotmusic.component
 			
 			if (buttons && buttons.length > 0)
 			{
-				for each (var button:feathers.controls.Button in buttons)
+				for each (var buttonAdded:feathers.controls.Button in buttons)
 				{
-					addChild(button);
+					addChild(buttonAdded);
 				}
 			}
 			

@@ -7,8 +7,11 @@ package cz.hotmusic.model
 		public function Model()
 		{
 		}
+
+		public static const ITEMS_ON_PAGE:int = 10; // je treba nastavit i v listCount ve vsech sluzbach stejne
 		
 		private static var _instance:Model;
+		
 		public static function getInstance():Model
 		{
 			if (_instance == null) {
@@ -28,12 +31,12 @@ package cz.hotmusic.model
 		
 		public var songsLastMonth:int;
 		public var songsTotal:int;
-		
 		public var albumsLastMonth:int;
 		public var albumsTotal:int;
-		
 		public var artistsLastMonth:int;
 		public var artistsTotal:int;
+		public var genresTotal:int;
+		public var usersTotal:int;
 		
 		public function resetModel():void
 		{
