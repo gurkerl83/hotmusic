@@ -105,7 +105,7 @@ package cz.hotmusic
 		{
 			var sg:SwipeGesture = new SwipeGesture(this);
 			sg.addEventListener(GestureEvent.GESTURE_RECOGNIZED, function onSwipe(event:GestureEvent):void {
-				var offset:int = 50;
+				var offset:int = 30;
 				if (sg.direction == SwipeGestureDirection.LEFT || sg.offsetY == 0 && sg.offsetX < -offset) {
 					trace("swiped left");
 					if (!_rightActive && !_leftActive)
