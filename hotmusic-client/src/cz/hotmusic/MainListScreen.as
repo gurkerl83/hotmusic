@@ -37,9 +37,16 @@ package cz.hotmusic
 	
 	import flash.display.InteractiveObject;
 	import flash.display.Stage;
+	import flash.events.TransformGestureEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.ReturnKeyLabel;
+	import flash.ui.Multitouch;
+	import flash.ui.MultitouchInputMode;
+	
+	import org.gestouch.events.GestureEvent;
+	import org.gestouch.gestures.SwipeGesture;
+	import org.gestouch.gestures.SwipeGestureDirection;
 	
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
@@ -96,6 +103,34 @@ package cz.hotmusic
 		
 		override protected function initialize():void
 		{
+			var sg:SwipeGesture = new SwipeGesture(this);
+			sg.addEventListener(GestureEvent.GESTURE_RECOGNIZED, function onSwipe(event:GestureEvent):void {
+				var offset:int = 50;
+				if (sg.direction == SwipeGestureDirection.LEFT || sg.offsetY == 0 && sg.offsetX < -offset) {
+					trace("swiped left");
+					if (!_rightActive && !_leftActive)
+						rightButton_triggeredHandler(null);
+					if (_leftActive)
+						leftButton_triggeredHandler(null);
+				} else if (sg.direction == SwipeGestureDirection.RIGHT || sg.offsetY == 0 && sg.offsetX > offset ) {
+					trace("swiped right");
+					if (!_rightActive && !_leftActive)
+						leftButton_triggeredHandler(null);
+					if (_rightActive)
+						rightButton_triggeredHandler(null);
+				} else
+					trace("swipe direction not recognized");
+				
+				trace(sg.direction, sg.offsetX, sg.offsetY);
+			});
+			
+//			Multitouch.inputMode = MultitouchInputMode.GESTURE;
+//			addEventListener(TransformGestureEvent.GESTURE_SWIPE, function onSwipe(event:TransformGestureEvent):void {
+//				if (event.offsetX == 1)
+//					trace("swiped right");
+//				else
+//					trace("swiped left");
+//			});
 			
 			initMainList();
 			leftMenuInit();

@@ -17,7 +17,13 @@ package
 	import flash.events.InvokeEvent;
 	import flash.geom.Rectangle;
 	
+	import org.gestouch.core.Gestouch;
+	import org.gestouch.extensions.starling.StarlingDisplayListAdapter;
+	import org.gestouch.extensions.starling.StarlingTouchHitTester;
+	import org.gestouch.input.NativeInputAdapter;
+	
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
 	
@@ -106,6 +112,11 @@ package
 			_starling.antiAliasing = 1;
 			_starling.addEventListener("rootCreated", removeSplash);
 			_starling.start();
+			
+			// Gestouch initialization
+			Gestouch.inputAdapter ||= new NativeInputAdapter(stage);
+			Gestouch.addDisplayListAdapter(DisplayObject, new StarlingDisplayListAdapter());
+			Gestouch.addTouchHitTester(new StarlingTouchHitTester(_starling), -1);
 			
 			this.stage.addEventListener(Event.RESIZE, stage_resizeHandler, false, int.MAX_VALUE, true);
 			this.stage.addEventListener(Event.DEACTIVATE, stage_deactivateHandler, false, 0, true);
