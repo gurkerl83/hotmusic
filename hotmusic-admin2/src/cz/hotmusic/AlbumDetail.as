@@ -14,6 +14,7 @@ package cz.hotmusic
 	import cz.hotmusic.lib.model.Artist;
 	import cz.hotmusic.lib.model.Genre;
 	import cz.hotmusic.model.Model;
+	import cz.zc.mylib.helper.DateHelper;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -57,13 +58,14 @@ package cz.hotmusic
 		
 		public function save():void
 		{
-			if (!albumname.value || !artistname.selectedItem || !genre.selectedItem )
+			if (!albumname.value || !artistname.selectedItem || !genre.selectedItem || DateHelper.parsePHPDate(releasedate.value) == null )
 				return;
 			
 			var album:Album = new Album();
 			album.name = albumname.value;
 			album.artist = Artist(artistname.selectedItem);
 			album.genre = Genre(genre.selectedItem);
+			album.releaseDate = DateHelper.parsePHPDate(releasedate.value);
 			album.itunes = itunes.value;
 			album.googlePlay = google.value;
 			album.amazon = amazon.value;
@@ -98,7 +100,7 @@ package cz.hotmusic
 			albumname.value = "";
 			artistname.selectedItem = null;
 			genre.selectedItem = null;
-			releasedate.value = "";
+			releasedate.value = DateHelper.formatDateUS(new Date());
 			itunes.value = "";
 			google.value = "";
 			amazon.value = "";
@@ -191,6 +193,8 @@ package cz.hotmusic
 			amazon.previousTabFocus = google.textinput;
 			beatport.previousTabFocus = amazon.textinput;
 			
+			releasedate.textinput.restrict = "0-9\\-";
+			
 			albumname.textinput.focusManager.focus = albumname.textinput;
 		}
 		
@@ -241,8 +245,8 @@ package cz.hotmusic
 					artistname.selectedItem = data.artist;
 				if (data && data.genre)
 					genre.selectedItem = data.genre;
-//				if (data && data.releaseDate)
-//					releasedate.value = data.releaseDate;
+				if (data)
+					releasedate.value = DateHelper.formatDateUS(data.releaseDate);
 				if (data && data.itunes)
 					itunes.value = data.itunes;
 				if (data && data.googlePlay)
