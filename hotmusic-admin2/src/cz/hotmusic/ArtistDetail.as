@@ -55,7 +55,7 @@ package cz.hotmusic
 		
 		public function save():void
 		{
-			if (!this.artist.value)
+			if (!isValid())
 				return;
 			
 			var artist:Artist = new Artist(this.artist.value);
@@ -66,6 +66,20 @@ package cz.hotmusic
 			se.artist = artist;
 			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function isValid():Boolean 
+		{
+			artist.hideValidator();
+			
+			var valid:Boolean = true;
+			
+			if (!artist.value) {
+				artist.showValidator();
+				valid = false;
+			}
+			
+			return valid;
 		}
 		
 		public function clear():void

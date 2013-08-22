@@ -50,7 +50,7 @@ package cz.hotmusic
 		
 		public function save():void
 		{
-			if (!firstname.value || !surname.value || !email.value)
+			if (!isValid())
 				return;
 			
 			var user:User = new User();
@@ -68,6 +68,30 @@ package cz.hotmusic
 			se.user = user;
 			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function isValid():Boolean 
+		{
+			firstname.hideValidator();
+			surname.hideValidator()
+			email.hideValidator()
+			
+			var valid:Boolean = true;
+			
+			if (!firstname.value) {
+				firstname.showValidator();
+				valid = false;
+			}
+			if (!surname.selectedItem) {
+				surname.showValidator();
+				valid = false;
+			}
+			if (!email.selectedItem) {
+				email.showValidator();
+				valid = false;
+			}
+			
+			return valid;
 		}
 		
 		public function clear():void

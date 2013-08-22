@@ -58,7 +58,7 @@ package cz.hotmusic
 		
 		public function save():void
 		{
-			if (!albumname.value || !artistname.selectedItem || !genre.selectedItem || DateHelper.parsePHPDate(releasedate.value) == null )
+			if (!isValid())
 				return;
 			
 			var album:Album = new Album();
@@ -77,6 +77,35 @@ package cz.hotmusic
 			se.album = album;
 			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function isValid():Boolean 
+		{
+			albumname.hideValidator();
+			artistname.hideValidator()
+			genre.hideValidator()
+			releasedate.hideValidator()
+			
+			var valid:Boolean = true;
+				
+			if (!albumname.value) {
+				albumname.showValidator();
+				valid = false;
+			}
+			if (!artistname.selectedItem) {
+				artistname.showValidator();
+				valid = false;
+			}
+			if (!genre.selectedItem) {
+				genre.showValidator();
+				valid = false;
+			}
+			if (DateHelper.parsePHPDate(releasedate.value) == null ) {
+				releasedate.showValidator();
+				valid = false;
+			}
+			
+			return valid;
 		}
 		
 		private function createResult(result:Object):void

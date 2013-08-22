@@ -55,7 +55,7 @@ package cz.hotmusic
 		
 		public function save():void
 		{
-			if (!this.genre.value)
+			if (!isValid())
 				return;
 			
 			var genre:Genre = new Genre(this.genre.value);
@@ -66,6 +66,20 @@ package cz.hotmusic
 			se.genre = genre;
 			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function isValid():Boolean 
+		{
+			genre.hideValidator();
+			
+			var valid:Boolean = true;
+			
+			if (!genre.value) {
+				genre.showValidator();
+				valid = false;
+			}
+			
+			return valid;
 		}
 		
 		public function clear():void

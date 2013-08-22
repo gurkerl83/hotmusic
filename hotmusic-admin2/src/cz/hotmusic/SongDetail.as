@@ -75,7 +75,7 @@ package cz.hotmusic
 		
 		public function save():void
 		{
-			if (!songname.value || !artistname.selectedItem || !genre.selectedItem || DateHelper.parsePHPDate(releasedate.value) == null )
+			if (!isValid())
 				return;
 			
 			var song:Song = new Song();
@@ -97,6 +97,35 @@ package cz.hotmusic
 			se.song = song;
 			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function isValid():Boolean 
+		{
+			songname.hideValidator();
+			artistname.hideValidator()
+			genre.hideValidator()
+			releasedate.hideValidator()
+			
+			var valid:Boolean = true;
+			
+			if (!songname.value) {
+				songname.showValidator();
+				valid = false;
+			}
+			if (!artistname.selectedItem) {
+				artistname.showValidator();
+				valid = false;
+			}
+			if (!genre.selectedItem) {
+				genre.showValidator();
+				valid = false;
+			}
+			if (DateHelper.parsePHPDate(releasedate.value) == null ) {
+				releasedate.showValidator();
+				valid = false;
+			}
+			
+			return valid;
 		}
 		
 		private function createResult(result:Object):void

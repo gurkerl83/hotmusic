@@ -272,6 +272,7 @@ package feathers.themes
 		protected var backgroundSkinTextures:Scale9Textures;
 		protected var backgroundDisabledSkinTextures:Scale9Textures;
 		protected var backgroundFocusedSkinTextures:Scale9Textures;
+		protected var textinputredSkinTextures:Scale9Textures;
 		protected var buttonUpSkinTextures:Scale9Textures;
 		protected var buttonDownSkinTextures:Scale9Textures;
 		protected var buttonDisabledSkinTextures:Scale9Textures;
@@ -458,6 +459,7 @@ package feathers.themes
 			const textinputblackSkinTexture:Texture = atlas.getTexture("textinputblack-skin");
 			const textinputwhiteSkinTexture:Texture = atlas.getTexture("textinputwhite-skin");
 			const textinputSkinTexture:Texture = atlas.getTexture("textinput-skin");
+			const textinputredSkinTexture:Texture = atlas.getTexture("textinputred-skin");
 			const backgroundSkinTexture:Texture = atlas.getTexture("background-skin");
 			const backgroundDownSkinTexture:Texture = atlas.getTexture("background-down-skin");
 			const backgroundDisabledSkinTexture:Texture = atlas.getTexture("background-disabled-skin");
@@ -466,6 +468,7 @@ package feathers.themes
 			this.textinputblackSkinTextures = new Scale9Textures(textinputblackSkinTexture, TEXTINPUTBLACK_SCALE9_GRID);
 			this.textinputwhiteSkinTextures = new Scale9Textures(textinputwhiteSkinTexture, TEXTINPUTWHITE_SCALE9_GRID);
 			this.textinputSkinTextures = new Scale9Textures(textinputSkinTexture, TEXTINPUT_SCALE9_GRID);
+			this.textinputredSkinTextures = new Scale9Textures(textinputredSkinTexture, TEXTINPUTWHITE_SCALE9_GRID);
 			this.backgroundSkinTextures = new Scale9Textures(backgroundSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundDisabledSkinTextures = new Scale9Textures(backgroundDisabledSkinTexture, DEFAULT_SCALE9_GRID);
 			this.backgroundFocusedSkinTextures = new Scale9Textures(backgroundFocusedSkinTexture, DEFAULT_SCALE9_GRID);
@@ -1297,6 +1300,11 @@ package feathers.themes
 			backgroundFocusedSkin.width = 264 * this.scale;
 			backgroundFocusedSkin.height = height * this.scale;
 			input.backgroundFocusedSkin = backgroundFocusedSkin;
+
+//			const validatorTextInputSkin:Scale9Image = new Scale9Image(this.textinputredSkinTextures, this.scale);
+//			validatorTextInputSkin.width = 264 * this.scale;
+//			validatorTextInputSkin.height = height * this.scale;
+//			input.focusIndicatorSkin = validatorTextInputSkin;
 
 			input.minWidth = input.minHeight = height * this.scale;
 			input.minTouchWidth = input.minTouchHeight = height * this.scale;

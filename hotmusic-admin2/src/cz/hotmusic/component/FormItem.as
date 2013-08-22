@@ -32,6 +32,16 @@ package cz.hotmusic.component
 			autocomplete.selectedItem = value;
 		}
 		
+		public function showValidator():void
+		{
+			_bgRed.visible = true;
+		}
+
+		public function hideValidator():void
+		{
+			_bgRed.visible = false;
+		}
+		
 		private var _label:String;
 		private var _orderNumber:String;
 		private var _value:String;
@@ -72,6 +82,7 @@ package cz.hotmusic.component
 		private var currentState:String
 		
 		private var _bg:Quad;
+		private var _bgRed:Quad;
 		private var _orderNumberLbl:Label;
 		private var _labelLbl:Label;
 		public var textinput:TextInput;
@@ -84,6 +95,8 @@ package cz.hotmusic.component
 			height = 50;
 			
 			_bg = new Quad(1,1,0xCCCCCC);
+			_bgRed = new Quad(1,1,0xD49799);
+			_bgRed.visible = false;
 			
 			_orderNumberLbl = new Label();
 			_orderNumberLbl.name = Theme.SMALL_BOLD_ORANGE;
@@ -101,8 +114,10 @@ package cz.hotmusic.component
 			}
 			
 			addChild(_bg);
+			addChild(_bgRed);
 			addChild(_orderNumberLbl);
 			addChild(_labelLbl);
+			
 			if (isAutocomplete)
 				addChild(autocomplete);
 			else
@@ -116,8 +131,8 @@ package cz.hotmusic.component
 			var paddingLeft:int = 20;
 			var gap:int = 16;
 			
-			_bg.width = actualWidth;
-			_bg.height = actualHeight;
+			_bg.width = _bgRed.width = actualWidth;
+			_bg.height = _bgRed.height = actualHeight;
 			
 			if (isInvalid(INVALIDATION_FLAG_DATA)) {
 				_orderNumberLbl.text = _orderNumber;
@@ -162,6 +177,11 @@ package cz.hotmusic.component
 //			else
 //				textinput.setFocus();
 //		}
+		
+		override public function showFocus():void
+		{
+			super.showFocus();
+		}
 		
 		// toto je zde kvuli nastaveni focusu uvnitr
 		override public function set nextTabFocus(value:IFocusDisplayObject):void
