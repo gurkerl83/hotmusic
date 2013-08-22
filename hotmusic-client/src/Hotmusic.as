@@ -45,6 +45,8 @@ package
 			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, function (event:Event):void {
 				startTestFlight();
 			});
+			
+			splash.y = (stage.fullScreenHeight - splash.height)/2;
 			addChild(splash);
 			
 			if(this.stage)
