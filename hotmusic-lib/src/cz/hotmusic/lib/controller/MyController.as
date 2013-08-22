@@ -28,6 +28,7 @@ package cz.hotmusic.lib.controller
 	import cz.hotmusic.lib.command.profile.LoginUserCommand;
 	import cz.hotmusic.lib.command.profile.RegisterUserCommand;
 	import cz.hotmusic.lib.command.profile.RemoveUserCommand;
+	import cz.hotmusic.lib.command.profile.ResetPasswordUserCommand;
 	import cz.hotmusic.lib.command.profile.UpdateUserCommand;
 	import cz.hotmusic.lib.command.song.AutocompleteSongCommand;
 	import cz.hotmusic.lib.command.song.CreateSongCommand;
@@ -78,6 +79,7 @@ package cz.hotmusic.lib.controller
 			addCommand(ProfileServiceEvent.REMOVE, RemoveUserCommand);
 			addCommand(ProfileServiceEvent.UPDATE, UpdateUserCommand);
 			addCommand(ProfileServiceEvent.FEEDBACK, FeedbackUserCommand);
+			addCommand(ProfileServiceEvent.RESET_PASSWORD, ResetPasswordUserCommand);
 //			addCommand(ProfileServiceEvent.UPDATE, GetScoreCommand);
 //			addCommand(ProfileServiceEvent.LIST_COUNT, UpdateProfileCommand);
 //			addCommand(ProfileServiceEvent.DELETE, ValidatePromoCodeCommand);

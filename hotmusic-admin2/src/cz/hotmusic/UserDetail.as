@@ -2,6 +2,7 @@ package cz.hotmusic
 {
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
+	import cz.hotmusic.component.Alert;
 	import cz.hotmusic.component.FormItem;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
@@ -125,6 +126,7 @@ package cz.hotmusic
 		private var genresCB:Check;
 		private var usersCB:Check;
 		private var addArtistCB:Check;
+		private var resetPassword:Button;
 		
 		override protected function initialize():void
 		{
@@ -177,6 +179,20 @@ package cz.hotmusic
 			addArtistCB.label = "Authorize item \"+Artist\"";
 			addArtistCB.isSelected = true;
 			
+			resetPassword = new Button();
+			resetPassword.label = "Reset password";
+			resetPassword.name = Theme.SMALL_BOLD_RED;
+			resetPassword.addEventListener(Event.TRIGGERED, function onResetTrigger(event:Event):void {
+				Alert.show("Do you really want to reset the password for user " + User(data).firstname + " " + User(data).surname + "?",
+					Alert.WARN, function doReset():void {
+						var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.RESET_PASSWORD);
+						se.user = User(data);
+						se.sid = Model.getInstance().user.sid;
+						CairngormEventDispatcher.getInstance().dispatchEvent(se);
+					}
+				);
+			});
+			
 			addChild(firstname);
 			addChild(surname);
 			addChild(email);
@@ -185,6 +201,7 @@ package cz.hotmusic
 			addChild(genresCB);
 			addChild(usersCB);
 			addChild(addArtistCB);
+			addChild(resetPassword);
 			
 			firstname.textinput.focusManager.focus = firstname.textinput;
 			
@@ -212,24 +229,27 @@ package cz.hotmusic
 			email.width = actualWidth - 2*padding;
 			
 			adminRightCB.x = padding;
-			adminRightCB.y = email.y + email.height + 20;
+			adminRightCB.y = email.y + email.height + gap;
 			adminRightCB.validate();
 			
-			userRightCB.x = adminRightCB.x + adminRightCB.width + 20;
+			userRightCB.x = adminRightCB.x + adminRightCB.width + gap;
 			userRightCB.y = adminRightCB.y;
 			userRightCB.validate();
 			
 			genresCB.x = padding;
-			genresCB.y = adminRightCB.y + adminRightCB.height + 20;
+			genresCB.y = adminRightCB.y + adminRightCB.height + gap;
 			genresCB.validate();
 			
-			usersCB.x = genresCB.x + genresCB.width + 20;
+			usersCB.x = genresCB.x + genresCB.width + gap;
 			usersCB.y = genresCB.y;
 			usersCB.validate();
 
-			addArtistCB.x = usersCB.x + usersCB.width + 20;
+			addArtistCB.x = usersCB.x + usersCB.width + gap;
 			addArtistCB.y = genresCB.y;
 			addArtistCB.validate();
+			
+			resetPassword.x = padding;
+			resetPassword.y = addArtistCB.y + addArtistCB.height + gap;
 			
 			if (isInvalid(INVALIDATION_FLAG_DATA)) {
 				if (data && data.firstname)
@@ -244,7 +264,9 @@ package cz.hotmusic
 					genresCB.isSelected = User(data).genresAuthorized;
 					usersCB.isSelected = User(data).usersAuthorized;
 					addArtistCB.isSelected = User(data).addArtistAuthorized;
+					resetPassword.visible = true;
 				} else {
+					resetPassword.visible = false;
 					clear();
 				}
 			}

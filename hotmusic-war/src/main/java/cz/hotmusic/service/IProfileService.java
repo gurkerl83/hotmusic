@@ -16,4 +16,5 @@ public interface IProfileService {
 	void remove(String sid, User user) throws Throwable;
 	void update(String sid, User user) throws Throwable;
 	void feedback(String sid, String text) throws Throwable;
+	void resetPassword(String sid, User user) throws Throwable;
 }

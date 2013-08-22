@@ -32,6 +32,7 @@ import cz.hotmusic.service.IProfileService;
 @RemotingDestination
 public class ProfileService implements IProfileService{
 	
+	private static final String DEFAULT_PASSWORD = "hotmusic";
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private SessionFactory sessionFactory;
 	private SessionHelper sessionHelper;
@@ -104,6 +105,9 @@ public class ProfileService implements IProfileService{
 		
 		//store md5 password
 //		user.password = DigestUtils.md5Hex(user.password);
+		
+		// store default password
+		user.password = DEFAULT_PASSWORD;
 		
 		session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
@@ -210,6 +214,35 @@ public class ProfileService implements IProfileService{
 	    returnUser.sessionMobile = type.equals(MOBILE_TYPE) ? foundUser.sessionMobile:null;
 		
 		return returnUser;
+	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
+	public void resetPassword(String sid, User user) throws Throwable {
+		Assert.assertNotNull(sid);
+		Assert.assertNotNull(user);
+		Assert.assertNotNull(user.id);
+		sessionHelper.checkSession(sid);
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from User where id = :id");
+		query.setParameter("id", user.id);
+		
+		@SuppressWarnings("unchecked")
+		List<User> list = (List<User>)query.list();
+		if (list.size() != 1)
+			throw new Exception("Can't find the user");
+		
+		User foundUser = list.get(0);
+		foundUser.password = DEFAULT_PASSWORD;
+
+		session = sessionFactory.openSession();
+		Transaction tr = session.beginTransaction();
+		tr.begin();
+		session.update(foundUser);
+		tr.commit();
+		
 	}
 	
 	@Override

@@ -118,6 +118,8 @@ package feathers.themes
 		public static const PAGE_BUTTON_DARK		:String = "PAGE_BUTTON_DARK";
 		public static const PAGE_BUTTON_LIGHT		:String = "PAGE_BUTTON_LIGHT";
 		
+		public static const HEADER_HIDE				:String = "HEADER_HIDE";
+		
 		// barvy
 		
 		public static const BLACK_TEXT_COLOR		:uint = 0x000004;
@@ -1366,6 +1368,13 @@ package feathers.themes
 			header.backgroundSkin = backgroundSkin;
 			header.titleProperties.textFormat = this.headerTextFormat;
 			header.titleProperties.embedFonts = true;
+			
+			if (header.name == HEADER_HIDE) {
+				header.minHeight = header.height = 0;
+				header.backgroundSkin = null;
+				header.paddingTop = header.paddingRight = header.paddingBottom =
+					header.paddingLeft = 0;
+			}
 		}
 
 		protected function pickerListInitializer(list:PickerList):void
