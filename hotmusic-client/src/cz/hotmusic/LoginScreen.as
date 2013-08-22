@@ -58,6 +58,7 @@ package cz.hotmusic
 			_passwordTI = new TextInput();
 			_passwordTI.prompt = "password";
 			_passwordTI.name = "textinputblack";
+			_passwordTI.displayAsPassword = true;
 			
 			_loginBtn = new Button();
 			_loginBtn.addEventListener(starling.events.Event.TRIGGERED, function (event:starling.events.Event):void {
