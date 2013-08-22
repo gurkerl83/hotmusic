@@ -26,6 +26,7 @@ package feathers.themes
 {
 	import cz.hotmusic.FontAssets;
 	import cz.hotmusic.component.ActionButton;
+	import cz.hotmusic.component.ChangePasswordPanel;
 	import cz.hotmusic.renderer.AlbumRenderer;
 	import cz.hotmusic.renderer.ArtistRenderer;
 	import cz.hotmusic.renderer.GenreRenderer;
@@ -587,6 +588,7 @@ package feathers.themes
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(PickerList, pickerListInitializer);
 			this.setInitializerForClass(Panel, panelInitializer);
+			this.setInitializerForClass(ChangePasswordPanel, panelInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
 			this.setInitializerForClass(Callout, calloutInitializer);
 			this.setInitializerForClass(Scroller, scrollerInitializer);
@@ -1272,21 +1274,14 @@ package feathers.themes
 				paddingLeft = 18;
 				height = 65;
 				fontSize = 24;
-			} else if (input.name == "textinputwhite") {
+			} else { //if (input.name == "textinputwhite") {
 				tist = this.textinputwhiteSkinTextures;
 				textcolor = 0x000004;
 				promptcolor = 0x000004;
 				paddingLeft = 18;
 				height = 40;
 				fontSize = 24;
-			} else {
-				tist = this.textinputSkinTextures;
-				textcolor = 0x000004;
-				promptcolor = 0x7a7a7a;
-				paddingLeft = 50;
-				height = 49;
-				fontSize = 30;
-			}
+			} 
 			
 			const backgroundSkin:Scale9Image = new Scale9Image(tist, this.scale);
 			backgroundSkin.width = 264 * this.scale;

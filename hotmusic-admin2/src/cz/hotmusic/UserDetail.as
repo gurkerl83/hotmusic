@@ -187,6 +187,7 @@ package cz.hotmusic
 					Alert.WARN, function doReset():void {
 						var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.RESET_PASSWORD);
 						se.user = User(data);
+						se.user.password = "hotmusic";
 						se.sid = Model.getInstance().user.sid;
 						CairngormEventDispatcher.getInstance().dispatchEvent(se);
 					}

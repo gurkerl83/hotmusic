@@ -53,6 +53,7 @@ package cz.hotmusic.component
 		
 		private static function initPanel():void {
 			panel = new Panel();
+			panel.minWidth = 400;
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.gap = 20;
 			layout.padding = 20;
@@ -94,7 +95,7 @@ package cz.hotmusic.component
 			if (panelButton.getChildIndex(yesButton) >= 0)
 				panelButton.removeChild(yesButton);
 			if (panelButton.getChildIndex(noButton) >= 0)
-				panelButton.addChild(noButton);
+				panelButton.removeChild(noButton);
 			
 			// add button
 			if (panelButton.getChildIndex(okButton) == -1)

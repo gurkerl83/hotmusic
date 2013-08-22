@@ -235,7 +235,13 @@ public class ProfileService implements IProfileService{
 			throw new Exception("Can't find the user");
 		
 		User foundUser = list.get(0);
-		foundUser.password = DEFAULT_PASSWORD;
+		
+		// reset password
+		
+		if (user.password != null && user.password.length() > 0)
+			foundUser.password = user.password;
+		else
+			foundUser.password = DEFAULT_PASSWORD;
 
 		session = sessionFactory.openSession();
 		Transaction tr = session.beginTransaction();

@@ -3,6 +3,7 @@ package cz.hotmusic
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
 	import cz.hotmusic.component.Alert;
+	import cz.hotmusic.component.ChangePasswordPanel;
 	import cz.hotmusic.lib.controller.MyServiceLocator;
 	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
@@ -16,6 +17,7 @@ package cz.hotmusic
 	import feathers.controls.Screen;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
+	import feathers.core.PopUpManager;
 	import feathers.themes.Theme;
 	
 	import flash.events.Event;
@@ -71,6 +73,7 @@ package cz.hotmusic
 			addChild(version);
 		}
 		
+		private var firstTimeLogin:Boolean;
 		private function signInBtn_TriggeredHandler(event:starling.events.Event):void
 		{
 			var pse:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LOGIN, loginResult, loginFault);
@@ -78,6 +81,10 @@ package cz.hotmusic
 			pse.user.email = loginTI.text;
 			pse.user.password = passwordTI.text;
 			pse.sedata = ProfileServiceEvent.ADMIN_TYPE;
+			
+			if (pse.user.password == "hotmusic")
+				firstTimeLogin = true;
+			
 			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
 			
 //			if (loginTI.text == "aaa" && passwordTI.text == "aaa")
@@ -128,11 +135,34 @@ package cz.hotmusic
 			
 			DataHelper.getInstance().addEventListener(DataHelper.INIT_COMPLETE, function ich(e:flash.events.Event):void {
 				removeEventListener(DataHelper.INIT_COMPLETE, ich);
-				dispatchEventWith("login");
+				
+				if (!firstTimeLogin)
+					dispatchEventWith("login");
 			});
+			
+			// stahni vsechna data
+			
 			DataHelper.getInstance().initModel(null,  function onInitFault(info:FaultEvent):void {
 				Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
 			}, Model.getInstance());
+			
+			// zobraz popup na zmenu hesla
+			
+			if (firstTimeLogin) {
+				var cpp:ChangePasswordPanel = new ChangePasswordPanel();
+				cpp.user = Model.getInstance().user;
+				cpp.addEventListener("changePassword", function onPasswordChange(event:starling.events.Event):void {
+					var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.RESET_PASSWORD);
+					se.sid = Model.getInstance().user.sid;
+					se.user = Model.getInstance().user;
+					se.user.password = String(event.data);
+					CairngormEventDispatcher.getInstance().dispatchEvent(se);
+					
+					dispatchEventWith("login");
+					PopUpManager.removePopUp(cpp);
+				});
+				PopUpManager.addPopUp(cpp);
+			}
 			
 		}
 		
