@@ -90,7 +90,7 @@ package cz.hotmusic
 							removeEventListener(DataHelper.INIT_COMPLETE, ich);
 							dispatchEventWith("login");
 						});
-						DataHelper.getInstance().initModel(Model.getInstance());
+						DataHelper.getInstance().initModel(null, null, Model.getInstance());
 					})
 				})
 			});

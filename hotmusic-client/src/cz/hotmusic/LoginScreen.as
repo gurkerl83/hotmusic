@@ -4,9 +4,11 @@ package cz.hotmusic
 	import com.facebook.graph.FacebookMobile;
 	import com.facebook.graph.data.FacebookSession;
 	
+	import cz.hotmusic.components.Alert;
 	import cz.hotmusic.helper.LoginHelper;
 	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
+	import cz.hotmusic.lib.helper.ErrorHelper;
 	import cz.hotmusic.lib.model.User;
 	import cz.hotmusic.model.Model;
 	
@@ -59,7 +61,7 @@ package cz.hotmusic
 			
 			_loginBtn = new Button();
 			_loginBtn.addEventListener(starling.events.Event.TRIGGERED, function (event:starling.events.Event):void {
-				LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, null, function(result:ResultEvent):void
+				LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, null, function onLoginResult(result:ResultEvent):void
 				{
 					Model.getInstance().user = User(result.result);
 					
@@ -67,7 +69,9 @@ package cz.hotmusic
 						removeEventListener(DataHelper.INIT_COMPLETE, ich);
 						dispatchEventWith("login");
 					});
-					DataHelper.getInstance().initModel(Model.getInstance(), true);
+					DataHelper.getInstance().initModel(null, null, Model.getInstance(), true);
+				}, function onLoginFault(msg:String):void {
+					Alert.show(ErrorHelper.getInstance().getMessage(msg), Alert.ERROR);
 				})
 			});
 			_loginBtn.label = "Sign in";
@@ -108,7 +112,7 @@ package cz.hotmusic
 					removeEventListener(DataHelper.INIT_COMPLETE, ich);
 					dispatchEventWith("login");
 				});
-				DataHelper.getInstance().initModel(Model.getInstance(), true);
+				DataHelper.getInstance().initModel(null, null, Model.getInstance(), true);
 			});
 		}
 		

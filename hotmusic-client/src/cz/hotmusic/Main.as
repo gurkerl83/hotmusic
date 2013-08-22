@@ -81,7 +81,7 @@ package cz.hotmusic
 				removeEventListener(DataHelper.INIT_COMPLETE, ich);
 				_navigator.showScreen(MAIN_LIST);
 			});
-			DataHelper.getInstance().initModel(Model.getInstance(), true);
+			DataHelper.getInstance().initModel(null, null, Model.getInstance(), true);
 		}
 		
 		private function autologin(successCall:Function, failCall:Function):void {

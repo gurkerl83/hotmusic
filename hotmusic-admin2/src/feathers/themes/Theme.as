@@ -42,6 +42,7 @@ package feathers.themes
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.PageIndicator;
+	import feathers.controls.Panel;
 	import feathers.controls.PickerList;
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
@@ -583,6 +584,7 @@ package feathers.themes
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
 			this.setInitializerForClass(PickerList, pickerListInitializer);
+			this.setInitializerForClass(Panel, panelInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
 			this.setInitializerForClass(Callout, calloutInitializer);
 			this.setInitializerForClass(Scroller, scrollerInitializer);
@@ -1406,6 +1408,10 @@ package feathers.themes
 			}
 
 			list.listProperties.itemRendererName = COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER;
+		}
+		
+		protected function panelInitializer(panel:Panel):void {
+			panel.backgroundSkin = new Scale9Image(backgroundFocusedSkinTextures);
 		}
 
 		protected function calloutInitializer(callout:Callout):void

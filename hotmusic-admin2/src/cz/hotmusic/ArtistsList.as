@@ -2,11 +2,13 @@ package cz.hotmusic
 {
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
+	import cz.hotmusic.component.Alert;
 	import cz.hotmusic.component.PageJumper;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.helper.MockDataHelper;
 	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.ArtistServiceEvent;
+	import cz.hotmusic.lib.helper.ErrorHelper;
 	import cz.hotmusic.lib.model.Artist;
 	import cz.hotmusic.model.Model;
 	import cz.hotmusic.renderer.ArtistRenderer;
@@ -18,6 +20,7 @@ package cz.hotmusic
 	import feathers.data.ListCollection;
 	import feathers.themes.Theme;
 	
+	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	
 	import starling.display.Sprite;
@@ -105,6 +108,8 @@ package cz.hotmusic
 			pageJumper.addEventListener(PageJumper.PAGE_JUMP, function onPageJump(event:Event):void {
 				DataHelper.getInstance().getArtists(function onArtists():void {
 					list.dataProvider = new ListCollection(Model.getInstance().artists);
+				},  function onArtistsFault(info:FaultEvent):void {
+					Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
 				}
 					, false, event.data);
 			});
@@ -124,12 +129,14 @@ package cz.hotmusic
 				list.dataProvider = new ListCollection(Model.getInstance().artists);
 				pageJumper.actualPage = 0;
 				invalidate();
+			},  function onArtistsFault(info:FaultEvent):void {
+				Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
 			});
 		}
 		
 		private function removeFault(info:Object):void
 		{
-			
+			Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
 		}
 		
 		override protected function draw():void

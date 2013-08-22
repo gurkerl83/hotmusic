@@ -35,15 +35,15 @@ package cz.hotmusic.lib.data
 			return _instance;
 		}
 		
-		public function initModel(model:Object, skipCounts:Boolean=false):void
+		public function initModel(cb:Function, cbf:Function, model:Object, skipCounts:Boolean=false):void
 		{
 			this.model = model;
 //			_songsComplete = _artistsComplete = _albumsComplete = _genresComplete = _usersComplete = false;
-			getSongs(null, skipCounts);
-			getArtists(null, skipCounts);
-			getAlbums(null, skipCounts);
-			getGenres(null, skipCounts);
-			getUsers(null, skipCounts);
+			getSongs(cb, cbf, skipCounts, null);
+			getArtists(cb, cbf, skipCounts, null);
+			getAlbums(cb, cbf, skipCounts, null);
+			getGenres(cb, cbf, skipCounts, null);
+			getUsers(cb, cbf, skipCounts, null);
 		}
 		
 		private var _songsComplete:Boolean;
@@ -114,13 +114,17 @@ package cz.hotmusic.lib.data
 		//-------------------------------
 		
 		private var songsCallback:Function;
-		public function getSongs(callback:Function=null,skipCounts:Boolean=false,paging:Object=null):void
+		private var songsCallbackFault:Function;
+		public function getSongs(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false,paging:Object=null):void
 		{
 			_songsComplete = _songsTotalComplete = _songsLastMonthComplete = false;
 			
 			songsCallback = null;
+			songsCallbackFault = null;
 			if (callback != null)
 				songsCallback = callback;
+			if (callbackFault != null)
+				songsCallbackFault = callbackFault;
 			
 			// List
 			var sse:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST,songResult,songFault);
@@ -145,7 +149,10 @@ package cz.hotmusic.lib.data
 					dispatchInitComplete();
 				}
 			},function listCountFault(info:Object):void {
-				
+				if (songsCallbackFault != null) {
+					songsCallbackFault.call(this, info);
+					songsCallbackFault = null; // not call others fault callbacks
+				}
 			});
 			ssecount.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
@@ -183,7 +190,10 @@ package cz.hotmusic.lib.data
 		}
 		private function songFault(info:Object):void
 		{
-			
+			if (songsCallbackFault != null) {
+				songsCallbackFault.call(this, info);
+				songsCallbackFault = null; // not call others fault callbacks
+			}
 		}
 
 		//-------------------------------
@@ -193,13 +203,18 @@ package cz.hotmusic.lib.data
 		//-------------------------------
 		
 		private var artistsCallback:Function;
-		public function getArtists(callback:Function=null, skipCounts:Boolean=false, paging:Object=null):void
+		private var artistsCallbackFault:Function;
+		public function getArtists(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_artistsComplete = _artistsTotalComplete = _artistsLastMonthComplete = false;
 			
 			artistsCallback = null;
+			artistsCallbackFault = null;
 			if (callback != null)
 				artistsCallback = callback;
+			if (callbackFault != null)
+				artistsCallbackFault = callbackFault;
+			
 			var se:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST,artistResult,artistFault);
 			se.sid = model.user.sid;
 			if (paging != null)
@@ -221,7 +236,10 @@ package cz.hotmusic.lib.data
 					dispatchInitComplete();
 				}
 			},function listCountFault(info:Object):void {
-				
+				if (artistsCallbackFault != null) {
+					artistsCallbackFault.call(this, info);
+					artistsCallbackFault = null; // not call others fault callbacks
+				}
 			});
 			ssecount.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
@@ -259,7 +277,10 @@ package cz.hotmusic.lib.data
 		
 		private function artistFault(info:Object):void
 		{
-			
+			if (artistsCallbackFault != null) {
+				artistsCallbackFault.call(this, info);
+				artistsCallbackFault = null; // not call others fault callbacks
+			}
 		}
 
 		//-------------------------------
@@ -269,13 +290,18 @@ package cz.hotmusic.lib.data
 		//-------------------------------
 		
 		private var albumsCallback:Function;
-		public function getAlbums(callback:Function=null, skipCounts:Boolean=false, paging:Object=null):void
+		private var albumsCallbackFault:Function;
+		public function getAlbums(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_albumsComplete = _albumsTotalComplete = _albumsLastMonthComplete = false;
 			
 			albumsCallback = null;
+			albumsCallbackFault = null;
 			if (callback != null)
 				albumsCallback = callback;
+			if (callbackFault != null)
+				albumsCallbackFault = callbackFault;
+			
 			var se:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST,albumResult,albumFault);
 			se.sid = model.user.sid;
 			if (paging != null)
@@ -297,7 +323,10 @@ package cz.hotmusic.lib.data
 					dispatchInitComplete();
 				}
 			},function listCountFault(info:Object):void {
-				
+				if (albumsCallbackFault != null) {
+					albumsCallbackFault.call(this, info);
+					albumsCallbackFault = null; // not call others fault callbacks
+				}
 			});
 			ssecount.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
@@ -334,7 +363,10 @@ package cz.hotmusic.lib.data
 		
 		private function albumFault(info:Object):void
 		{
-			
+			if (albumsCallbackFault != null) {
+				albumsCallbackFault.call(this, info);
+				albumsCallbackFault = null; // not call others fault callbacks
+			}
 		}
 
 		//-------------------------------
@@ -344,13 +376,18 @@ package cz.hotmusic.lib.data
 		//-------------------------------
 		
 		private var genresCallback:Function;
-		public function getGenres(callback:Function=null, skipCounts:Boolean=false, paging:Object=null):void
+		private var genresCallbackFault:Function;
+		public function getGenres(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_genresComplete = _genresTotalComplete = false;
 			
 			genresCallback = null;
+			genresCallbackFault = null;
 			if (callback != null)
 				genresCallback = callback;
+			if (callbackFault != null)
+				genresCallbackFault = callbackFault;
+			
 			var se:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.LIST,genreResult,genreFault);
 			se.sid = model.user.sid;
 			if (paging != null)
@@ -371,7 +408,10 @@ package cz.hotmusic.lib.data
 					dispatchInitComplete();
 				}
 			},function listCountFault(info:Object):void {
-				trace("listCountFault genre");
+				if (genresCallbackFault != null) {
+					genresCallbackFault.call(this, info);
+					genresCallbackFault = null; // not call others fault callbacks
+				}
 			});
 			ssecount.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
@@ -394,7 +434,10 @@ package cz.hotmusic.lib.data
 		
 		private function genreFault(info:Object):void
 		{
-			
+			if (genresCallbackFault != null) {
+				genresCallbackFault.call(this, info);
+				genresCallbackFault = null; // not call others fault callbacks
+			}
 		}
 
 		//-------------------------------
@@ -404,13 +447,18 @@ package cz.hotmusic.lib.data
 		//-------------------------------
 		
 		private var usersCallback:Function;
-		public function getUsers(callback:Function=null, skipCounts:Boolean=false, paging:Object=null):void
+		private var usersCallbackFault:Function;
+		public function getUsers(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_usersComplete = _usersTotalComplete = false;
 			
 			usersCallback = null;
+			usersCallbackFault = null;
 			if (callback != null)
 				usersCallback = callback;
+			if (callbackFault != null)
+				usersCallbackFault = callbackFault;
+			
 			var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST,userResult,userFault);
 			se.sid = model.user.sid;
 			if (paging != null)
@@ -431,7 +479,10 @@ package cz.hotmusic.lib.data
 					dispatchInitComplete();
 				}
 			},function listCountFault(info:Object):void {
-				trace("listCountFault users");
+				if (usersCallbackFault != null) {
+					usersCallbackFault.call(this, info);
+					usersCallbackFault = null; // not call others fault callbacks
+				}
 			});
 			ssecount.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
@@ -454,23 +505,26 @@ package cz.hotmusic.lib.data
 		
 		private function userFault(info:Object):void
 		{
-			
+			if (usersCallbackFault != null) {
+				usersCallbackFault.call(this, info);
+				usersCallbackFault = null; // not call others fault callbacks
+			}
 		}
 		
-		public function getData(type:String, cb:Function=null):void
+		public function getData(type:String, cb:Function=null, cbf:Function=null):void
 		{
 			if (type == "Songs")
-				getSongs(cb);
+				getSongs(cb, cbf);
 			else if (type == "Artists")
-				getArtists(cb);
+				getArtists(cb, cbf);
 			else if (type == "Albums")
-				getAlbums(cb);
+				getAlbums(cb, cbf);
 			else if (type == "Genres")
-				getGenres(cb);
+				getGenres(cb, cbf);
 			else if (type == "Users")
-				getUsers(cb);
+				getUsers(cb, cbf);
 			else if (type == "+Artists")
-				getArtists(cb);
+				getArtists(cb, cbf);
 		}
 	}
 }

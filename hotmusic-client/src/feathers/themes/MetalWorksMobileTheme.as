@@ -39,6 +39,7 @@ package feathers.themes
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.PageIndicator;
+	import feathers.controls.Panel;
 	import feathers.controls.PickerList;
 	import feathers.controls.ProgressBar;
 	import feathers.controls.Radio;
@@ -463,6 +464,7 @@ package feathers.themes
 			this.setInitializerForClass(TextInput, textInputInitializer, "textinputblack");
 			this.setInitializerForClass(PageIndicator, pageIndicatorInitializer);
 			this.setInitializerForClass(ProgressBar, progressBarInitializer);
+			this.setInitializerForClass(Panel, panelInitializer);
 			this.setInitializerForClass(PickerList, pickerListInitializer);
 			this.setInitializerForClass(Header, headerInitializer);
 			this.setInitializerForClass(Callout, calloutInitializer);
@@ -1064,6 +1066,10 @@ package feathers.themes
 			fillDisabledSkin.width = 8 * this.scale;
 			fillDisabledSkin.height = 22 * this.scale;
 			progress.fillDisabledSkin = fillDisabledSkin;
+		}
+		
+		protected function panelInitializer(panel:Panel):void {
+			panel.backgroundSkin = new Scale9Image(backgroundFocusedSkinTextures);
 		}
 
 		protected function headerInitializer(header:Header):void

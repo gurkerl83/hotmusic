@@ -131,7 +131,7 @@ public class ProfileService implements IProfileService{
 			return null;
 		}
 		
-		if (user.version != 0)
+		if (user.version != 0 && type.equals(MOBILE_TYPE))
 			throw new Exception("Wrong client version. Please download newest version.");
 			
 //		user.canPlay = true;

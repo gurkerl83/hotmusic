@@ -5,7 +5,9 @@ package cz.hotmusic.helper
 	import com.facebook.graph.data.FacebookSession;
 	
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
+	import cz.hotmusic.lib.helper.ErrorHelper;
 	import cz.hotmusic.lib.model.User;
+	import cz.hotmusic.model.Model;
 	import cz.zc.mylib.event.GenericEvent;
 	
 	import flash.desktop.NativeApplication;
@@ -15,6 +17,7 @@ package cz.hotmusic.helper
 	import flash.media.StageWebView;
 	import flash.net.SharedObject;
 	
+	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	
 	import starling.core.Starling;
@@ -76,6 +79,7 @@ package cz.hotmusic.helper
 			pse.user.email = user;
 			pse.user.password = pass;
 			pse.user.facebookId = facebookId;
+			pse.user.version = Model.getInstance().user.version;
 			pse.sedata = ProfileServiceEvent.MOBILE_TYPE;
 			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
 			
@@ -91,7 +95,7 @@ package cz.hotmusic.helper
 			// login incorrect
 			if (result.result == null)
 			{
-				if (failCall != null) failCall.call();
+				if (failCall != null) failCall.call(this, ErrorHelper.LOGIN_INCORRECT);
 				return;
 			}
 			
@@ -103,9 +107,9 @@ package cz.hotmusic.helper
 			if (successCall != null) successCall.call(this, result);
 		}
 		
-		private function loginProfileServiceFault(info:Object):void
+		private function loginProfileServiceFault(info:FaultEvent):void
 		{
-			if (failCall != null) failCall.call();
+			if (failCall != null) failCall.call(this, info.fault.faultString);
 		}
 		
 		public function facebook(facebookWidth:Number, facebookHeight:Number, successCall:Function=null, failCall:Function=null):void 

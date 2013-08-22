@@ -34,6 +34,7 @@ package cz.hotmusic.model
 		private function resetModel():void
 		{
 			user = new User();
+			user.version = 0;
 			songs = [];
 			artists = [];
 			albums = [];

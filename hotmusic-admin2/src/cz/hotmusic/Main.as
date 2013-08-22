@@ -22,7 +22,7 @@ package cz.hotmusic
 		}
 		
 		private var _theme:Theme;
-		private var _navigator:ScreenNavigator;
+		public static var navigator:ScreenNavigator;
 		private var _transitionManager:ScreenSlidingStackTransitionManager;
 		
 		private function addedToStageHandler(event:Event):void
@@ -30,22 +30,22 @@ package cz.hotmusic
 			FocusManager.isEnabled = true;
 			this._theme = new Theme(this.stage);
 			
-			this._navigator = new ScreenNavigator();
+			navigator = new ScreenNavigator();
 			
-			this._navigator.addScreen(LOGIN_SCREEN, new ScreenNavigatorItem(LoginScreen,
+			navigator.addScreen(LOGIN_SCREEN, new ScreenNavigatorItem(LoginScreen,
 				{
 					login: MAIN_LIST
 				}));
 
-			this._navigator.addScreen(MAIN_LIST, new ScreenNavigatorItem(MainScreen,
+			navigator.addScreen(MAIN_LIST, new ScreenNavigatorItem(MainScreen,
 				{
 					logout: LOGIN_SCREEN
 				}));
 
-			this.addChild(this._navigator);
-			_navigator.showScreen(LOGIN_SCREEN);
+			this.addChild(navigator);
+			navigator.showScreen(LOGIN_SCREEN);
 
-			this._transitionManager = new ScreenSlidingStackTransitionManager(this._navigator);
+			this._transitionManager = new ScreenSlidingStackTransitionManager(navigator);
 			this._transitionManager.duration = 0.5;
 		}
 	}

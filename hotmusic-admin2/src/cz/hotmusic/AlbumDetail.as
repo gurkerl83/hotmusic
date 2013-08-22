@@ -2,12 +2,14 @@ package cz.hotmusic
 {
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
+	import cz.hotmusic.component.Alert;
 	import cz.hotmusic.component.FormItem;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.AlbumServiceEvent;
 	import cz.hotmusic.lib.event.ArtistServiceEvent;
 	import cz.hotmusic.lib.event.GenreServiceEvent;
+	import cz.hotmusic.lib.helper.ErrorHelper;
 	import cz.hotmusic.lib.model.Album;
 	import cz.hotmusic.lib.model.Artist;
 	import cz.hotmusic.lib.model.Genre;
@@ -19,6 +21,8 @@ package cz.hotmusic
 	import feathers.themes.Theme;
 	
 	import flash.events.Event;
+	
+	import mx.rpc.events.FaultEvent;
 	
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -79,7 +83,9 @@ package cz.hotmusic
 				removeEventListener(DataHelper.ALBUMS_COMPLETE, sch);
 				dispatchEventWith("closeDetail");
 			});
-			DataHelper.getInstance().getAlbums();
+			DataHelper.getInstance().getAlbums(null,  function onAlbumsFault(info:FaultEvent):void {
+				Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
+			});
 		}
 		
 		private function createFault(info:Object):void

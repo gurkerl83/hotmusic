@@ -2,9 +2,11 @@ package cz.hotmusic
 {
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
+	import cz.hotmusic.component.Alert;
 	import cz.hotmusic.lib.controller.MyServiceLocator;
 	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
+	import cz.hotmusic.lib.helper.ErrorHelper;
 	import cz.hotmusic.lib.model.User;
 	import cz.hotmusic.model.Model;
 	import cz.zc.mylib.helper.DateHelper;
@@ -18,6 +20,7 @@ package cz.hotmusic
 	
 	import flash.events.Event;
 	
+	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	
 	import starling.display.Image;
@@ -111,8 +114,15 @@ package cz.hotmusic
 		
 		private function loginResult(result:ResultEvent):void
 		{
-			if (result.result == null || !User(result.result).adminRights)
+			if (result.result == null) {
+				Alert.show("Login incorrect!",Alert.ERROR);
 				return;
+			}
+				
+			if (!User(result.result).adminRights) {
+				Alert.show("You don't have admin rights!",Alert.ERROR);
+				return;
+			}
 			
 			Model.getInstance().user = User(result.result);
 			
@@ -120,13 +130,15 @@ package cz.hotmusic
 				removeEventListener(DataHelper.INIT_COMPLETE, ich);
 				dispatchEventWith("login");
 			});
-			DataHelper.getInstance().initModel(Model.getInstance());
+			DataHelper.getInstance().initModel(null,  function onInitFault(info:FaultEvent):void {
+				Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
+			}, Model.getInstance());
 			
 		}
 		
-		private function loginFault(info:Object):void
+		private function loginFault(info:FaultEvent):void
 		{
-			
+			Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString),Alert.ERROR);
 		}
 		
 	}
