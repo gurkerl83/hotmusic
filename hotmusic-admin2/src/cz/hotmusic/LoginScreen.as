@@ -74,6 +74,7 @@ package cz.hotmusic
 			pse.user = new User();
 			pse.user.email = loginTI.text;
 			pse.user.password = passwordTI.text;
+			pse.sedata = ProfileServiceEvent.ADMIN_TYPE;
 			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
 			
 //			if (loginTI.text == "aaa" && passwordTI.text == "aaa")

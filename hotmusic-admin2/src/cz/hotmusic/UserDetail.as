@@ -65,7 +65,7 @@ package cz.hotmusic
 			if (data != null) // modify
 				user.id = data.id;
 			se.user = user;
-			se.sid = Model.getInstance().user.session;
+			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 		}
 		
@@ -90,7 +90,7 @@ package cz.hotmusic
 		{
 			trace("got result");
 			var pse:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST, listResult, listFault);
-			pse.sid = Model.getInstance().user.session;
+			pse.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
 		}
 		

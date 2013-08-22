@@ -36,6 +36,9 @@ public class ProfileService implements IProfileService{
 	private SessionFactory sessionFactory;
 	private SessionHelper sessionHelper;
 	
+	private final String MOBILE_TYPE = "MOBILE_TYPE";
+	private final String ADMIN_TYPE = "ADMIN_TYPE";
+	
 	//------------------------------------------------------
 	//
 	// PUBLIC METHODS
@@ -117,9 +120,11 @@ public class ProfileService implements IProfileService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public User login(User user) throws Exception {
+	public User login(User user, String type) throws Exception {
 		// check inputs
 		Assert.assertNotNull(user);
+		if (type.equals(MOBILE_TYPE) && type.equals(ADMIN_TYPE))
+			throw new Exception("Wrong type. Please specify MOBILE_TYPE or ADMIN_TYPE.");
 //		Assert.assertNotNull(user.password);
 		if (user.email == null && user.facebookId == null) {
 			logger.debug("You have to fill users email or facebookId");
@@ -174,7 +179,10 @@ public class ProfileService implements IProfileService{
 		logger.debug("Login success");
 		
 		// create and save new user session
-		foundUser.session = UUID.randomUUID().toString();
+		if (type.equals(MOBILE_TYPE))
+			foundUser.sessionMobile = UUID.randomUUID().toString();
+		else
+			foundUser.sessionAdmin = UUID.randomUUID().toString();
 		
 		session = sessionFactory.openSession();
 		Transaction tr = session.beginTransaction();
@@ -182,8 +190,26 @@ public class ProfileService implements IProfileService{
 		session.update(foundUser);
 		tr.commit();
 	    session.close();
+	    
+	    // maping with only one session (mobile/admin)
+	    
+	    User returnUser = new User();
+	    returnUser.addArtistAuthorized = foundUser.addArtistAuthorized;
+	    returnUser.adminRights = foundUser.adminRights;
+	    returnUser.email = foundUser.email;
+	    returnUser.facebookId = foundUser.facebookId;
+	    returnUser.firstname = foundUser.firstname;
+	    returnUser.genresAuthorized = foundUser.genresAuthorized;
+	    returnUser.id = foundUser.id;
+	    returnUser.male = foundUser.male;
+	    returnUser.nick= foundUser.nick;
+	    returnUser.surname = foundUser.surname;
+	    returnUser.usersAuthorized = foundUser.usersAuthorized;
+	    returnUser.version = foundUser.version;
+	    returnUser.sessionAdmin = type.equals(ADMIN_TYPE) ? foundUser.sessionAdmin:null;
+	    returnUser.sessionMobile = type.equals(MOBILE_TYPE) ? foundUser.sessionMobile:null;
 		
-		return foundUser;
+		return returnUser;
 	}
 	
 	@Override
@@ -346,7 +372,7 @@ public class ProfileService implements IProfileService{
 		sessionHelper.checkSession(sid);
 		
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from User where session = :sid");
+		Query query = session.createQuery("from User where sessionAdmin = :sid or sessionMobile = :sid");
 		query.setParameter("sid", sid);
 		
 		@SuppressWarnings("unchecked")

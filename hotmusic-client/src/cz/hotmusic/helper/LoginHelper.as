@@ -76,6 +76,7 @@ package cz.hotmusic.helper
 			pse.user.email = user;
 			pse.user.password = pass;
 			pse.user.facebookId = facebookId;
+			pse.sedata = ProfileServiceEvent.MOBILE_TYPE;
 			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
 			
 //			if (user == TEST_USER && pass == TEST_PASS && !isFB)

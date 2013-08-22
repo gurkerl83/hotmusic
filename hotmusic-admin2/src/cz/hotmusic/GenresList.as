@@ -67,7 +67,7 @@ package cz.hotmusic
 			list.addEventListener("delete", function onDelete(event:Event):void {
 				skipOpenDetail = true;
 				var se:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.REMOVE, removeResult, removeFault);
-				se.sid = Model.getInstance().user.session;
+				se.sid = Model.getInstance().user.sid;
 				se.genre = Genre(GenreRenderer(event.target).data);
 				CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			});

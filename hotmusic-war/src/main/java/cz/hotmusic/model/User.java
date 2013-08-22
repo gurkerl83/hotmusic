@@ -33,7 +33,8 @@ public class User {
 	public Boolean male;
 	public String password;
 	public String facebookId;
-	public String session;
+	public String sessionAdmin;
+	public String sessionMobile;
 	public String lastSession;
 	/**
 	 * true = admin, false = user
@@ -103,12 +104,6 @@ public class User {
 	public void setObjectUUID(String objectUUID) {
 		this.objectUUID = objectUUID;
 	}
-	public String getSession() {
-		return session;
-	}
-	public void setSession(String session) {
-		this.session = session;
-	}
 	public String getLastSession() {
 		return lastSession;
 	}
@@ -138,5 +133,17 @@ public class User {
 	}
 	public void setAddArtistAuthorized(Boolean addArtistAuthorized) {
 		this.addArtistAuthorized = addArtistAuthorized;
+	}
+	public String getSessionAdmin() {
+		return sessionAdmin;
+	}
+	public void setSessionAdmin(String sessionAdmin) {
+		this.sessionAdmin = sessionAdmin;
+	}
+	public String getSessionMobile() {
+		return sessionMobile;
+	}
+	public void setSessionMobile(String sessionMobile) {
+		this.sessionMobile = sessionMobile;
 	}
 }

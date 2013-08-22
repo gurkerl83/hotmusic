@@ -96,7 +96,7 @@ package cz.hotmusic
 			list.addEventListener("delete", function onDelete(event:Event):void {
 				skipOpenDetail = true;
 				var se:SongServiceEvent = new SongServiceEvent(SongServiceEvent.REMOVE, removeResult, removeFault);
-				se.sid = Model.getInstance().user.session;
+				se.sid = Model.getInstance().user.sid;
 				se.song = Song(SongRenderer(event.target).data);
 				CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			});

@@ -124,7 +124,7 @@ package cz.hotmusic.lib.data
 			
 			// List
 			var sse:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST,songResult,songFault);
-			sse.sid = model.user.session;
+			sse.sid = model.user.sid;
 			if (paging != null)
 				sse.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(sse);
@@ -147,7 +147,7 @@ package cz.hotmusic.lib.data
 			},function listCountFault(info:Object):void {
 				
 			});
-			ssecount.sid = model.user.session;
+			ssecount.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
 
 			// Last month
@@ -161,7 +161,7 @@ package cz.hotmusic.lib.data
 			},function listCountFault(info:Object):void {
 				
 			});
-			sselastmonth.sid = model.user.session;
+			sselastmonth.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(sselastmonth);
 		}
 		
@@ -201,7 +201,7 @@ package cz.hotmusic.lib.data
 			if (callback != null)
 				artistsCallback = callback;
 			var se:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST,artistResult,artistFault);
-			se.sid = model.user.session;
+			se.sid = model.user.sid;
 			if (paging != null)
 				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
@@ -223,7 +223,7 @@ package cz.hotmusic.lib.data
 			},function listCountFault(info:Object):void {
 				
 			});
-			ssecount.sid = model.user.session;
+			ssecount.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
 			
 			// Last month
@@ -237,7 +237,7 @@ package cz.hotmusic.lib.data
 			},function listCountFault(info:Object):void {
 				
 			});
-			sselastmonth.sid = model.user.session;
+			sselastmonth.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(sselastmonth);
 			
 		}
@@ -277,7 +277,7 @@ package cz.hotmusic.lib.data
 			if (callback != null)
 				albumsCallback = callback;
 			var se:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST,albumResult,albumFault);
-			se.sid = model.user.session;
+			se.sid = model.user.sid;
 			if (paging != null)
 				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
@@ -299,7 +299,7 @@ package cz.hotmusic.lib.data
 			},function listCountFault(info:Object):void {
 				
 			});
-			ssecount.sid = model.user.session;
+			ssecount.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
 			
 			// Last month
@@ -313,7 +313,7 @@ package cz.hotmusic.lib.data
 			},function listCountFault(info:Object):void {
 				
 			});
-			sselastmonth.sid = model.user.session;
+			sselastmonth.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(sselastmonth);
 		}
 		
@@ -352,7 +352,7 @@ package cz.hotmusic.lib.data
 			if (callback != null)
 				genresCallback = callback;
 			var se:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.LIST,genreResult,genreFault);
-			se.sid = model.user.session;
+			se.sid = model.user.sid;
 			if (paging != null)
 				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
@@ -373,7 +373,7 @@ package cz.hotmusic.lib.data
 			},function listCountFault(info:Object):void {
 				trace("listCountFault genre");
 			});
-			ssecount.sid = model.user.session;
+			ssecount.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
 		}
 		
@@ -412,7 +412,7 @@ package cz.hotmusic.lib.data
 			if (callback != null)
 				usersCallback = callback;
 			var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST,userResult,userFault);
-			se.sid = model.user.session;
+			se.sid = model.user.sid;
 			if (paging != null)
 				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
@@ -433,7 +433,7 @@ package cz.hotmusic.lib.data
 			},function listCountFault(info:Object):void {
 				trace("listCountFault users");
 			});
-			ssecount.sid = model.user.session;
+			ssecount.sid = model.user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
 		}
 		

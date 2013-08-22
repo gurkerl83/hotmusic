@@ -617,7 +617,7 @@ package cz.hotmusic
 				
 				if (sendDialog.currentState == SendDialog.FEEDBACK_STATE) {
 					var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.FEEDBACK);
-					se.sid = Model.getInstance().user.session;
+					se.sid = Model.getInstance().user.sid;
 					se.sedata = sendDialog.textinput.text;
 					CairngormEventDispatcher.getInstance().dispatchEvent(se);
 					

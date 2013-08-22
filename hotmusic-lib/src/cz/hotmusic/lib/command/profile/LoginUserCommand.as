@@ -22,7 +22,7 @@ package cz.hotmusic.lib.command.profile
 		{
 			pse = ProfileServiceEvent(event);
 			var service:RemoteObject = MyServiceLocator.getInstance().getService(MyServiceLocator.PROFILE_SERVICE);
-			var call:AsyncToken = service.login(pse.user);
+			var call:AsyncToken = service.login(pse.user, pse.sedata);
 			call.addResponder(this);
 		}
 		

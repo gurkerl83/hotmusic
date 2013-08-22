@@ -19,6 +19,10 @@ package cz.hotmusic.lib.event
 		public static const AUTOCOMPLETE	:String = "AUTOCOMPLETE_USER";
 		public static const FEEDBACK		:String = "FEEDBACK_USER";
 		
+		// login types
+		public static const MOBILE_TYPE		:String = "MOBILE_TYPE";
+		public static const ADMIN_TYPE		:String = "ADMIN_TYPE";
+		
 		public function ProfileServiceEvent(type:String, resultCallback:Function=null, faultCallback:Function=null)
 		{
 			super(type);

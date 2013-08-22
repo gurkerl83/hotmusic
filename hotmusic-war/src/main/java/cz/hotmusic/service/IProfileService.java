@@ -7,7 +7,7 @@ import cz.hotmusic.model.User;
 
 public interface IProfileService {
 	String registerUser(User user) throws Exception;
-	User login(User user) throws Exception;
+	User login(User user, String type) throws Exception;
 	Boolean forgetPassword(User user);
 	List<User> autocomplete(String sid, String text) throws Throwable;
 	List<User> list(String sid, int page, int count) throws Throwable;

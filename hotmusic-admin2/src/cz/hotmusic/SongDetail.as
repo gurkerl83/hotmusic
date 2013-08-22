@@ -90,7 +90,7 @@ package cz.hotmusic
 			if (songData != null) // modify song
 				song.id = songData.id;
 			se.song = song;
-			se.sid = Model.getInstance().user.session;
+			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 		}
 		
@@ -139,7 +139,7 @@ package cz.hotmusic
 //			songname.value = "The Adventure Of Rain Dancce Maggie";
 			
 			var ase:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.AUTOCOMPLETE, null, null);
-			ase.sid = Model.getInstance().user.session;
+			ase.sid = Model.getInstance().user.sid;
 			artistname = new FormItem();
 			artistname.orderNumber = "2.";
 			artistname.label = "Artist name";
@@ -147,7 +147,7 @@ package cz.hotmusic
 			artistname.serviceEvent = ase;
 			
 			var alse:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.AUTOCOMPLETE, null, null);
-			alse.sid = Model.getInstance().user.session;
+			alse.sid = Model.getInstance().user.sid;
 			albumname = new FormItem();
 			albumname.orderNumber = "3.";
 			albumname.label = "Album name";
@@ -155,7 +155,7 @@ package cz.hotmusic
 			albumname.serviceEvent = alse;
 			
 			var gse:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.AUTOCOMPLETE, null, null);
-			gse.sid = Model.getInstance().user.session;
+			gse.sid = Model.getInstance().user.sid;
 			genre = new FormItem();
 			genre.orderNumber = "4.";
 			genre.label = "Genre";

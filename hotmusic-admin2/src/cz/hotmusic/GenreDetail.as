@@ -60,7 +60,7 @@ package cz.hotmusic
 			if (data != null) // modify
 				genre.id = data.id;
 			se.genre = genre;
-			se.sid = Model.getInstance().user.session;
+			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 		}
 		

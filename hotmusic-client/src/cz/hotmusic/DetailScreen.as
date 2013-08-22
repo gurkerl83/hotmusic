@@ -521,7 +521,7 @@ package cz.hotmusic
 			vote.song = song;
 			
 			var se:ServiceEvent = new SongServiceEvent(SongServiceEvent.VOTE, null, null);
-			se.sid = Model.getInstance().user.session;
+			se.sid = Model.getInstance().user.sid;
 			se.sedata = vote;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 		}

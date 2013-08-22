@@ -69,7 +69,7 @@ package cz.hotmusic
 			if (data != null) // modify
 				album.id = data.id;
 			se.album = album;
-			se.sid = Model.getInstance().user.session;
+			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 		}
 		
@@ -123,7 +123,7 @@ package cz.hotmusic
 //			albumname.value = "Slash";
 
 			var ase:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.AUTOCOMPLETE, null, null);
-			ase.sid = Model.getInstance().user.session;
+			ase.sid = Model.getInstance().user.sid;
 			artistname = new FormItem();
 			artistname.orderNumber = "2.";
 			artistname.label = "Artist name";
@@ -131,7 +131,7 @@ package cz.hotmusic
 			artistname.serviceEvent = ase;
 			
 			var gse:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.AUTOCOMPLETE, null, null);
-			gse.sid = Model.getInstance().user.session;
+			gse.sid = Model.getInstance().user.sid;
 			genre = new FormItem();
 			genre.orderNumber = "3.";
 			genre.label = "Genre";

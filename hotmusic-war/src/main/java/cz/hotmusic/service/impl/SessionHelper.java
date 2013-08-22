@@ -38,7 +38,7 @@ public class SessionHelper {
 		Assert.assertNotNull(userSession);
 		
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from User where session = :session");
+		Query query = session.createQuery("from User where sessionAdmin = :session or sessionMobile = :session");
 		query.setParameter("session", userSession);
 		
 		List<User> list = query.list();

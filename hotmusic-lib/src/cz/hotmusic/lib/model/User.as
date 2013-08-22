@@ -20,11 +20,20 @@ package cz.hotmusic.lib.model
 		public var male:Boolean;
 		public var password:String;
 		public var facebookId:String;
-		public var session:String;
+		public var sessionAdmin:String;
+		public var sessionMobile:String;
 		public var lastSession:String;
 		public var adminRights:Boolean;
 		public var genresAuthorized:Boolean;
 		public var usersAuthorized:Boolean;
 		public var addArtistAuthorized:Boolean;
+		
+		public function get sid():String {
+			if (sessionAdmin && sessionAdmin.length > 0)
+				return sessionAdmin;
+			if (sessionMobile && sessionMobile.length > 0)
+				return sessionMobile;
+			return null;
+		}
 	}
 }

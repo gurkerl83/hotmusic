@@ -85,7 +85,7 @@ public class SongService implements ISongService{
 		
 		
 		@SuppressWarnings("unchecked")
-		List<User> listUser = (List<User>)session.createQuery("from User where session = :sid").setParameter("sid", sid).list();
+		List<User> listUser = (List<User>)session.createQuery("from User where sessionAdmin = :sid or sessionMobile = :sid").setParameter("sid", sid).list();
 		if (listUser.size() != 1)
 			throw new Exception("Can't find the user");
 		User foundUser = listUser.get(0);
@@ -242,7 +242,7 @@ public class SongService implements ISongService{
 		
 		// LOAD USER
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from User where session = :sid");
+		Query query = session.createQuery("from User where sessionAdmin = :sid or sessionUser = :sid");
 		query.setParameter("sid", sid);
 		
 		@SuppressWarnings("unchecked")

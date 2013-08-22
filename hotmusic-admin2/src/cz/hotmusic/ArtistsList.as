@@ -88,7 +88,7 @@ package cz.hotmusic
 			list.addEventListener("delete", function onDelete(event:Event):void {
 				skipOpenDetail = true;
 				var se:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.REMOVE, removeResult, removeFault);
-				se.sid = Model.getInstance().user.session;
+				se.sid = Model.getInstance().user.sid;
 				se.artist = Artist(ArtistRenderer(event.target).data);
 				CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			});

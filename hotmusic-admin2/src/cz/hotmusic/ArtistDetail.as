@@ -60,7 +60,7 @@ package cz.hotmusic
 			if (artistData != null) // modify artist
 				artist.id = artistData.id;
 			se.artist = artist;
-			se.sid = Model.getInstance().user.session;
+			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 		}
 		
