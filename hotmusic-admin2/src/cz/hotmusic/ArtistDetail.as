@@ -60,7 +60,7 @@ package cz.hotmusic
 			
 			var artist:Artist = new Artist(this.artist.value);
 			
-			var se:ArtistServiceEvent = new ArtistServiceEvent(artistData == null ? ArtistServiceEvent.CREATE:ArtistServiceEvent.UPDATE, createResult, createFault);
+			var se:ArtistServiceEvent = new ArtistServiceEvent(artistData == null ? ArtistServiceEvent.CREATE:ArtistServiceEvent.UPDATE, createResult, Alert.showError);
 			if (artistData != null) // modify artist
 				artist.id = artistData.id;
 			se.artist = artist;
@@ -101,11 +101,6 @@ package cz.hotmusic
 			DataHelper.getInstance().getArtists(null,  function onArtistsFault(info:FaultEvent):void {
 				Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
 			});
-		}
-		
-		private function createFault(info:Object):void
-		{
-			trace("got error");
 		}
 		
 		override protected function initialize():void

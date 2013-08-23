@@ -28,6 +28,10 @@ package cz.hotmusic.lib.model
 		public var usersAuthorized:Boolean;
 		public var addArtistAuthorized:Boolean;
 		
+		public var addedDate		:Date;
+		public var addedByUser		:User;
+		public var addedBySession	:String;
+		
 		public function get sid():String {
 			if (sessionAdmin && sessionAdmin.length > 0)
 				return sessionAdmin;

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import cz.hotmusic.model.Artist;
+import cz.hotmusic.model.Song;
 import cz.hotmusic.service.IArtistService;
 
 @Repository
@@ -26,6 +27,7 @@ public class ArtistService implements IArtistService{
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private SessionFactory sessionFactory;
 	private SessionHelper sessionHelper;
+	private final int count = 10; // velikost stranky
 	
 	//------------------------------------------------------
 	//
@@ -53,7 +55,7 @@ public class ArtistService implements IArtistService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public List<Artist> list(String sid, int page, int count) throws Throwable {
+	public List<Artist> list(String sid, int page) throws Throwable {
 		Assert.assertNotNull(sid);
 		sessionHelper.checkSession(sid);
 		
@@ -61,8 +63,6 @@ public class ArtistService implements IArtistService{
 		Query query = null;
 		
 		query = session.createQuery("from Artist");
-		
-		if (count == 0 ) count = 10;
 		
 		query.setFirstResult(page * count);
 		query.setMaxResults(count);
@@ -77,7 +77,40 @@ public class ArtistService implements IArtistService{
 	@RemotingInclude
 	@Transactional
 	public List<Artist> list(String sid) throws Throwable {
-		return list(sid, 0, 10);
+		return list(sid, 0);
+	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
+	public List<Artist> list(String sid, int page, String search, String sort) throws Throwable {
+		Assert.assertNotNull(sid);
+		sessionHelper.checkSession(sid);
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = null;
+		
+		if (sort != null && sort.equals("Z-A"))
+			sort = " order by name desc";
+		else if (sort != null && sort.equals("Newest"))
+			sort = " order by addedDate";
+		else if (sort != null && sort.equals("Oldesd"))
+			sort = " order by addedDate desc";
+		else 
+			sort = " order by name";
+		
+		if (search == null || search.equals(""))
+			query = session.createQuery("from Artist " + sort);
+		else
+			query = session.createQuery("from Artist where name like :search" + sort).setParameter("search", "%" + search + "%");
+			
+		query.setFirstResult(page * count);
+		query.setMaxResults(count);
+
+		@SuppressWarnings("unchecked")
+		List<Artist> list = query.list();
+		
+		return list;
 	}
 
 	@Override

@@ -91,7 +91,7 @@ package cz.hotmusic
 			song.soundcloud = soundcloud.value;
 			song.youtube = youtube.value;
 			
-			var se:SongServiceEvent = new SongServiceEvent(songData == null ? SongServiceEvent.CREATE:SongServiceEvent.UPDATE, createResult, createFault);
+			var se:SongServiceEvent = new SongServiceEvent(songData == null ? SongServiceEvent.CREATE:SongServiceEvent.UPDATE, createResult, Alert.showError);
 			if (songData != null) // modify song
 				song.id = songData.id;
 			se.song = song;
@@ -137,11 +137,6 @@ package cz.hotmusic
 			DataHelper.getInstance().getSongs(null,  function onSongsFault(info:FaultEvent):void {
 				Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
 			});
-		}
-		
-		private function createFault(info:Object):void
-		{
-			trace("got error");
 		}
 		
 		public function clear():void

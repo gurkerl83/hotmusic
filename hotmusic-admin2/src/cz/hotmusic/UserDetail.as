@@ -62,7 +62,7 @@ package cz.hotmusic
 			user.usersAuthorized = usersCB.isSelected;
 			user.addArtistAuthorized = addArtistCB.isSelected;
 			
-			var se:ProfileServiceEvent = new ProfileServiceEvent(data == null ? ProfileServiceEvent.REGISTER:ProfileServiceEvent.UPDATE, registerResult, registerFault);
+			var se:ProfileServiceEvent = new ProfileServiceEvent(data == null ? ProfileServiceEvent.REGISTER:ProfileServiceEvent.UPDATE, registerResult, Alert.showError);
 			if (data != null) // modify
 				user.id = data.id;
 			se.user = user;
@@ -82,11 +82,11 @@ package cz.hotmusic
 				firstname.showValidator();
 				valid = false;
 			}
-			if (!surname.selectedItem) {
+			if (!surname.value) {
 				surname.showValidator();
 				valid = false;
 			}
-			if (!email.selectedItem) {
+			if (!email.value) {
 				email.showValidator();
 				valid = false;
 			}
@@ -114,14 +114,9 @@ package cz.hotmusic
 		private function registerResult(result:Object):void
 		{
 			trace("got result");
-			var pse:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST, listResult, listFault);
+			var pse:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST, listResult, Alert.showError);
 			pse.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(pse);
-		}
-		
-		private function registerFault(info:Object):void
-		{
-			trace("got error");
 		}
 		
 		private function listResult(result:ResultEvent):void
@@ -135,11 +130,6 @@ package cz.hotmusic
 			}
 			dispatchEventWith("closeDetail");
 			
-		}
-		
-		private function listFault(info:Object):void
-		{
-			trace("got error");
 		}
 		
 		private var firstname:FormItem;

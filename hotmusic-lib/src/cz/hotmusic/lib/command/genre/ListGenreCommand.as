@@ -24,8 +24,8 @@ package cz.hotmusic.lib.command.genre
 			se = GenreServiceEvent(event);
 			var service:RemoteObject = MyServiceLocator.getInstance().getService(MyServiceLocator.GENRE_SERVICE);
 			var call:AsyncToken;
-			if (se.data != null) {
-				call = service.list(se.sid, se.data.page, se.data.count);
+			if (se.sedata != null) {
+				call = service.list(se.sid, se.sedata.page, se.sedata.search, se.sedata.sort);
 			} else {
 				call = service.list(se.sid);
 			}

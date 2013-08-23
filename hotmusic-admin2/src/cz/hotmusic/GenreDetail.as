@@ -60,7 +60,7 @@ package cz.hotmusic
 			
 			var genre:Genre = new Genre(this.genre.value);
 			
-			var se:GenreServiceEvent = new GenreServiceEvent(data == null ? GenreServiceEvent.CREATE:GenreServiceEvent.UPDATE, createResult, createFault);
+			var se:GenreServiceEvent = new GenreServiceEvent(data == null ? GenreServiceEvent.CREATE:GenreServiceEvent.UPDATE, createResult, Alert.showError);
 			if (data != null) // modify
 				genre.id = data.id;
 			se.genre = genre;
@@ -102,11 +102,6 @@ package cz.hotmusic
 			DataHelper.getInstance().getGenres(null,  function onGenresFault(info:FaultEvent):void {
 				Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
 			});
-		}
-		
-		private function createFault(info:Object):void
-		{
-			trace("got error");
 		}
 		
 		override protected function initialize():void

@@ -1,5 +1,7 @@
 package cz.hotmusic.component
 {
+	import cz.hotmusic.lib.helper.ErrorHelper;
+	
 	import feathers.controls.Button;
 	import feathers.controls.Header;
 	import feathers.controls.Label;
@@ -8,6 +10,8 @@ package cz.hotmusic.component
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.themes.Theme;
+	
+	import mx.rpc.events.FaultEvent;
 	
 	import org.osmf.layout.HorizontalAlign;
 	import org.osmf.layout.VerticalAlign;
@@ -47,6 +51,23 @@ package cz.hotmusic.component
 			PopUpManager.addPopUp(panel);
 		}
 		
+		public static function showError(error:Object):void 
+		{
+			var msg:String;
+			if (error is FaultEvent) {
+				msg = FaultEvent(error).fault.faultString;
+			} else if (error is String) {
+				msg = String(error);
+			} else {
+				throw new Error("Unknown error object");
+			}
+			
+//			if (msg && msg.length > 200)
+//				msg = msg.substr(0, 200);
+			
+			show(ErrorHelper.getInstance().getMessage(msg), ERROR);
+		}
+		
 		public static function hide():void {
 			PopUpManager.removePopUp(panel);
 		}
@@ -54,6 +75,8 @@ package cz.hotmusic.component
 		private static function initPanel():void {
 			panel = new Panel();
 			panel.minWidth = 400;
+			panel.maxWidth = 800;
+//			panel.maxHeight = 600;
 			var layout:VerticalLayout = new VerticalLayout();
 			layout.gap = 20;
 			layout.padding = 20;
@@ -61,6 +84,9 @@ package cz.hotmusic.component
 			panel.layout = layout;
 			
 			label = new Label();
+			label.maxWidth = 750;
+//			label.minWidth = 600;
+			label.textRendererProperties.wordWrap = true;
 			panel.addChild( label );
 			
 			panelButton = new Panel();

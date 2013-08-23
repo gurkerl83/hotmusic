@@ -1,19 +1,35 @@
 package cz.hotmusic.component
 {
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
+	
+	import cz.hotmusic.ISearchSort;
+	import cz.hotmusic.lib.data.DataHelper;
+	import cz.hotmusic.lib.event.ServiceEvent;
 	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.Button;
+	import feathers.controls.List;
 	import feathers.core.FeathersControl;
+	import feathers.data.ListCollection;
 	import feathers.themes.Theme;
+	
+	import mx.rpc.events.ResultEvent;
 	
 	import starling.events.Event;
 	
 	public class PageJumper extends FeathersControl
 	{
-		public function PageJumper()
+		public function PageJumper(se:ServiceEvent, list:List, screen:ISearchSort)
 		{
 			super();
+			this.screen = screen;
+			this.list = list;
+			this.se = se;
 		}
+		
+		private var screen:ISearchSort;
+		private var list:List;
+		private var se:ServiceEvent;
 		
 		public static const PAGE_JUMP:String = "PAGE_JUMP";
 		
@@ -21,12 +37,12 @@ package cz.hotmusic.component
 
 		public function get actualPage():int
 		{
-			return _actualPage;
+			return screen.page;
 		}
 
 		public function set actualPage(value:int):void
 		{
-			_actualPage = value;
+			screen.page = value;
 		}
 
 		public function get totalItems():int
@@ -60,8 +76,9 @@ package cz.hotmusic.component
 				if (actualPage <= 0)
 					return;
 				actualPage = 0;
-				var ge:Event = new Event(PAGE_JUMP, false, {page:actualPage,count:Model.ITEMS_ON_PAGE});
-				dispatchEvent(ge);
+//				var ge:Event = new Event(PAGE_JUMP, false, {page:actualPage,count:Model.ITEMS_ON_PAGE});
+//				dispatchEvent(ge);
+				onList();
 				invalidate(INVALIDATION_FLAG_DATA);
 			});
 			
@@ -73,8 +90,9 @@ package cz.hotmusic.component
 				if (actualPage <= 0)
 					return;
 				actualPage--;
-				var ge:Event = new Event(PAGE_JUMP, false, {page:actualPage, count:Model.ITEMS_ON_PAGE});
-				dispatchEvent(ge);
+//				var ge:Event = new Event(PAGE_JUMP, false, {page:actualPage, count:Model.ITEMS_ON_PAGE});
+//				dispatchEvent(ge);
+				onList();
 				invalidate(INVALIDATION_FLAG_DATA);
 			});
 			
@@ -86,8 +104,9 @@ package cz.hotmusic.component
 				if (actualPage >= lastPageNumber)
 					return;
 				actualPage++;
-				var ge:Event = new Event(PAGE_JUMP, false, {page:actualPage, count:Model.ITEMS_ON_PAGE});
-				dispatchEvent(ge);
+//				var ge:Event = new Event(PAGE_JUMP, false, {page:actualPage, count:Model.ITEMS_ON_PAGE});
+//				dispatchEvent(ge);
+				onList();
 				invalidate(INVALIDATION_FLAG_DATA);
 			});
 			
@@ -99,8 +118,9 @@ package cz.hotmusic.component
 				if (actualPage >= lastPageNumber)
 					return;
 				actualPage = lastPageNumber;
-				var ge:Event = new Event(PAGE_JUMP, false, {page:actualPage,count:Model.ITEMS_ON_PAGE});
-				dispatchEvent(ge);
+//				var ge:Event = new Event(PAGE_JUMP, false, {page:actualPage,count:Model.ITEMS_ON_PAGE});
+//				dispatchEvent(ge);
+				onList();
 				invalidate(INVALIDATION_FLAG_DATA);
 			});
 			
@@ -195,8 +215,9 @@ package cz.hotmusic.component
 				btn.addEventListener(Event.TRIGGERED, function onTrigger(event:Event):void {
 					actualPage = int(Button(event.target).label) - 1;
 					event.stopImmediatePropagation();
-					var ge:Event = new Event(PAGE_JUMP, false, {page:actualPage,count:Model.ITEMS_ON_PAGE});
-					dispatchEvent(ge);
+//					var ge:Event = new Event(PAGE_JUMP, false, {page:actualPage,count:Model.ITEMS_ON_PAGE});
+//					dispatchEvent(ge);
+					onList();
 					invalidate(INVALIDATION_FLAG_DATA);
 				});
 				i++;
@@ -212,6 +233,19 @@ package cz.hotmusic.component
 				btn.name = Theme.PAGE_BUTTON_LIGHT;
 				buttonsArr.push(btn);
 			}
+		}
+		
+		private function onList():void 
+		{
+			screen.page = actualPage;
+			se.sedata = screen;
+			se.sid = Model.getInstance().user.sid;
+			se.resultCallback = function onResult(result:ResultEvent):void 
+			{
+				list.dataProvider = new ListCollection(DataHelper.al2a(result.result));
+			}
+			se.faultCallback = Alert.showError;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 		}
 	}
 }

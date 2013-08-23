@@ -4,6 +4,7 @@ package cz.hotmusic
 	
 	import cz.hotmusic.component.Alert;
 	import cz.hotmusic.component.PageJumper;
+	import cz.hotmusic.component.SearchSort;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.helper.MockDataHelper;
 	import cz.hotmusic.lib.data.DataHelper;
@@ -26,7 +27,7 @@ package cz.hotmusic
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class AlbumsList extends Screen implements IActionButtons
+	public class AlbumsList extends Screen implements IActionButtons, ISearchSort
 	{
 		public function AlbumsList()
 		{
@@ -34,11 +35,54 @@ package cz.hotmusic
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
+		// ----------------------------------------
+		//
+		// GETTERS SETTERS
+		//
+		// ----------------------------------------
+		
+		private var _sort:String;
+		private var _page:int;
+		private var _search:String;
+		
+		public function get sort():String
+		{
+			return _sort;
+		}
+		
+		public function set sort(value:String):void
+		{
+			_sort = value;
+		}
+		
+		public function get page():int
+		{
+			return _page;
+		}
+		
+		public function set page(value:int):void
+		{
+			_page = value;
+		}
+		
+		public function get search():String
+		{
+			return _search;
+		}
+		
+		public function set search(value:String):void
+		{
+			_search = value;
+		}
+		
 		private function onAddedToStage(event:Event):void {
 			// reload data
 			list.dataProvider = new ListCollection(Model.getInstance().albums);
 			pageJumper.totalItems = Model.getInstance().albumsTotal;
 			pageJumper.actualPage = 0;
+			
+			// reset search ti
+			searchSort.clear();
 		}
 		
 		// ACTION BUTTONS
@@ -60,6 +104,7 @@ package cz.hotmusic
 		private var totalLbl:Label;
 		private var totalVal:Label;
 		private var pageJumper:PageJumper;
+		private var searchSort:SearchSort;
 		
 		private var skipOpenDetail:Boolean;
 		
@@ -111,16 +156,10 @@ package cz.hotmusic
 					list.selectedIndex = -1;
 			});
 			
-			pageJumper = new PageJumper();
+			pageJumper = new PageJumper(new AlbumServiceEvent(AlbumServiceEvent.LIST,null, null),list, this);
 			pageJumper.totalItems = Model.getInstance().albumsTotal;
-			pageJumper.addEventListener(PageJumper.PAGE_JUMP, function onPageJump(event:Event):void {
-				DataHelper.getInstance().getAlbums(function onAlbums():void {
-					list.dataProvider = new ListCollection(Model.getInstance().albums);
-				},  function onAlbumsFault(info:FaultEvent):void {
-					Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
-				}
-					, false, event.data);
-			});
+			
+			searchSort = new SearchSort(new AlbumServiceEvent(AlbumServiceEvent.LIST, null, null),list, this);
 			
 			addChild(lastMonthLbl);
 			addChild(lastMonthVal);
@@ -128,6 +167,7 @@ package cz.hotmusic
 			addChild(totalVal);
 			addChild(list);
 			addChild(pageJumper);
+			addChild(searchSort);
 		}
 		
 		private function removeResult(result:ResultEvent):void
@@ -167,7 +207,10 @@ package cz.hotmusic
 			totalVal.validate();
 			totalVal.y = baseline - totalVal.height + totalLbl.height;
 			
-			list.y = totalLbl.y + totalLbl.height + gap;
+			searchSort.y = totalLbl.y + totalLbl.height + gap;
+			searchSort.validate();
+			
+			list.y = searchSort.y + searchSort.height + gap;
 			list.width = actualWidth;
 			
 			pageJumper.validate();

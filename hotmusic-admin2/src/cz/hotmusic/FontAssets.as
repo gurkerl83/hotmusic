@@ -105,6 +105,10 @@ package cz.hotmusic
 		public static const Delete:Class;
 		[Embed(source="assets/icon/datebg.png")]
 		public static const DateBG:Class;
+		[Embed(source="assets/icon/lupaup.png")]
+		public static const LupaUp:Class;
+		[Embed(source="assets/icon/lupadown.png")]
+		public static const LupaDown:Class;
 		
 		public function FontAssets()
 		{

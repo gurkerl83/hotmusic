@@ -1,9 +1,12 @@
 package cz.hotmusic.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -43,6 +46,11 @@ public class User {
 	public Boolean genresAuthorized;
 	public Boolean usersAuthorized;
 	public Boolean addArtistAuthorized;
+	
+	public Date addedDate;
+	@OneToOne
+	public User addedByUser;
+	public String addedBySession;
 	
 	public String getFacebookId() {
 		return facebookId;
@@ -145,5 +153,23 @@ public class User {
 	}
 	public void setSessionMobile(String sessionMobile) {
 		this.sessionMobile = sessionMobile;
+	}
+	public Date getAddedDate() {
+		return addedDate;
+	}
+	public void setAddedDate(Date addedDate) {
+		this.addedDate = addedDate;
+	}
+	public User getAddedByUser() {
+		return addedByUser;
+	}
+	public void setAddedByUser(User addedByUser) {
+		this.addedByUser = addedByUser;
+	}
+	public String getAddedBySession() {
+		return addedBySession;
+	}
+	public void setAddedBySession(String addedBySession) {
+		this.addedBySession = addedBySession;
 	}
 }

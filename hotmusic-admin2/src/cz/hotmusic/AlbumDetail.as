@@ -71,7 +71,7 @@ package cz.hotmusic
 			album.amazon = amazon.value;
 			album.beatport = beatport.value;
 			
-			var se:AlbumServiceEvent = new AlbumServiceEvent(data == null ? AlbumServiceEvent.CREATE:AlbumServiceEvent.UPDATE, createResult, createFault);
+			var se:AlbumServiceEvent = new AlbumServiceEvent(data == null ? AlbumServiceEvent.CREATE:AlbumServiceEvent.UPDATE, createResult, Alert.showError);
 			if (data != null) // modify
 				album.id = data.id;
 			se.album = album;
@@ -117,11 +117,6 @@ package cz.hotmusic
 			DataHelper.getInstance().getAlbums(null,  function onAlbumsFault(info:FaultEvent):void {
 				Alert.show(ErrorHelper.getInstance().getMessage(info.fault.faultString), Alert.ERROR);
 			});
-		}
-		
-		private function createFault(info:Object):void
-		{
-			trace("got error");
 		}
 		
 		public function clear():void

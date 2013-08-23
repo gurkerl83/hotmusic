@@ -25,6 +25,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import cz.hotmusic.model.Feedback;
+import cz.hotmusic.model.Song;
 import cz.hotmusic.model.User;
 import cz.hotmusic.service.IProfileService;
 
@@ -36,6 +37,7 @@ public class ProfileService implements IProfileService{
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private SessionFactory sessionFactory;
 	private SessionHelper sessionHelper;
+	private final int count = 10; // velikost stranky
 	
 	private final String MOBILE_TYPE = "MOBILE_TYPE";
 	private final String ADMIN_TYPE = "ADMIN_TYPE";
@@ -49,75 +51,69 @@ public class ProfileService implements IProfileService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public String registerUser(User user) throws Exception {
+	public String registerUser(User user) throws Throwable {
+		return registerUser(null, user);
+	}
+	
+	public String registerUser(String sid, User user) throws Throwable {
 		// check inputs
-		Assert.assertNotNull(user);
-		Assert.assertNotNull(user.email);
-//		Assert.assertNotNull(user.nick);
-//		Assert.assertNotNull(user.password);
-//		Assert.assertNotNull(user.male);
-		
-		if (user.version != 0)
-			throw new Exception("Wrong client version. Please download newest version.");
-		
-//		if ((user.facebookId == null || user.facebookId.length() <= 0) && 
-//			 (user.password == null || user.password.length() <= 0))
-//			throw new Exception("You have to fill facebooId or password");
-		
-		// check previous registration
-		Session session = sessionFactory.getCurrentSession();
-		Query query = null;
-		
-		if (user.facebookId != null && user.facebookId.length() > 0) {
-			query = session.createQuery("from User where facebookId = :facebookId");
-			query.setParameter("facebookId", user.facebookId);
-		
-			@SuppressWarnings("unchecked")
-			List<User> list = query.list();
-			
-			if (list != null && list.size() > 0) {
-				return list.get(0).id;
-//				throw new Exception("user already registered. User.facebookId=" + user.facebookId);
-			}
-		} 
-		
-		if (user.email != null && user.email.length() > 0) {
-			query = session.createQuery("from User where email = :email");
-			query.setParameter("email", user.email);
-			
-			@SuppressWarnings("unchecked")
-			List<User> list = query.list();
-			
-			if (list != null && list.size() > 0) {
-				throw new Exception("user already registered. User.email=" + user.email);
-			}
-		}
-		
-//		if (query == null) {
-//			throw new Exception("you have to fill mandatory attributes like nick or facebookId");
-//		}
-//		
-//		List<Model> list = query.list();
-//		
-//		if (list != null && list.size() > 0) {
-//			throw new Exception("user already registered. User.email=" + user.email);
-//		}
-		
-		//store md5 password
-//		user.password = DigestUtils.md5Hex(user.password);
-		
-		// store default password
-		user.password = DEFAULT_PASSWORD;
-		
-		session = sessionFactory.openSession();
-		Transaction transaction = session.beginTransaction();
-		transaction.begin();
-		session.save(user);
-		transaction.commit();
-	    session.close();
-		
-		return user.id;
-		
+				Assert.assertNotNull(user);
+				Assert.assertNotNull(user.email);
+
+				if (sid != null)
+					sessionHelper.checkSession(sid);
+				
+				if (user.version != 0)
+					throw new Exception("Wrong client version. Please download newest version.");
+				
+				// check previous registration
+				Session session = sessionFactory.getCurrentSession();
+				Query query = null;
+				
+				if (user.facebookId != null && user.facebookId.length() > 0) {
+					query = session.createQuery("from User where facebookId = :facebookId");
+					query.setParameter("facebookId", user.facebookId);
+				
+					@SuppressWarnings("unchecked")
+					List<User> list = query.list();
+					
+					if (list != null && list.size() > 0) {
+						return list.get(0).id;
+//						throw new Exception("user already registered. User.facebookId=" + user.facebookId);
+					}
+				} 
+				
+				if (user.email != null && user.email.length() > 0) {
+					query = session.createQuery("from User where email = :email");
+					query.setParameter("email", user.email);
+					
+					@SuppressWarnings("unchecked")
+					List<User> list = query.list();
+					
+					if (list != null && list.size() > 0) {
+						throw new Exception("user already registered. User.email=" + user.email);
+					}
+				}
+				
+				//store md5 password
+//				user.password = DigestUtils.md5Hex(user.password);
+				
+				// store default password
+				user.password = DEFAULT_PASSWORD;
+				user.addedBySession = sid;
+				user.addedDate = new Date();
+				
+				if (sid == null)
+					user.adminRights = false;
+				
+				session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				transaction.begin();
+				session.save(user);
+				transaction.commit();
+			    session.close();
+				
+				return user.id;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -288,7 +284,7 @@ public class ProfileService implements IProfileService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public List<User> list(String sid, int page, int count) throws Throwable {
+	public List<User> list(String sid, int page) throws Throwable {
 		Assert.assertNotNull(sid);
 		sessionHelper.checkSession(sid);
 		
@@ -296,8 +292,6 @@ public class ProfileService implements IProfileService{
 		Query query = null;
 		
 		query = session.createQuery("from User");
-		
-		if (count == 0 ) count = 10;
 		
 		query.setFirstResult(page * count);
 		query.setMaxResults(count);
@@ -312,7 +306,40 @@ public class ProfileService implements IProfileService{
 	@RemotingInclude
 	@Transactional
 	public List<User> list(String sid) throws Throwable {
-		return list(sid, 0, 10);
+		return list(sid, 0);
+	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
+	public List<User> list(String sid, int page, String search, String sort) throws Throwable {
+		Assert.assertNotNull(sid);
+		sessionHelper.checkSession(sid);
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = null;
+		
+		if (sort != null && sort.equals("Z-A"))
+			sort = " order by surname,firstname desc";
+		else if (sort != null && sort.equals("Newest"))
+			sort = " order by addedDate";
+		else if (sort != null && sort.equals("Oldesd"))
+			sort = " order by addedDate desc";
+		else 
+			sort = " order by surname,firstname";
+		
+		if (search == null || search.equals(""))
+			query = session.createQuery("from User " + sort);
+		else
+			query = session.createQuery("from User where firstname like :search or surname like :search or email like :search" + sort).setParameter("search", "%" + search + "%");
+			
+		query.setFirstResult(page * count);
+		query.setMaxResults(count);
+
+		@SuppressWarnings("unchecked")
+		List<User> list = query.list();
+		
+		return list;
 	}
 
 	@Override

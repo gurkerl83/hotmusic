@@ -14,10 +14,12 @@ package cz.hotmusic
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
+	import feathers.controls.PickerList;
 	import feathers.controls.Screen;
 	import feathers.controls.TextArea;
 	import feathers.controls.TextInput;
 	import feathers.core.PopUpManager;
+	import feathers.data.ListCollection;
 	import feathers.themes.Theme;
 	
 	import flash.events.Event;
@@ -116,7 +118,6 @@ package cz.hotmusic
 			signInBtn.width = mywidth;
 			signInBtn.x = actualWidth/2 - signInBtn.width/2;
 			signInBtn.y = passwordTI.y + passwordTI.height + 2*gap;
-			
 		}
 		
 		private function loginResult(result:ResultEvent):void

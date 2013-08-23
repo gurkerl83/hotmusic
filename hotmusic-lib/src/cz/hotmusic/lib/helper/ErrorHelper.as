@@ -18,6 +18,7 @@ package cz.hotmusic.lib.helper
 		public static const SESSION_NOT_VALID		:String = "Error: user session is not valid or expired"; // odhlasit
 		public static const USER_ALREADY_REGISTERED	:String = "user already registered."; // zobrazit, user uz je registrovany
 		public static const CONSTRAINT_VIOLATION	:String = "ConstraintViolationException : could not execute update query"; // zaznam nelze vymazat, je pravdepodobne vyuzivan
+		public static const DATAINTEGRITY_VIOLATION	:String = "DataIntegrityViolationException : Could not execute JDBC batch update"; // zaznam nelze vymazat, je pravdepodobne vyuzivan
 		public static const LOGIN_INCORRECT		 	:String = "Login incorrect";
 		public static const SEND_FAILED			 	:String = "Send failed";
 		
@@ -25,6 +26,7 @@ package cz.hotmusic.lib.helper
 		public static const SESSION_NOT_VALID_ANSWER		:String = "Session is not valid or expired, try login again please";
 		public static const USER_ALREADY_REGISTERED_ANSWER	:String = "User already registered";
 		public static const CONSTRAINT_VIOLATION_ANSWER 	:String = "Can not delete because it is still used. Delete all occurrences first and then try again";
+		public static const DATAINTEGRITY_VIOLATION_ANSWER 	:String = "Can not insert because it already exists";
 		public static const LOGIN_INCORRECT_ANSWER 	:String = "Login incorrect!";
 		public static const SEND_FAILED_ANSWER	 	:String = "Server is not responding right now";
 		
@@ -49,6 +51,9 @@ package cz.hotmusic.lib.helper
 			
 			if (error.indexOf(SEND_FAILED) >= 0)
 				return SEND_FAILED_ANSWER;
+
+			if (error.indexOf(DATAINTEGRITY_VIOLATION) >= 0)
+				return DATAINTEGRITY_VIOLATION_ANSWER;
 			
 			return error;
 		}

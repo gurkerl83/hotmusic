@@ -526,5 +526,14 @@ package cz.hotmusic.lib.data
 			else if (type == "+Artists")
 				getArtists(cb, cbf);
 		}
+		
+		public static function al2a(al:Object):Array 
+		{
+			var a:Array = [];
+			for each (var i:Object in al) {
+				a.push(i);
+			}
+			return a;
+		}
 	}
 }

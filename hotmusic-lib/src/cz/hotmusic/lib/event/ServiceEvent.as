@@ -4,7 +4,6 @@ package cz.hotmusic.lib.event
 	
 	public class ServiceEvent extends CairngormEvent
 	{
-		
 		public var sid:String;
 		public var sedata:Object;
 		public var response:Object;

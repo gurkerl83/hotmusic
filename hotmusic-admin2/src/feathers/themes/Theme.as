@@ -56,6 +56,7 @@ package feathers.themes
 	import feathers.controls.TextInput;
 	import feathers.controls.ToggleSwitch;
 	import feathers.controls.popups.CalloutPopUpContentManager;
+	import feathers.controls.popups.DropDownPopUpContentManager;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer;
@@ -159,6 +160,7 @@ package feathers.themes
 		protected static const ITEM_RENDERER_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 1, 82);
 		protected static const ITEM_RENDERER_MAIN_SCALE9_GRID:Rectangle = new Rectangle(1, 5, 10, 40);
 		protected static const ITEM_RENDERER_MENU_SCALE9_GRID:Rectangle = new Rectangle(1, 1, 26, 50);
+		protected static const ITEM_RENDERER_PICKER_SCALE9_GRID:Rectangle = new Rectangle(1, 1, 13, 29);
 		protected static const INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 1, 82);
 		protected static const INSET_ITEM_RENDERER_FIRST_SCALE9_GRID:Rectangle = new Rectangle(13, 13, 3, 70);
 		protected static const INSET_ITEM_RENDERER_LAST_SCALE9_GRID:Rectangle = new Rectangle(13, 0, 3, 75);
@@ -281,7 +283,8 @@ package feathers.themes
 		protected var buttonPageOrangeSkinTextures:Scale9Textures;
 		protected var buttonPageLightSkinTextures:Scale9Textures;
 		protected var buttonPageDarkSkinTextures:Scale9Textures;
-		protected var pickerListButtonIconTexture:Texture;
+		protected var pickerListUpButtonIconTexture:Texture;
+		protected var pickerListDownButtonIconTexture:Texture;
 		protected var tabDownSkinTextures:Scale9Textures;
 		protected var tabSelectedSkinTextures:Scale9Textures;
 		protected var pickerListItemSelectedIconTexture:Texture;
@@ -308,6 +311,9 @@ package feathers.themes
 		protected var itemRendererAutocompleteUpSkinTextures:Scale9Textures;
 		protected var itemRendererAutocompleteSelectedSkinTextures:Scale9Textures;
 		protected var itemRendererAutocompleteHoverSkinTextures:Scale9Textures;
+		protected var itemRendererPickerUpSkinTextures:Scale9Textures;
+		protected var itemRendererPickerSelectedSkinTextures:Scale9Textures;
+		
 		protected var itemRendererUpSkinTextures:Scale9Textures;
 		protected var itemRendererSelectedSkinTextures:Scale9Textures;
 		protected var insetItemRendererMiddleUpSkinTextures:Scale9Textures;
@@ -488,7 +494,8 @@ package feathers.themes
 			this.tabDownSkinTextures = new Scale9Textures(atlas.getTexture("tab-down-skin"), TAB_SCALE9_GRID);
 			this.tabSelectedSkinTextures = new Scale9Textures(atlas.getTexture("tab-selected-skin"), TAB_SCALE9_GRID);
 
-			this.pickerListButtonIconTexture = atlas.getTexture("picker-list-icon");
+			this.pickerListUpButtonIconTexture = atlas.getTexture("picker-list-up-icon");
+			this.pickerListDownButtonIconTexture = atlas.getTexture("picker-list-down-icon");
 			this.pickerListItemSelectedIconTexture = atlas.getTexture("picker-list-item-selected-icon");
 
 			this.radioUpIconTexture = backgroundSkinTexture;
@@ -517,6 +524,10 @@ package feathers.themes
 			this.itemRendererAutocompleteUpSkinTextures = itemRendererMainUpSkinTextures;
 			this.itemRendererAutocompleteSelectedSkinTextures = itemRendererMainSelectedSkinTextures;
 			this.itemRendererAutocompleteHoverSkinTextures = itemRendererMainSelectedSkinTextures;
+			this.itemRendererPickerUpSkinTextures = new Scale9Textures(atlas.getTexture("picker-list-item-background"), ITEM_RENDERER_PICKER_SCALE9_GRID);
+			this.itemRendererPickerSelectedSkinTextures = new Scale9Textures(atlas.getTexture("picker-list-item-selected-background"), ITEM_RENDERER_PICKER_SCALE9_GRID);
+			
+			
 			this.itemRendererUpSkinTextures = new Scale9Textures(atlas.getTexture("list-item-up-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.itemRendererSelectedSkinTextures = new Scale9Textures(atlas.getTexture("list-item-selected-skin"), ITEM_RENDERER_SCALE9_GRID);
 			this.insetItemRendererMiddleUpSkinTextures = new Scale9Textures(atlas.getTexture("list-inset-item-middle-up-skin"), INSET_ITEM_RENDERER_MIDDLE_SCALE9_GRID);
@@ -818,7 +829,9 @@ package feathers.themes
 				height: height * this.scale,
 				textureScale: this.scale
 			};
-			button.stateToSkinFunction = skinSelector.updateValue;
+			
+//			if (button.name != "feathers-picker-list-button")
+				button.stateToSkinFunction = skinSelector.updateValue;
 
 			button.defaultLabelProperties.textFormat = myDefaultLabelTextFormat;
 			button.defaultLabelProperties.embedFonts = true;
@@ -867,13 +880,32 @@ package feathers.themes
 		protected function pickerListButtonInitializer(button:Button):void
 		{
 			this.buttonInitializer(button);
+			
+			button.stateToSkinFunction = null;
+			button.upSkin = new Scale9Image(textinputblackSkinTextures);
+			button.hoverSkin = new Scale9Image(textinputblackSkinTextures);
+			button.downSkin = new Scale9Image(textinputblackSkinTextures);
+//			button.height = button.minHeight = 40;
+//			button.width = 400;
+			button.paddingRight = 6;
+			button.paddingLeft = 18;
 
-			const defaultIcon:Image = new Image(this.pickerListButtonIconTexture);
+			const defaultIcon:Image = new Image(this.pickerListUpButtonIconTexture);
 			defaultIcon.scaleX = defaultIcon.scaleY = this.scale;
 			button.defaultIcon = defaultIcon;
+			const downIcon:Image = new Image(this.pickerListDownButtonIconTexture);
+			downIcon.scaleX = downIcon.scaleY = this.scale;
+			button.downIcon = downIcon;
 
 			button.gap = Number.POSITIVE_INFINITY;
 			button.iconPosition = Button.ICON_POSITION_RIGHT;
+			
+			button.defaultLabelProperties.textFormat = smallBoldWhiteTextFormat;
+			button.defaultLabelProperties.embedFonts = true;
+			button.disabledLabelProperties.textFormat = smallBoldWhiteTextFormat;
+			button.disabledLabelProperties.embedFonts = true;
+			button.selectedDisabledLabelProperties.textFormat = smallBoldWhiteTextFormat;
+			button.selectedDisabledLabelProperties.embedFonts = true;
 		}
 
 		protected function toggleSwitchTrackInitializer(track:Button):void
@@ -1025,38 +1057,45 @@ package feathers.themes
 		protected function pickerListItemRendererInitializer(renderer:BaseDefaultItemRenderer):void
 		{
 			const skinSelector:Scale9ImageStateValueSelector = new Scale9ImageStateValueSelector();
-			skinSelector.defaultValue = this.itemRendererUpSkinTextures;
-			skinSelector.setValueForState(this.itemRendererSelectedSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.defaultValue = this.itemRendererPickerUpSkinTextures;
+			skinSelector.setValueForState(this.itemRendererPickerSelectedSkinTextures, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.itemRendererPickerSelectedSkinTextures, Button.STATE_HOVER, false);
 			skinSelector.imageProperties =
 			{
 				width: 88 * this.scale,
-				height: 88 * this.scale,
+				height: 30 * this.scale,
 				textureScale: this.scale
 			};
 			renderer.stateToSkinFunction = skinSelector.updateValue;
 
 			const defaultSelectedIcon:Image = new Image(this.pickerListItemSelectedIconTexture);
 			defaultSelectedIcon.scaleX = defaultSelectedIcon.scaleY = this.scale;
-			renderer.defaultSelectedIcon = defaultSelectedIcon;
+			renderer.defaultSelectedIcon = null;
 
 			const defaultIcon:Quad = new Quad(defaultSelectedIcon.width, defaultSelectedIcon.height, 0xff00ff);
 			defaultIcon.alpha = 0;
-			renderer.defaultIcon = defaultIcon;
+			renderer.defaultIcon = null;;
 
-			renderer.defaultLabelProperties.textFormat = this.largeLightTextFormat;
-			renderer.downLabelProperties.textFormat = this.largeDarkTextFormat;
+			renderer.defaultLabelProperties.textFormat = this.smallBoldWhiteTextFormat;
+			renderer.defaultLabelProperties.embedFonts = true;
+			renderer.downLabelProperties.textFormat = this.smallBoldWhiteTextFormat;
+			renderer.downLabelProperties.embedFonts = true;
 
 			renderer.itemHasIcon = false;
 			renderer.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			renderer.paddingTop = renderer.paddingBottom = 8 * this.scale;
-			renderer.paddingLeft = 32 * this.scale;
+			renderer.paddingLeft = 18 * this.scale;
 			renderer.paddingRight = 24 * this.scale;
-			renderer.gap = 12 * this.scale;
+			renderer.gap = 6 * this.scale;
 			renderer.iconPosition = Button.ICON_POSITION_LEFT;
 			renderer.accessoryGap = Number.POSITIVE_INFINITY;
-			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-			renderer.minWidth = renderer.minHeight = 88 * this.scale;
-			renderer.minTouchWidth = renderer.minTouchHeight = 88 * this.scale;
+			renderer.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_LEFT;
+			renderer.minWidth = 88 * this.scale; 
+			renderer.minHeight = 30 * this.scale;
+			renderer.minTouchWidth = 88 * this.scale; 
+			renderer.minTouchHeight = 30 * this.scale;
+			
+			renderer.useHandCursor = true;
 		}
 
 		protected function insetItemRendererInitializer(renderer:DefaultGroupedListItemRenderer, defaultSkinTextures:Scale9Textures, selectedAndDownSkinTextures:Scale9Textures):void
@@ -1382,44 +1421,49 @@ package feathers.themes
 
 		protected function pickerListInitializer(list:PickerList):void
 		{
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
-			{
-				list.popUpContentManager = new CalloutPopUpContentManager();
-			}
-			else
-			{
-				const centerStage:VerticalCenteredPopUpContentManager = new VerticalCenteredPopUpContentManager();
-				centerStage.marginTop = centerStage.marginRight = centerStage.marginBottom =
-					centerStage.marginLeft = 24 * this.scale;
-				list.popUpContentManager = centerStage;
-			}
-
-			const layout:VerticalLayout = new VerticalLayout();
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-			layout.useVirtualLayout = true;
-			layout.gap = 0;
-			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
-				layout.paddingLeft = 0;
-			list.listProperties.layout = layout;
-			list.listProperties.@scrollerProperties.verticalScrollPolicy = Scroller.SCROLL_POLICY_ON;
-
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
-			{
-				list.listProperties.minWidth = 560 * this.scale;
-				list.listProperties.maxHeight = 528 * this.scale;
-			}
-			else
-			{
-				const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
-				backgroundSkin.width = 20 * this.scale;
-				backgroundSkin.height = 20 * this.scale;
-				list.listProperties.backgroundSkin = backgroundSkin;
-				list.listProperties.paddingTop = list.listProperties.paddingRight =
-					list.listProperties.paddingBottom = list.listProperties.paddingLeft = 8 * this.scale;
-			}
-
+			list.popUpContentManager = new DropDownPopUpContentManager();
 			list.listProperties.itemRendererName = COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER;
+			list.height = 40;
+			
+//			list.listProperties.backgroundSkin = new Scale9Image(this.backgroundDisabledSkinTextures); 
+//			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+//			{
+//				list.popUpContentManager = new CalloutPopUpContentManager();
+//			}
+//			else
+//			{
+//				const centerStage:VerticalCenteredPopUpContentManager = new VerticalCenteredPopUpContentManager();
+//				centerStage.marginTop = centerStage.marginRight = centerStage.marginBottom =
+//					centerStage.marginLeft = 24 * this.scale;
+//				list.popUpContentManager = centerStage;
+//			}
+//
+//			const layout:VerticalLayout = new VerticalLayout();
+//			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
+//			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+//			layout.useVirtualLayout = true;
+//			layout.gap = 0;
+//			layout.paddingTop = layout.paddingRight = layout.paddingBottom =
+//				layout.paddingLeft = 0;
+//			list.listProperties.layout = layout;
+//			list.listProperties.@scrollerProperties.verticalScrollPolicy = Scroller.SCROLL_POLICY_ON;
+//
+//			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
+//			{
+//				list.listProperties.minWidth = 560 * this.scale;
+//				list.listProperties.maxHeight = 528 * this.scale;
+//			}
+//			else
+//			{
+//				const backgroundSkin:Scale9Image = new Scale9Image(this.backgroundDisabledSkinTextures, this.scale);
+//				backgroundSkin.width = 20 * this.scale;
+//				backgroundSkin.height = 20 * this.scale;
+//				list.listProperties.backgroundSkin = backgroundSkin;
+//				list.listProperties.paddingTop = list.listProperties.paddingRight =
+//					list.listProperties.paddingBottom = list.listProperties.paddingLeft = 8 * this.scale;
+//			}
+//
+//			list.listProperties.itemRendererName = COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER;
 		}
 		
 		protected function panelInitializer(panel:Panel):void {

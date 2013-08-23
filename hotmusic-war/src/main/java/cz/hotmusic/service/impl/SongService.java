@@ -6,7 +6,6 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cz.hotmusic.model.Album;
 import cz.hotmusic.model.Artist;
-import cz.hotmusic.model.Feedback;
 import cz.hotmusic.model.Genre;
 import cz.hotmusic.model.Song;
 import cz.hotmusic.model.User;
@@ -32,6 +30,7 @@ public class SongService implements ISongService{
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private SessionFactory sessionFactory;
 	private SessionHelper sessionHelper;
+	private final int count = 10; // velikost stranky
 	
 	//------------------------------------------------------
 	//
@@ -61,7 +60,7 @@ public class SongService implements ISongService{
 	@Override
 	@RemotingInclude
 	@Transactional
-	public List<Song> list(String sid, int page, int count) throws Throwable {
+	public List<Song> list(String sid, int page) throws Throwable {
 		Assert.assertNotNull(sid);
 		sessionHelper.checkSession(sid);
 		
@@ -72,18 +71,53 @@ public class SongService implements ISongService{
 		
 		query = session.createQuery("from Song");
 		
-		if (count == 0 ) count = 10;
-		
 		query.setFirstResult(page * count);
 		query.setMaxResults(count);
 
 		@SuppressWarnings("unchecked")
 		List<Song> listSong = query.list();
 		
-		// prihlasenej user
+		setCanVote(sid, listSong, session);
 		
+		return listSong;
+	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
+	public List<Song> list(String sid, int page, String search, String sort) throws Throwable {
+		Assert.assertNotNull(sid);
+		sessionHelper.checkSession(sid);
 		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = null;
 		
+		if (sort != null && sort.equals("Z-A"))
+			sort = " order by name desc";
+		else if (sort != null && sort.equals("Newest"))
+			sort = " order by addedDate";
+		else if (sort != null && sort.equals("Oldesd"))
+			sort = " order by addedDate desc";
+		else 
+			sort = " order by name";
+		
+		if (search == null || search.equals(""))
+			query = session.createQuery("from Song " + sort);
+		else
+			query = session.createQuery("from Song where name like :search" + sort).setParameter("search", "%" + search + "%");
+			
+		query.setFirstResult(page * count);
+		query.setMaxResults(count);
+
+		@SuppressWarnings("unchecked")
+		List<Song> list = query.list();
+		
+		setCanVote(sid, list, session);
+		
+		return list;
+	}
+	
+	private void setCanVote(String sid, List<Song> listSong, Session session) throws Exception {
 		@SuppressWarnings("unchecked")
 		List<User> listUser = (List<User>)session.createQuery("from User where sessionAdmin = :sid or sessionMobile = :sid").setParameter("sid", sid).list();
 		if (listUser.size() != 1)
@@ -93,21 +127,20 @@ public class SongService implements ISongService{
 		// nastaveni canVote pro prihlasenyho usera
 		
 		for (Song song : listSong) {
+			@SuppressWarnings("unchecked")
 			List<Vote> listVote = session.createQuery("from Vote where song_song_id = :songId and user_user_id = :userId").setParameter("songId", song.id).setParameter("userId", foundUser.id).list();
 			if (listVote.size() == 0)
 				song.canVote = true;
 			else
 				song.canVote = false;
 		}
-		
-		return listSong;
 	}
 	
 	@Override
 	@RemotingInclude
 	@Transactional
 	public List<Song> list(String sid) throws Throwable {
-		return list(sid, 0, 10);
+		return list(sid, 0);
 	}
 
 	@Override
