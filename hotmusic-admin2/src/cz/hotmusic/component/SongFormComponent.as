@@ -6,6 +6,8 @@ package cz.hotmusic.component
 	import cz.hotmusic.lib.model.Song;
 	import cz.hotmusic.model.Model;
 	
+	import feathers.core.FeathersControl;
+	
 	import starling.display.Button;
 	import starling.events.Event;
 	import starling.textures.Texture;
@@ -102,7 +104,6 @@ package cz.hotmusic.component
 			super.draw();
 			
 //			if (isInvalid(INVALIDATION_FLAG_SIZE))
-			setSizeInternal(actualWidth, youtube.visible ? (4*COLAPSED_HEIGHT + 3*gap): COLAPSED_HEIGHT, false);
 			setSize(actualWidth, youtube.visible ? (4*COLAPSED_HEIGHT + 3*gap): COLAPSED_HEIGHT);
 			
 			orderNumberLbl.y = COLAPSED_HEIGHT/2 - orderNumberLbl.height/2;

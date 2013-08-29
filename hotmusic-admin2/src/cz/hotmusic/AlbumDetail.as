@@ -21,6 +21,7 @@ package cz.hotmusic
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
+	import feathers.events.FeathersEventType;
 	import feathers.themes.Theme;
 	
 	import flash.events.Event;
@@ -297,7 +298,10 @@ package cz.hotmusic
 					beatport.value = data.beatport;
 				if (data && data.songs) {
 					
-					for each (var sfc:SongFormComponent in sfcList) {
+					
+					while (sfcList && sfcList.length > 0) {
+						var sfc:SongFormComponent = sfcList.pop();
+						sfc.removeEventListener(FeathersEventType.RESIZE, onSFCResize);
 						removeChild(sfc);
 					}
 					
@@ -305,6 +309,7 @@ package cz.hotmusic
 					var i:int = 1;
 					for each (var s:Song in data.songs) {
 						sfc = new SongFormComponent();
+						sfc.addEventListener(FeathersEventType.RESIZE, onSFCResize);
 						addChild(sfc);
 						sfc.song = s;
 						sfc.orderNumber = ""+i+".";
@@ -321,6 +326,21 @@ package cz.hotmusic
 				if (data == null)
 					clear();
 			}
+			
+			if (isInvalid(INVALIDATION_FLAG_SIZE)) {
+				var prevDO:DisplayObject = songsLbl;
+				
+				for each (var doItem:DisplayObject in sfcList) {
+					doItem.y = prevDO.y + prevDO.height + formgap;
+					prevDO = doItem;
+				}
+			}
+		}
+		
+		private function onSFCResize(event:starling.events.Event):void 
+		{
+			trace("onSFCResize");
+			invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }
