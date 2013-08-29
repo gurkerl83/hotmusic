@@ -109,6 +109,8 @@ package cz.hotmusic
 		public static const LupaUp:Class;
 		[Embed(source="assets/icon/lupadown.png")]
 		public static const LupaDown:Class;
+		[Embed(source="assets/icon/plus.png")]
+		public static const Plus:Class;
 		
 		public function FontAssets()
 		{

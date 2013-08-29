@@ -1,5 +1,6 @@
 package cz.hotmusic.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cz.hotmusic.model.Album;
 import cz.hotmusic.model.Artist;
 import cz.hotmusic.model.Genre;
+import cz.hotmusic.model.Song;
 import cz.hotmusic.service.IAlbumService;
 
 @Repository
@@ -66,6 +68,7 @@ public class AlbumService implements IAlbumService{
 		return album.id;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@RemotingInclude
 	@Transactional
@@ -81,8 +84,12 @@ public class AlbumService implements IAlbumService{
 		query.setFirstResult(page * count);
 		query.setMaxResults(count);
 
-		@SuppressWarnings("unchecked")
 		List<Album> list = query.list();
+		
+		for (Album album : list) {
+			album.songs = new ArrayList<Song>();
+			album.songs.addAll((List<Song>)session.createQuery("from Song where album = :album").setParameter("album", album).list());
+		}
 		
 		return list;
 	}

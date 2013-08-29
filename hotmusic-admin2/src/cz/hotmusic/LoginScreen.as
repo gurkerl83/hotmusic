@@ -4,6 +4,7 @@ package cz.hotmusic
 	
 	import cz.hotmusic.component.Alert;
 	import cz.hotmusic.component.ChangePasswordPanel;
+	import cz.hotmusic.component.SongFormComponent;
 	import cz.hotmusic.lib.controller.MyServiceLocator;
 	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
@@ -44,6 +45,9 @@ package cz.hotmusic
 		private var signInBtn:Button;
 		private var version:Label;
 		
+		// testing
+		private var songc:SongFormComponent;
+		
 		override protected function initialize():void {
 			super.initialize();
 			
@@ -73,6 +77,11 @@ package cz.hotmusic
 			addChild(passwordTI);
 			addChild(signInBtn);
 			addChild(version);
+			// testing
+			songc = new SongFormComponent();
+			songc.orderNumber = "1.";
+			songc.label = "Song name";
+			addChild(songc);
 		}
 		
 		private var firstTimeLogin:Boolean;
@@ -118,6 +127,10 @@ package cz.hotmusic
 			signInBtn.width = mywidth;
 			signInBtn.x = actualWidth/2 - signInBtn.width/2;
 			signInBtn.y = passwordTI.y + passwordTI.height + 2*gap;
+			
+			// testing
+			songc.y = signInBtn.y + signInBtn.height;
+			songc.width = actualWidth;
 		}
 		
 		private function loginResult(result:ResultEvent):void

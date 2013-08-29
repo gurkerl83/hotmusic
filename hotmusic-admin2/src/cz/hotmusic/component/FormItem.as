@@ -81,30 +81,35 @@ package cz.hotmusic.component
 		private static const NORMAL_STATE	:String = "normal";
 		private static const INVALID_STATE	:String = "invalid";
 		
+		protected static const COLAPSED_HEIGHT:int = 50;
+		
 		private var currentState:String
 		
-		private var _bg:Quad;
+		protected var bg:Quad;
 		private var _bgRed:Quad;
-		private var _orderNumberLbl:Label;
-		private var _labelLbl:Label;
+		protected var orderNumberLbl:Label;
+		protected var labelLbl:Label;
 		public var textinput:TextInput;
 		public var autocomplete:Autocomplete;
+		
+		protected var paddingLeft:int;
 		
 		override protected function initialize():void
 		{
 			super.initialize();
 			
-			height = 50;
+			height = COLAPSED_HEIGHT;
+			paddingLeft = 20;
 			
-			_bg = new Quad(1,1,0xCCCCCC);
+			bg = new Quad(1,1,0xCCCCCC);
 			_bgRed = new Quad(1,1,0xD49799);
 			_bgRed.visible = false;
 			
-			_orderNumberLbl = new Label();
-			_orderNumberLbl.name = Theme.SMALL_BOLD_ORANGE;
+			orderNumberLbl = new Label();
+			orderNumberLbl.name = Theme.SMALL_BOLD_ORANGE;
 			
-			_labelLbl = new Label();
-			_labelLbl.name = Theme.SMALL_NORMAL_BLACK;
+			labelLbl = new Label();
+			labelLbl.name = Theme.SMALL_NORMAL_BLACK;
 			
 			if (isAutocomplete) {
 				autocomplete = new Autocomplete();
@@ -115,10 +120,10 @@ package cz.hotmusic.component
 				textinput.addEventListener(FeathersEventType.FOCUS_IN,tiFocusInHandler); 
 			}
 			
-			addChild(_bg);
+			addChild(bg);
 			addChild(_bgRed);
-			addChild(_orderNumberLbl);
-			addChild(_labelLbl);
+			addChild(orderNumberLbl);
+			addChild(labelLbl);
 			
 			if (isAutocomplete)
 				addChild(autocomplete);
@@ -130,27 +135,26 @@ package cz.hotmusic.component
 		{
 			super.draw();
 			
-			var paddingLeft:int = 20;
 			var gap:int = 16;
 			
-			_bg.width = _bgRed.width = actualWidth;
-			_bg.height = _bgRed.height = actualHeight;
+			bg.width = _bgRed.width = actualWidth;
+			bg.height = _bgRed.height = COLAPSED_HEIGHT;
 			
 			if (isInvalid(INVALIDATION_FLAG_DATA)) {
-				_orderNumberLbl.text = _orderNumber;
-				_labelLbl.text = _label;
+				orderNumberLbl.text = _orderNumber;
+				labelLbl.text = _label;
 				if (!isAutocomplete)
 					textinput.text = _value;
 			}
 			
-			_orderNumberLbl.validate();
-			_orderNumberLbl.x = paddingLeft;
-			_orderNumberLbl.y = actualHeight/2 - _orderNumberLbl.height/2;
+			orderNumberLbl.validate();
+			orderNumberLbl.x = paddingLeft;
+			orderNumberLbl.y = actualHeight/2 - orderNumberLbl.height/2;
 			
 			
-			_labelLbl.validate();
-			_labelLbl.x = _orderNumberLbl.x + _orderNumberLbl.width;// + gap;
-			_labelLbl.y = actualHeight/2 - _labelLbl.height/2;
+			labelLbl.validate();
+			labelLbl.x = orderNumberLbl.x + orderNumberLbl.width;// + gap;
+			labelLbl.y = actualHeight/2 - labelLbl.height/2;
 
 			if (isAutocomplete) {
 				autocomplete.x = 250;

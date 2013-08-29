@@ -695,6 +695,8 @@ package feathers.themes
 					label.textRendererProperties.textFormat = this.smallBoldOrangeTextFormat;
 				} else if (label.name == SMALL_BOLD_BLACK) {
 					label.textRendererProperties.textFormat = this.smallBoldBlackTextFormat;
+				} else if (label.name == SMALL_BOLD_WHITE) {
+					label.textRendererProperties.textFormat = this.smallBoldWhiteTextFormat;
 				} else if (label.name == SMALL_NORMAL_BLACK) {
 					label.textRendererProperties.textFormat = this.smallNormalBlackTextFormat;
 					

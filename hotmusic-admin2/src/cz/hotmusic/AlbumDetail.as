@@ -4,6 +4,7 @@ package cz.hotmusic
 	
 	import cz.hotmusic.component.Alert;
 	import cz.hotmusic.component.FormItem;
+	import cz.hotmusic.component.SongFormComponent;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.AlbumServiceEvent;
@@ -13,6 +14,7 @@ package cz.hotmusic
 	import cz.hotmusic.lib.model.Album;
 	import cz.hotmusic.lib.model.Artist;
 	import cz.hotmusic.lib.model.Genre;
+	import cz.hotmusic.lib.model.Song;
 	import cz.hotmusic.model.Model;
 	import cz.zc.mylib.helper.DateHelper;
 	
@@ -25,6 +27,7 @@ package cz.hotmusic
 	
 	import mx.rpc.events.FaultEvent;
 	
+	import starling.display.DisplayObject;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
@@ -145,6 +148,9 @@ package cz.hotmusic
 		private var google:FormItem;
 		private var amazon:FormItem;
 		private var beatport:FormItem;
+		private var songsLbl:Label;
+		
+		private var sfcList:Array; // store all SongFormComponent objects
 		
 		override protected function initialize():void
 		{
@@ -191,6 +197,10 @@ package cz.hotmusic
 			beatport.orderNumber = "8.";
 			beatport.label = "Beatport link to buy";
 			
+			songsLbl = new Label();
+			songsLbl.text = "Album songs";
+			songsLbl.name = Theme.SMALL_BOLD_WHITE;
+			
 			addChild(beatport);
 			addChild(amazon);
 			addChild(google);
@@ -199,6 +209,8 @@ package cz.hotmusic
 			addChild(genre);
 			addChild(artistname);
 			addChild(albumname);
+			
+			addChild(songsLbl);
 			
 			albumname.nextTabFocus = artistname.autocomplete.textinput;
 			artistname.nextTabFocus = genre.autocomplete.textinput;
@@ -263,6 +275,9 @@ package cz.hotmusic
 			beatport.y = amazon.y + amazon.height + formgap;
 			beatport.width = actualWidth - 2*padding;
 			
+			songsLbl.x = padding;
+			songsLbl.y = beatport.y +  beatport.height + formgap;
+			
 			if (isInvalid(INVALIDATION_FLAG_DATA)) {
 				if (data && data.name)
 					albumname.value = data.name;
@@ -280,6 +295,29 @@ package cz.hotmusic
 					amazon.value = data.amazon;
 				if (data && data.beatport)
 					beatport.value = data.beatport;
+				if (data && data.songs) {
+					
+					for each (var sfc:SongFormComponent in sfcList) {
+						removeChild(sfc);
+					}
+					
+					var prevDO:DisplayObject = songsLbl;
+					var i:int = 1;
+					for each (var s:Song in data.songs) {
+						sfc = new SongFormComponent();
+						addChild(sfc);
+						sfc.song = s;
+						sfc.orderNumber = ""+i+".";
+						sfc.x = padding;
+						sfc.y = prevDO.y + prevDO.height + formgap;
+						sfc.width = actualWidth - 2*padding;
+						if (sfcList == null)
+							sfcList = [];
+						sfcList.push(sfc);
+						prevDO = sfc;
+						i++;
+					}
+				}
 				if (data == null)
 					clear();
 			}
