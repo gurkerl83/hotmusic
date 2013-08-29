@@ -1,9 +1,12 @@
 package cz.hotmusic.lib.model
 {
+	import mx.collections.ArrayCollection;
+
 	public class Album
 	{
-		public function Album()
+		public function Album(name:String=null)
 		{
+			this.name = name;
 		}
 		
 		public var id:String;
@@ -16,6 +19,7 @@ package cz.hotmusic.lib.model
 		public var googlePlay:String;
 		public var amazon:String;
 		public var beatport:String;
+		public var songs:ArrayCollection;
 		
 		public var addedDate		:Date;
 		public var addedByUser		:User;

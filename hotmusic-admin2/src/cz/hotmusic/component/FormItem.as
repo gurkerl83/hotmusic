@@ -73,6 +73,8 @@ package cz.hotmusic.component
 		}
 		public function get value():String
 		{
+			if (isAutocomplete)
+				return autocomplete.textinput.text;
 			return textinput.text;
 		}
 		

@@ -96,7 +96,7 @@ package cz.hotmusic.component
 			listChangePage = List(event.currentTarget).selectedItem.page;
 			DataHelper.getInstance().getData(String(List(event.target).selectedItem.label), function onData():void {
 				screenNavigator.showScreen(listChangePage);
-			});
+			}, Alert.showError);
 		}
 		
 	}

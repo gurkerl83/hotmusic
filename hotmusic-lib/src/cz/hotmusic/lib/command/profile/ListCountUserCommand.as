@@ -22,7 +22,6 @@ package cz.hotmusic.lib.command.profile
 		{
 			se = ProfileServiceEvent(event);
 			var service:RemoteObject = MyServiceLocator.getInstance().getService(MyServiceLocator.PROFILE_SERVICE);
-			var call:AsyncToken;
 			var call:AsyncToken = service.listCount(se.sid);
 			call.addResponder(this);
 		}

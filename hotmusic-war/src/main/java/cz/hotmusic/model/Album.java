@@ -8,17 +8,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
@@ -31,19 +26,22 @@ public class Album {
 		@Transient
 		public String objectUUID;
 		public String name;
-		@OneToOne
+		@OneToOne(cascade={CascadeType.ALL})
 		public Artist artist;
-		@OneToOne
+		@OneToOne(cascade={CascadeType.ALL})
 		public Genre genre;
 		public Date releaseDate;
 		public String itunes;
 		public String googlePlay;
 		public String amazon;
 		public String beatport;
-		@OneToMany(cascade=CascadeType.ALL)
-		@JoinTable(name = "Album_Songs")
-		@OrderColumn
-		@LazyCollection(LazyCollectionOption.FALSE)
+//		@OneToMany(cascade=CascadeType.ALL, mappedBy="album")
+//		@OneToMany(cascade=CascadeType.ALL)
+//		@OneToMany
+//		@JoinColumn(name="album_album_id")
+//		@OrderColumn
+//		@LazyCollection(LazyCollectionOption.FALSE)
+		@Transient
 		public List<Song> songs;
 		
 		public Date addedDate;

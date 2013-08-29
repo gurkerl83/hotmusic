@@ -6,7 +6,6 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import cz.hotmusic.model.Album;
 import cz.hotmusic.model.Artist;
 import cz.hotmusic.model.Genre;
-import cz.hotmusic.model.Song;
 import cz.hotmusic.service.IAlbumService;
 
 @Repository
@@ -48,10 +46,21 @@ public class AlbumService implements IAlbumService{
 		Assert.assertNotNull(album.genre);
 		sessionHelper.checkSession(sid);
 		
+		Session session = sessionFactory.getCurrentSession();
+
 		album.addedBySession = sid;
 		album.addedDate = new Date();
 		
-		Session session = sessionFactory.getCurrentSession();
+		if (album.artist != null && album.artist.id == null && album.artist.addedDate == null) {
+			album.artist.addedBySession = sid;
+			album.artist.addedDate = new Date();
+		}
+		
+		if (album.genre != null && album.genre.id == null) {
+			album.genre.addedDate = new Date();
+			album.genre.addedBySession = sid;
+		}
+		
 		session.save(album);
 		
 		return album.id;
@@ -204,10 +213,26 @@ public class AlbumService implements IAlbumService{
 		
 		if (album.name != null)
 			foundAlbum.name = album.name;
-		if (album.artist != null) 
-			foundAlbum.artist = (Artist) session.load(Artist.class, album.artist.id);
-		if (album.genre != null)
-			foundAlbum.genre = (Genre) session.load(Genre.class, album.genre.id);
+		if (album.artist != null) {
+			if (album.artist.id != null)
+				foundAlbum.artist = (Artist) session.load(Artist.class, album.artist.id);
+			else if (album.artist.name != null && album.artist.name.length() > 0) {
+				album.artist.addedBySession = sid;
+				album.artist.addedDate = new Date();
+				session.save(album.artist);
+				foundAlbum.artist = album.artist;
+			}
+		}
+		if (album.genre != null) {
+			if (album.genre.id != null)
+				foundAlbum.genre = (Genre) session.load(Genre.class, album.genre.id);
+			else if (album.genre.name != null && album.genre.name.length() > 0) {
+				album.genre.addedBySession = sid;
+				album.genre.addedDate = new Date();
+				session.save(album.genre);
+				foundAlbum.genre = album.genre;
+			}
+		}
 		if (album.releaseDate != null)
 			foundAlbum.releaseDate = album.releaseDate;
 		if (album.itunes != null)

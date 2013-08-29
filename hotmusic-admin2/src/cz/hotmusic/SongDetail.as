@@ -58,6 +58,7 @@ package cz.hotmusic
 		{
 			_songData = value;
 			invalidate(INVALIDATION_FLAG_DATA);
+			clear();
 		}
 		
 		private var songname:FormItem;
@@ -80,9 +81,9 @@ package cz.hotmusic
 			
 			var song:Song = new Song();
 			song.name = songname.value;
-			song.artist = Artist(artistname.selectedItem);
-			song.album = Album(albumname.selectedItem);
-			song.genre = Genre(genre.selectedItem);
+			song.artist = artistname.selectedItem != null ? Artist(artistname.selectedItem):new Artist(artistname.value);
+			song.album = getAlbum();
+			song.genre =  genre.selectedItem != null ? Genre(genre.selectedItem):new Genre(genre.value);
 			song.releaseDate = DateHelper.parsePHPDate(releasedate.value);
 			song.itunes = itunes.value;
 			song.googlePlay = google.value;
@@ -99,6 +100,15 @@ package cz.hotmusic
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 		}
 		
+		private function getAlbum():Album
+		{
+			if (albumname.selectedItem != null)
+				return Album(albumname.selectedItem);
+			if (albumname.value == null || albumname.value.length <= 0)
+				return null;
+			return new Album(albumname.value);
+		}
+		
 		private function isValid():Boolean 
 		{
 			songname.hideValidator();
@@ -112,11 +122,11 @@ package cz.hotmusic
 				songname.showValidator();
 				valid = false;
 			}
-			if (!artistname.selectedItem) {
+			if (!artistname.selectedItem && !artistname.value && artistname.value.length <= 0 ) {
 				artistname.showValidator();
 				valid = false;
 			}
-			if (!genre.selectedItem) {
+			if (!genre.selectedItem && !genre.value && genre.value.length <= 0) {
 				genre.showValidator();
 				valid = false;
 			}

@@ -1,5 +1,7 @@
 package cz.hotmusic.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +25,8 @@ public class Genre {
 	public String name;
 	@Transient
 	public Double count;
+	public Date addedDate;
+	public String addedBySession;
 	
 	public String getId() {
 		return id;
@@ -47,5 +51,17 @@ public class Genre {
 	}
 	public void setCount(Double count) {
 		this.count = count;
+	}
+	public Date getAddedDate() {
+		return addedDate;
+	}
+	public void setAddedDate(Date addedDate) {
+		this.addedDate = addedDate;
+	}
+	public String getAddedBySession() {
+		return addedBySession;
+	}
+	public void setAddedBySession(String addedBySession) {
+		this.addedBySession = addedBySession;
 	}
 }

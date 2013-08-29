@@ -54,6 +54,7 @@ package cz.hotmusic
 		{
 			_data = value;
 			invalidate(INVALIDATION_FLAG_DATA);
+			clear();
 		}
 		
 		public function save():void
@@ -63,8 +64,8 @@ package cz.hotmusic
 			
 			var album:Album = new Album();
 			album.name = albumname.value;
-			album.artist = Artist(artistname.selectedItem);
-			album.genre = Genre(genre.selectedItem);
+			album.artist = artistname.selectedItem != null ? Artist(artistname.selectedItem):new Artist(artistname.value);
+			album.genre = genre.selectedItem != null ? Genre(genre.selectedItem):new Genre(genre.value);
 			album.releaseDate = DateHelper.parsePHPDate(releasedate.value);
 			album.itunes = itunes.value;
 			album.googlePlay = google.value;
@@ -92,11 +93,11 @@ package cz.hotmusic
 				albumname.showValidator();
 				valid = false;
 			}
-			if (!artistname.selectedItem) {
+			if (!artistname.selectedItem && !artistname.value && artistname.value.length <= 0 ) {
 				artistname.showValidator();
 				valid = false;
 			}
-			if (!genre.selectedItem) {
+			if (!genre.selectedItem && !genre.value && genre.value.length <= 0) {
 				genre.showValidator();
 				valid = false;
 			}

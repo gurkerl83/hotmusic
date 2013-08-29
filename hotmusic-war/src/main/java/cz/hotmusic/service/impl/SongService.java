@@ -49,9 +49,31 @@ public class SongService implements ISongService{
 		Assert.assertNotNull(song.genre);
 		sessionHelper.checkSession(sid);
 		
+		Session session = sessionFactory.getCurrentSession();
+		
 		song.addedBySession = sid;
 		song.addedDate = new Date();
-		Session session = sessionFactory.getCurrentSession();
+		if (song.artist != null && song.artist.id == null && song.artist.addedDate == null) {
+			song.artist.addedBySession = sid;
+			song.artist.addedDate = new Date();
+		}
+		if (song.album != null && song.album.id == null) {
+			song.album.addedDate = new Date();
+			song.album.addedBySession = sid;
+			song.album.releaseDate = new Date();
+			session.save(song.album);
+		}
+		
+//		if (song.album.songs == null)
+//			song.album.songs = new ArrayList<Song>();
+//		song.album.songs.add(song);
+		
+		if (song.genre != null && song.genre.id == null) {
+			song.genre.addedDate = new Date();
+			song.genre.addedBySession = sid;
+		}
+		
+		
 		session.save(song);
 		
 		return song.id;
@@ -228,16 +250,41 @@ public class SongService implements ISongService{
 			throw new Exception("Can't find the song");
 		Song foundSong = list.get(0);
 		
-		if (song.album != null)
-			foundSong.album = (Album) session.load(Album.class, song.album.id);
+		if (song.album != null) {
+			if (song.album.id != null)
+				foundSong.album = (Album) session.load(Album.class, song.album.id);
+			else if (song.album.name != null && song.album.name.length() > 0) {
+				song.album.addedBySession = sid;
+				song.album.addedDate = new Date();
+				song.album.releaseDate = new Date();
+				session.save(song.album);
+				foundSong.album = song.album;
+			}
+		}
 		if (song.amazon != null)
 			foundSong.amazon = song.amazon;
-		if (song.artist != null)
-			foundSong.artist = (Artist) session.load(Artist.class, song.artist.id);
+		if (song.artist != null) {
+			if (song.artist.id != null)
+				foundSong.artist = (Artist) session.load(Artist.class, song.artist.id);
+			else if (song.artist.name != null && song.artist.name.length() > 0) {
+				song.artist.addedBySession = sid;
+				song.artist.addedDate = new Date();
+				session.save(song.artist);
+				foundSong.artist = song.artist;
+			}
+		}
 		if (song.beatport != null)
 			foundSong.beatport = song.beatport;
-		if (song.genre != null)
-			foundSong.genre = (Genre) session.load(Genre.class, song.genre.id);
+		if (song.genre != null) {
+			if (song.genre.id != null)
+				foundSong.genre = (Genre) session.load(Genre.class, song.genre.id);
+			else if (song.genre.name != null && song.genre.name.length() > 0) {
+				song.genre.addedBySession = sid;
+				song.genre.addedDate = new Date();
+				session.save(song.genre);
+				foundSong.genre = song.genre;
+			}
+		}
 		if (song.googlePlay != null)
 			foundSong.googlePlay = song.googlePlay;
 		if (song.itunes != null)

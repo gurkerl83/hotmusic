@@ -27,11 +27,13 @@ public class Song {
 	@Transient
 	public String objectUUID;
 	public String name;
-	@OneToOne
+	@OneToOne(cascade={CascadeType.ALL})
 	public Artist artist;
+//	@ManyToOne(cascade={CascadeType.ALL})
+//	@JoinColumn(name="album_album_id")
 	@ManyToOne
 	public Album album;
-	@OneToOne
+	@OneToOne(cascade={CascadeType.ALL})
 	public Genre genre;
 	public Integer rateUp;
 	public Integer rateDown;

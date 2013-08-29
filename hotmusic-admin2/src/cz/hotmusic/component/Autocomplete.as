@@ -3,8 +3,8 @@ package cz.hotmusic.component
 	import com.adobe.cairngorm.control.CairngormEvent;
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
-	import cz.hotmusic.lib.event.ServiceEvent;
 	import cz.hotmusic.helper.ObjectHelper;
+	import cz.hotmusic.lib.event.ServiceEvent;
 	
 	import feathers.controls.List;
 	import feathers.controls.TextInput;
@@ -114,9 +114,21 @@ package cz.hotmusic.component
 		private function tiFocusOutHandler(event:Event):void {
 			trace("tiFocusOutHandler" + ObjectHelper.getId(this));
 			if (_selectedItem == null) {
-				textinput.removeEventListener(Event.CHANGE, tiChangeHandler);
-				textinput.text = "";
-				textinput.addEventListener(Event.CHANGE, tiChangeHandler);
+				// pokud zadam text a nevyberu ze seznamu, pokusim se najit jestli
+				// se text neshoduje s nejakou polozkou v seznamu, abych pracoval s objektem
+				if (_list.dataProvider != null)
+				{
+					for each (var item:Object in _list.dataProvider.data)
+					{
+						if (item && item.name == textinput.text) {
+							_selectedItem = item;
+							break;
+						}
+					}
+				}
+//				textinput.removeEventListener(Event.CHANGE, tiChangeHandler);
+//				textinput.text = "";
+//				textinput.addEventListener(Event.CHANGE, tiChangeHandler);
 			}
 //			stage.removeEventListener(KeyboardEvent.KEY_UP, tiKey);
 			
