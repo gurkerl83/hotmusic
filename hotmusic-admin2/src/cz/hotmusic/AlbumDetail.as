@@ -16,6 +16,7 @@ package cz.hotmusic
 	import cz.hotmusic.lib.model.Genre;
 	import cz.hotmusic.lib.model.Song;
 	import cz.hotmusic.model.Model;
+	import cz.zc.mylib.helper.ArrayHelper;
 	import cz.zc.mylib.helper.DateHelper;
 	
 	import feathers.controls.Button;
@@ -37,6 +38,14 @@ package cz.hotmusic
 		public function AlbumDetail()
 		{
 			super();
+			addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStage);
+		}
+		
+		private function addedToStage(event:starling.events.Event):void {
+			// clean songsToDelete
+			initSongsTo();
+			
+			addEventListener(SongFormComponent.SONG_DELETE_EVENT, onSongDelete);
 		}
 		
 		private var _actionButtons:Array;
@@ -243,6 +252,7 @@ package cz.hotmusic
 			var padding:int = 0;
 			var formgap:int = 4;
 			var gap:int = 20;
+			var prevDO:DisplayObject;
 			
 			albumname.x = padding;
 			albumname.y = padding;
@@ -296,18 +306,18 @@ package cz.hotmusic
 					amazon.value = data.amazon;
 				if (data && data.beatport)
 					beatport.value = data.beatport;
+				
 				if (data && data.songs) {
-					
-					
 					while (sfcList && sfcList.length > 0) {
 						var sfc:SongFormComponent = sfcList.pop();
 						sfc.removeEventListener(FeathersEventType.RESIZE, onSFCResize);
 						removeChild(sfc);
 					}
 					
-					var prevDO:DisplayObject = songsLbl;
+					prevDO = songsLbl;
 					var i:int = 1;
-					for each (var s:Song in data.songs) {
+					
+					for each (var s:Song in getSongs()) {
 						sfc = new SongFormComponent();
 						sfc.addEventListener(FeathersEventType.RESIZE, onSFCResize);
 						addChild(sfc);
@@ -323,12 +333,13 @@ package cz.hotmusic
 						i++;
 					}
 				}
+				
 				if (data == null)
 					clear();
 			}
 			
 			if (isInvalid(INVALIDATION_FLAG_SIZE)) {
-				var prevDO:DisplayObject = songsLbl;
+				prevDO = songsLbl;
 				
 				for each (var doItem:DisplayObject in sfcList) {
 					doItem.y = prevDO.y + prevDO.height + formgap;
@@ -341,6 +352,56 @@ package cz.hotmusic
 		{
 			trace("onSFCResize");
 			invalidate(INVALIDATION_FLAG_SIZE);
+		}
+		
+		private var songsToDelete:Array;
+		private var songsToAdd:Array;
+		
+		private function onSongDelete(event:starling.events.Event):void 
+		{
+			event.stopImmediatePropagation();
+			var song:Song = Song(event.data);
+			// pokud odstranuju persistentni, tak pridam do pole
+			// ktere se zpracuje pri ukladani
+			if (song && song.id != null && song.id.length > 0) {
+				songsToDelete.push(song);
+				
+			// pokud odstranuju nepersistentni, pak ho musim vymazat
+			// z pole songsToAdd
+			} else {
+				ArrayHelper.removeObject(song, songsToAdd);
+			}
+			invalidate();
+		}
+		
+		private function initSongsTo():void {
+			if (songsToDelete == null)
+				songsToDelete = [];
+			if (songsToAdd == null)
+				songsToAdd = [];
+			songsToDelete.splice(0, songsToDelete.length);
+			songsToAdd.splice(0, songsToAdd.length);
+		}
+		
+		/**
+		 * Tato funkce vraci aktualni seznam songu, tj. jsou to songy, ktere puvodne v albu byly
+		 * od nich jsou odebrane ty, ktere byly v prubehu vymazane a k nim pridane nove
+		 */
+		private function getSongs():Array {
+			var ar:Array = songsToAdd.concat();
+			
+			for each (var s:Song in data.songs) {
+				var isOk:Boolean = true;
+				for each (var sd:Song in songsToDelete) {
+					if (s == sd) {
+						isOk = false;
+						break;
+					}
+				}
+				if (isOk)
+					ar.push(s);
+			}
+			return ar;
 		}
 	}
 }

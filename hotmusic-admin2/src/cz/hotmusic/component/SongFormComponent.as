@@ -12,13 +12,14 @@ package cz.hotmusic.component
 	import starling.events.Event;
 	import starling.textures.Texture;
 
+	[Event(name="songDelete", type="starling.events.Event")]
 	public class SongFormComponent extends FormItem
 	{
 		public function SongFormComponent()
 		{
 			super();
 		}
-		
+		public static const SONG_DELETE_EVENT:String = "songDelete";
 		private var _song:Song;
 		
 		protected var plus:Button;
@@ -63,6 +64,10 @@ package cz.hotmusic.component
 				invalidate();
 			});
 			remove = new Button(Texture.fromBitmap(new FontAssets.Delete()));
+			remove.addEventListener(Event.TRIGGERED, function onClick(event:Event):void {
+				event.stopImmediatePropagation();
+				dispatchEventWith(SONG_DELETE_EVENT,true, song);
+			});
 			
 			label = "Song name";
 			
