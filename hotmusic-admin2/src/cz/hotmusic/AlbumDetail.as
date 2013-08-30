@@ -159,6 +159,7 @@ package cz.hotmusic
 		private var amazon:FormItem;
 		private var beatport:FormItem;
 		private var songsLbl:Label;
+		private var addSongBtn:Button;
 		
 		private var sfcList:Array; // store all SongFormComponent objects
 		
@@ -211,6 +212,14 @@ package cz.hotmusic
 			songsLbl.text = "Album songs";
 			songsLbl.name = Theme.SMALL_BOLD_WHITE;
 			
+			addSongBtn = new Button();
+			addSongBtn.label = "Add song";
+			addSongBtn.name = Theme.SMALL_BOLD_BLUE;
+			addSongBtn.addEventListener(starling.events.Event.TRIGGERED, function onClick(event:starling.events.Event):void {
+				songsToAdd.push(new Song());
+				invalidate();
+			});
+			
 			addChild(beatport);
 			addChild(amazon);
 			addChild(google);
@@ -221,6 +230,7 @@ package cz.hotmusic
 			addChild(albumname);
 			
 			addChild(songsLbl);
+			addChild(addSongBtn);
 			
 			albumname.nextTabFocus = artistname.autocomplete.textinput;
 			artistname.nextTabFocus = genre.autocomplete.textinput;
@@ -345,6 +355,9 @@ package cz.hotmusic
 					doItem.y = prevDO.y + prevDO.height + formgap;
 					prevDO = doItem;
 				}
+				
+				addSongBtn.x = padding;
+				addSongBtn.y = prevDO.y + prevDO.height + gap;
 			}
 		}
 		
