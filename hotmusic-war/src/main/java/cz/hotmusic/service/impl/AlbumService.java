@@ -10,7 +10,11 @@ import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.access.SingletonBeanFactoryLocator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.flex.remoting.RemotingDestination;
 import org.springframework.flex.remoting.RemotingInclude;
 import org.springframework.stereotype.Repository;
@@ -21,6 +25,7 @@ import cz.hotmusic.model.Artist;
 import cz.hotmusic.model.Genre;
 import cz.hotmusic.model.Song;
 import cz.hotmusic.service.IAlbumService;
+import cz.hotmusic.service.ISongService;
 
 @Repository
 @RemotingDestination
@@ -30,6 +35,7 @@ public class AlbumService implements IAlbumService{
 	private SessionFactory sessionFactory;
 	private SessionHelper sessionHelper;
 	private final int count = 10; // velikost stranky
+	private ISongService songService;
 	
 	//------------------------------------------------------
 	//
@@ -61,6 +67,17 @@ public class AlbumService implements IAlbumService{
 		if (album.genre != null && album.genre.id == null) {
 			album.genre.addedDate = new Date();
 			album.genre.addedBySession = sid;
+		}
+		
+		if (album.songs != null && album.songs.size() > 0) {
+			for (Song song : album.songs) {
+				// if song exists in db do song update
+				if (song != null && song.id != null && song.id.length() > 0) {
+					songService.update(sid, song);
+				} else {
+					songService.create(sid, song);
+				}
+			}
 		}
 		
 		session.save(album);
@@ -217,6 +234,7 @@ public class AlbumService implements IAlbumService{
 		if (list.size() != 1)
 			throw new Exception("Can't find the Album");
 		Album foundAlbum = list.get(0);
+		List<>
 		
 		if (album.name != null)
 			foundAlbum.name = album.name;
@@ -251,6 +269,32 @@ public class AlbumService implements IAlbumService{
 		if (album.beatport != null)
 			foundAlbum.beatport = album.beatport;
 		
+		if (album.songs != null && album.songs.size() > 0) {
+			for (Song song : album.songs) {
+				song.artist = foundAlbum.artist;
+				// if song exists in db do song update
+				if (song != null && song.id != null && song.id.length() > 0) {
+					songService.update(sid, song);
+				} else {
+					songService.create(sid, song);
+				}
+			}
+		}
+		
+		if (foundAlbum.songs != null) { TODO zamenit za foundSongs vytahnute z db
+			for (Song songold : foundAlbum.songs) {
+				Boolean isMatch = false;
+				for (Song songnew : album.songs) {
+					if (songnew == songold) {
+						isMatch  = true;
+						break;
+					}
+				}
+				if (!isMatch)
+					songService.remove(sid, songold);
+			}
+		}
+		
 //		session.close();
 
 //		session = sessionFactory.openSession();
@@ -283,6 +327,15 @@ public class AlbumService implements IAlbumService{
 	@Autowired
 	public void setSessionHelper(SessionHelper sessionHelper) {
 		this.sessionHelper = sessionHelper;
+	}
+
+	public ISongService getSongService() {
+		return songService;
+	}
+
+	@Autowired
+	public void setSongService(ISongService songService) {
+		this.songService = songService;
 	}
 
 }

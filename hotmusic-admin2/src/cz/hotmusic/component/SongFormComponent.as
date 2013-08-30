@@ -35,10 +35,7 @@ package cz.hotmusic.component
 			if (_song == null)
 				_song = new Song();
 			
-			_song.name = value;
-			_song.genre = Genre(genre.selectedItem);
-			_song.soundcloud = soundcloud.value;
-			_song.youtube = youtube.value;
+			commitSongProperties();
 			
 			return _song;
 		}
@@ -90,9 +87,9 @@ package cz.hotmusic.component
 			addChild(plus);
 			addChild(remove);
 			
-			addChild(genre);
-			addChild(soundcloud);
 			addChild(youtube);
+			addChild(soundcloud);
+			addChild(genre);
 		
 		}
 		
@@ -136,6 +133,13 @@ package cz.hotmusic.component
 			
 			youtube.y = soundcloud.y + soundcloud.height + gap;
 			youtube.width = actualWidth;
+		}
+		
+		public function commitSongProperties():void {
+			_song.name = value;
+			_song.genre = genre.selectedItem != null ? Genre(genre.selectedItem):new Genre(genre.value);
+			_song.soundcloud = soundcloud.value;
+			_song.youtube = youtube.value;
 		}
 	}
 }

@@ -46,7 +46,7 @@ package cz.hotmusic
 		private var version:Label;
 		
 		// testing
-		private var songc:SongFormComponent;
+//		private var songc:SongFormComponent;
 		
 		override protected function initialize():void {
 			super.initialize();
@@ -78,10 +78,10 @@ package cz.hotmusic
 			addChild(signInBtn);
 			addChild(version);
 			// testing
-			songc = new SongFormComponent();
-			songc.orderNumber = "1.";
-			songc.label = "Song name";
-			addChild(songc);
+//			songc = new SongFormComponent();
+//			songc.orderNumber = "1.";
+//			songc.label = "Song name";
+//			addChild(songc);
 		}
 		
 		private var firstTimeLogin:Boolean;
@@ -129,8 +129,8 @@ package cz.hotmusic
 			signInBtn.y = passwordTI.y + passwordTI.height + 2*gap;
 			
 			// testing
-			songc.y = signInBtn.y + signInBtn.height;
-			songc.width = actualWidth;
+//			songc.y = signInBtn.y + signInBtn.height;
+//			songc.width = actualWidth;
 		}
 		
 		private function loginResult(result:ResultEvent):void

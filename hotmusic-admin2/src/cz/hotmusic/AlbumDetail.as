@@ -27,6 +27,7 @@ package cz.hotmusic
 	
 	import flash.events.Event;
 	
+	import mx.collections.ArrayCollection;
 	import mx.rpc.events.FaultEvent;
 	
 	import starling.display.DisplayObject;
@@ -75,19 +76,10 @@ package cz.hotmusic
 			if (!isValid())
 				return;
 			
-			var album:Album = new Album();
-			album.name = albumname.value;
-			album.artist = artistname.selectedItem != null ? Artist(artistname.selectedItem):new Artist(artistname.value);
-			album.genre = genre.selectedItem != null ? Genre(genre.selectedItem):new Genre(genre.value);
-			album.releaseDate = DateHelper.parsePHPDate(releasedate.value);
-			album.itunes = itunes.value;
-			album.googlePlay = google.value;
-			album.amazon = amazon.value;
-			album.beatport = beatport.value;
+			var album:Album = prepareAlbumForSave();
 			
 			var se:AlbumServiceEvent = new AlbumServiceEvent(data == null ? AlbumServiceEvent.CREATE:AlbumServiceEvent.UPDATE, createResult, Alert.showError);
-			if (data != null) // modify
-				album.id = data.id;
+			
 			se.album = album;
 			se.sid = Model.getInstance().user.sid;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
@@ -415,6 +407,51 @@ package cz.hotmusic
 					ar.push(s);
 			}
 			return ar;
+		}
+		
+		/**
+		 * Pripravi album pro zaslani na server, predevsim vybere songy a nastavi jim
+		 * pozadovane parametry jako vazbu na album, linky, artist.
+		 */
+		private function prepareAlbumForSave():Album {
+			commpitSongsProperties();
+			var songs:Array = getSongs();
+			var album:Album = new Album();
+			
+			album.name = albumname.value;
+			album.artist = artistname.selectedItem != null ? Artist(artistname.selectedItem):new Artist(artistname.value);
+			album.genre = genre.selectedItem != null ? Genre(genre.selectedItem):new Genre(genre.value);
+			album.releaseDate = DateHelper.parsePHPDate(releasedate.value);
+			album.itunes = itunes.value;
+			album.googlePlay = google.value;
+			album.amazon = amazon.value;
+			album.beatport = beatport.value;
+			if (data != null) // modify
+				album.id = data.id;
+			
+			if (album.songs == null)
+				album.songs = new ArrayCollection();
+			
+			for each (var s:Song in songs) {
+				if (!(s.id != null && s.id.length > 0)) {
+					s.album = album;
+					s.itunes = album.itunes;
+					s.googlePlay = album.googlePlay;
+					s.amazon = album.amazon;
+					s.beatport = album.beatport;
+					s.artist = album.artist;
+				}
+				
+				album.songs.addItem(s);
+			}
+			
+			return album;
+		}
+		
+		private function commpitSongsProperties():void {
+			for each (var sfc:SongFormComponent in sfcList) {
+				sfc.commitSongProperties();
+			}
 		}
 	}
 }
