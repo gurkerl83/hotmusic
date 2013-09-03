@@ -22,10 +22,13 @@ package cz.hotmusic
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
+	import feathers.controls.ScrollContainer;
+	import feathers.controls.Scroller;
 	import feathers.events.FeathersEventType;
 	import feathers.themes.Theme;
 	
 	import flash.events.Event;
+	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
 	import mx.rpc.events.FaultEvent;
@@ -142,6 +145,7 @@ package cz.hotmusic
 			
 		}
 		
+		private var sc:ScrollContainer;
 		private var albumname:FormItem;
 		private var artistname:FormItem;
 		private var genre:FormItem;
@@ -154,10 +158,14 @@ package cz.hotmusic
 		private var addSongBtn:Button;
 		
 		private var sfcList:Array; // store all SongFormComponent objects
+		private var sfcDict:Dictionary; // store all SongFormComponent objects
 		
 		override protected function initialize():void
 		{
 			super.initialize();
+			
+			sc = new ScrollContainer();
+			sc.scrollerProperties.interactionMode = Scroller.INTERACTION_MODE_MOUSE;
 			
 			albumname = new FormItem();
 			albumname.orderNumber = "1.";
@@ -212,17 +220,20 @@ package cz.hotmusic
 				invalidate();
 			});
 			
-			addChild(beatport);
-			addChild(amazon);
-			addChild(google);
-			addChild(itunes);
-			addChild(releasedate);
-			addChild(genre);
-			addChild(artistname);
-			addChild(albumname);
 			
-			addChild(songsLbl);
-			addChild(addSongBtn);
+			sc.addChild(beatport);
+			sc.addChild(amazon);
+			sc.addChild(google);
+			sc.addChild(itunes);
+			sc.addChild(releasedate);
+			sc.addChild(genre);
+			sc.addChild(artistname);
+			sc.addChild(albumname);
+			
+			sc.addChild(songsLbl);
+			sc.addChild(addSongBtn);
+			
+			addChild(sc);
 			
 			albumname.nextTabFocus = artistname.autocomplete.textinput;
 			artistname.nextTabFocus = genre.autocomplete.textinput;
@@ -255,6 +266,9 @@ package cz.hotmusic
 			var formgap:int = 4;
 			var gap:int = 20;
 			var prevDO:DisplayObject;
+			
+			sc.width = actualWidth;
+			sc.height = actualHeight;
 			
 			albumname.x = padding;
 			albumname.y = padding;
@@ -310,30 +324,56 @@ package cz.hotmusic
 					beatport.value = data.beatport;
 				
 				if (data && data.songs) {
-					while (sfcList && sfcList.length > 0) {
-						var sfc:SongFormComponent = sfcList.pop();
-						sfc.removeEventListener(FeathersEventType.RESIZE, onSFCResize);
-						removeChild(sfc);
+//					while (sfcList && sfcList.length > 0) {
+//						var sfc:SongFormComponent = sfcList.pop();
+//						sfc.removeEventListener(FeathersEventType.RESIZE, onSFCResize);
+//						removeChild(sfc);
+//					}
+					
+					// vsechny sfc z displaylistu vymaz
+					for (var j:int = (sc.numChildren-1); j>0; j--)
+					{
+						if (!(sc.getChildAt(j) is SongFormComponent))
+							continue;
+						
+						sc.removeChild(sc.getChildAt(j));
 					}
 					
 					prevDO = songsLbl;
 					var i:int = 1;
+					if (sfcList == null)
+						sfcList = [];
+					if (sfcDict == null)
+						sfcDict = new Dictionary();
+					sfcList.splice(0, sfcList.length);
 					
+					// priprav si aktualni list s sfc
 					for each (var s:Song in getSongs()) {
-						sfc = new SongFormComponent();
-						sfc.addEventListener(FeathersEventType.RESIZE, onSFCResize);
-						addChild(sfc);
-						sfc.song = s;
-						sfc.orderNumber = ""+i+".";
-						sfc.x = padding;
-						sfc.y = prevDO.y + prevDO.height + formgap;
-						sfc.width = actualWidth - 2*padding;
-						if (sfcList == null)
-							sfcList = [];
+						var sfc:SongFormComponent;
+						sfc = sfcDict[s];
+						
+						// pokud nebyl v dictionary nalezen, vytvor a uloz do dict
+						if (sfc == null) {
+							sfc = new SongFormComponent();
+							sc.addChild(sfc);
+							sfc.addEventListener(FeathersEventType.RESIZE, onSFCResize);
+							sfc.song = s;
+							sfc.orderNumber = ""+i+".";
+							sfc.x = padding;
+							sfc.y = prevDO.y + prevDO.height + formgap;
+							sfc.width = actualWidth - 2*padding;
+							sfcDict[s] = sfc; 
+						} else {
+							sc.addChild(sfc);
+						}
+						
+						// pridej ho do listu
 						sfcList.push(sfc);
 						prevDO = sfc;
 						i++;
 					}
+					
+					trace("sfcList.length: "+sfcList.length);
 				}
 				
 				if (data == null)

@@ -46,9 +46,12 @@ package cz.hotmusic.component
 			if (_song == null)
 				return;
 			this.value = _song.name;
-			genre.selectedItem = _song.genre;
-			soundcloud.value = _song.soundcloud;
-			youtube.value = _song.youtube;
+			if (genre)
+				genre.selectedItem = _song.genre;
+			if (soundcloud)
+				soundcloud.value = _song.soundcloud;
+			if (youtube)
+				youtube.value = _song.youtube;
 		}
 
 		override protected function initialize():void
@@ -58,6 +61,7 @@ package cz.hotmusic.component
 			plus = new Button(Texture.fromBitmap(new FontAssets.Plus()));
 			plus.addEventListener(Event.TRIGGERED, function onPlus(event:Event):void {
 				genre.visible = soundcloud.visible = youtube.visible = !youtube.visible;
+				value = textinput.text;
 				invalidate();
 			});
 			remove = new Button(Texture.fromBitmap(new FontAssets.Delete()));
@@ -75,14 +79,20 @@ package cz.hotmusic.component
 			genre.label = "Genre";
 			genre.isAutocomplete = true;
 			genre.serviceEvent = gse;
+			if (_song)
+				genre.selectedItem = _song.genre;
 			
 			soundcloud = new SongFormItem();
 			soundcloud.orderNumber = "2.";
 			soundcloud.label = "Soundcloud listen link";
+			if (_song)
+				soundcloud.value = _song.soundcloud;
 			
 			youtube = new SongFormItem();
 			youtube.orderNumber = "3.";
 			youtube.label = "YouTube watch link";
+			if (_song)
+				youtube.value = _song.youtube;
 			
 			addChild(plus);
 			addChild(remove);

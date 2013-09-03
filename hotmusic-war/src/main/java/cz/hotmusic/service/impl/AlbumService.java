@@ -234,7 +234,8 @@ public class AlbumService implements IAlbumService{
 		if (list.size() != 1)
 			throw new Exception("Can't find the Album");
 		Album foundAlbum = list.get(0);
-		List<>
+		@SuppressWarnings("unchecked")
+		List<Song> foundSongs = session.createQuery("from Song where album = :album").setParameter("album", foundAlbum).list();
 		
 		if (album.name != null)
 			foundAlbum.name = album.name;
@@ -281,17 +282,20 @@ public class AlbumService implements IAlbumService{
 			}
 		}
 		
-		if (foundAlbum.songs != null) { TODO zamenit za foundSongs vytahnute z db
-			for (Song songold : foundAlbum.songs) {
+		if (foundSongs != null) { 
+			for (Song songold : foundSongs) {
 				Boolean isMatch = false;
 				for (Song songnew : album.songs) {
-					if (songnew == songold) {
+					if (songnew == songold || songnew != null && songnew.id != null && songnew.id.equals(songold.id)) {
 						isMatch  = true;
 						break;
 					}
 				}
-				if (!isMatch)
-					songService.remove(sid, songold);
+				// odstran vazbu na album
+				if (!isMatch) {
+					songold.album = null;
+					songService.update(sid, songold);
+				}
 			}
 		}
 		
