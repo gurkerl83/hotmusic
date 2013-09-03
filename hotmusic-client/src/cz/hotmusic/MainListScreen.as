@@ -56,6 +56,7 @@ package cz.hotmusic
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
+	import starling.events.TouchEvent;
 	import starling.textures.Texture;
 	
 	[Event(name="showDetail",type="starling.events.Event")]
@@ -75,6 +76,7 @@ package cz.hotmusic
 		private var _feedbackButton:starling.display.Button;
 		private var _header:Header;
 		private var _list:List;
+		private var _listLocker:starling.display.Button;
 		
 		private var _leftActive:Boolean;
 		private var _leftList:List;
@@ -153,6 +155,7 @@ package cz.hotmusic
 			this.addChild(this.myQuad);
 			this.addChild(this._header);
 			this.addChild(this._list);
+			this.addChild(this._listLocker);
 			this.addChild(this._leftShadow);
 			this.addChild(this._rightShadow);
 			this.addChild(this._bottomBg);
@@ -178,6 +181,10 @@ package cz.hotmusic
 			this._list.y = this._header.height;
 			this._list.width = this.actualWidth;
 			this._list.height = this.actualHeight - this._list.y - _bottomBg.height;
+			
+			_listLocker.y = _list.y;
+			_listLocker.width = _list.width;
+			_listLocker.height = _list.height;
 			
 			debugPanel.y = _header.height;
 			debugPanel.width = actualWidth;
@@ -328,6 +335,9 @@ package cz.hotmusic
 				_scrollContainer.visible = false;
 				_leftList.visible = true;
 				_leftHeader.visible = true;
+				_listLocker.visible = true;
+			} else {
+				_listLocker.visible = false;
 			}
 			validate();
 			
@@ -344,6 +354,7 @@ package cz.hotmusic
 		{
 			myQuad.x = _header.x;
 			_list.x = _header.x;
+			_listLocker.x = _header.x;
 			_leftShadow.x = _header.x - _leftShadow.width;
 			_rightShadow.x = _header.x + _header.width;
 			
@@ -366,6 +377,9 @@ package cz.hotmusic
 				_line.visible = true;
 				_scrollContainer.visible = true;
 				_rightHeader.visible = true;
+				_listLocker.visible = true;
+			} else {
+				_listLocker.visible = false;
 			}
 			validate();
 			
@@ -479,6 +493,21 @@ package cz.hotmusic
 				[
 					this._filterLeftButton
 				];
+			
+			this._listLocker = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddArtist()));
+			this._listLocker.alpha = 0;
+			this._listLocker.visible = false;
+			this._listLocker.addEventListener(Event.TRIGGERED, function listTriggered(event:Event):void {
+				if (_leftActive) {
+					event.stopImmediatePropagation();
+					leftButton_triggeredHandler(null);
+				}
+				if (_rightActive) {
+					event.stopImmediatePropagation();
+					rightButton_triggeredHandler(null);
+				}
+			}
+			);
 			
 			
 			// LIST
