@@ -143,7 +143,8 @@ package cz.hotmusic.lib.data
 			// Total
 			var ssecount:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
 				if (result && result.result is Number) {
-					model.songsTotal = result.result;
+					if (model.hasOwnProperty("songsTotal"))
+						model.songsTotal = result.result;
 					_songsTotalComplete = true;
 					dispatchSongsComplete();
 					dispatchInitComplete();
@@ -160,7 +161,8 @@ package cz.hotmusic.lib.data
 			// Last month
 			var sselastmonth:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST_LAST_MONTH,function listLastMonth(result:ResultEvent):void {
 				if (result && result.result is Number) {
-					model.songsLastMonth = result.result;
+					if (model.hasOwnProperty("songsLastMonth"))
+						model.songsLastMonth = result.result;
 					_songsLastMonthComplete = true;
 					dispatchSongsComplete();
 					dispatchInitComplete();
@@ -230,7 +232,8 @@ package cz.hotmusic.lib.data
 			// Total
 			var ssecount:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
 				if (result && result.result is Number) {
-					model.artistsTotal = result.result;
+					if (model.hasOwnProperty("artistsTotal"))
+						model.artistsTotal = result.result;
 					_artistsTotalComplete = true;
 					dispatchArtistsComplete();
 					dispatchInitComplete();
@@ -247,7 +250,8 @@ package cz.hotmusic.lib.data
 			// Last month
 			var sselastmonth:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST_LAST_MONTH,function listLastMonth(result:ResultEvent):void {
 				if (result && result.result is Number) {
-					model.artistsLastMonth = result.result;
+					if (model.hasOwnProperty("artistsLastMonth"))
+						model.artistsLastMonth = result.result;
 					_artistsLastMonthComplete = true;
 					dispatchArtistsComplete();
 					dispatchInitComplete();
@@ -317,7 +321,8 @@ package cz.hotmusic.lib.data
 			// Total
 			var ssecount:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
 				if (result && result.result is Number) {
-					model.albumsTotal = result.result;
+					if (model.hasOwnProperty("albumsTotal"))
+						model.albumsTotal = result.result;
 					_albumsTotalComplete = true;
 					dispatchAlbumsComplete();
 					dispatchInitComplete();
@@ -334,7 +339,8 @@ package cz.hotmusic.lib.data
 			// Last month
 			var sselastmonth:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST_LAST_MONTH,function listLastMonth(result:ResultEvent):void {
 				if (result && result.result is Number) {
-					model.albumsLastMonth = result.result;
+					if (model.hasOwnProperty("albumsLastMonth"))
+						model.albumsLastMonth = result.result;
 					_albumsLastMonthComplete = true;
 					dispatchAlbumsComplete();
 					dispatchInitComplete();
@@ -402,7 +408,8 @@ package cz.hotmusic.lib.data
 			// Total
 			var ssecount:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
 				if (result && result.result is Number) {
-					model.genresTotal = result.result;
+					if (model.hasOwnProperty("genresTotal"))
+						model.genresTotal = result.result;
 					_genresTotalComplete = true;
 					dispatchGenresComplete();
 					dispatchInitComplete();
@@ -473,7 +480,8 @@ package cz.hotmusic.lib.data
 			// Total
 			var ssecount:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
 				if (result && result.result is Number) {
-					model.usersTotal = result.result;
+					if (model.hasOwnProperty("usersTotal"))
+						model.usersTotal = result.result;
 					_usersTotalComplete = true;
 					dispatchUsersComplete();
 					dispatchInitComplete();

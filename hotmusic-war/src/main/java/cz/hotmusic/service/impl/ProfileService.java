@@ -99,7 +99,8 @@ public class ProfileService implements IProfileService{
 //				user.password = DigestUtils.md5Hex(user.password);
 				
 				// store default password
-				user.password = DEFAULT_PASSWORD;
+				if (user.password == null || user.password.length() == 0)
+					user.password = DEFAULT_PASSWORD;
 				user.addedBySession = sid;
 				user.addedDate = new Date();
 				
