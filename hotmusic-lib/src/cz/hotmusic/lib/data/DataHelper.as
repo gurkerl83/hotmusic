@@ -134,11 +134,11 @@ package cz.hotmusic.lib.data
 			CairngormEventDispatcher.getInstance().dispatchEvent(sse);
 			sse = null;
 			
-			if (skipCounts) {
-				_songsLastMonthComplete = true;
-				_songsTotalComplete = true;
-				return;
-			}
+//			if (skipCounts) {
+//				_songsLastMonthComplete = true;
+//				_songsTotalComplete = true;
+//				return;
+//			}
 			
 			// Total
 			var ssecount:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
@@ -223,11 +223,11 @@ package cz.hotmusic.lib.data
 				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			
-			if (skipCounts) {
-				_artistsLastMonthComplete = true;
-				_artistsTotalComplete = true;
-				return;
-			}
+//			if (skipCounts) {
+//				_artistsLastMonthComplete = true;
+//				_artistsTotalComplete = true;
+//				return;
+//			}
 			
 			// Total
 			var ssecount:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
@@ -312,11 +312,11 @@ package cz.hotmusic.lib.data
 				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			
-			if (skipCounts) {
-				_albumsLastMonthComplete = true;
-				_albumsTotalComplete = true;
-				return;
-			}
+//			if (skipCounts) {
+//				_albumsLastMonthComplete = true;
+//				_albumsTotalComplete = true;
+//				return;
+//			}
 			
 			// Total
 			var ssecount:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
@@ -400,10 +400,10 @@ package cz.hotmusic.lib.data
 				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			
-			if (skipCounts) {
-				_genresTotalComplete = true;
-				return;
-			}
+//			if (skipCounts) {
+//				_genresTotalComplete = true;
+//				return;
+//			}
 			
 			// Total
 			var ssecount:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
@@ -472,10 +472,10 @@ package cz.hotmusic.lib.data
 				se.data = paging;
 			CairngormEventDispatcher.getInstance().dispatchEvent(se);
 			
-			if (skipCounts) {
-				_usersTotalComplete = true;
-				return;
-			}
+//			if (skipCounts) {
+//				_usersTotalComplete = true;
+//				return;
+//			}
 			
 			// Total
 			var ssecount:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {

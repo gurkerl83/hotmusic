@@ -175,6 +175,7 @@ package cz.hotmusic
 			DataHelper.getInstance().getAlbums(function onData():void {
 				list.selectedIndex = -1;
 				list.dataProvider = new ListCollection(Model.getInstance().albums);
+				refreshLastNumbers();
 				pageJumper.actualPage = 0;
 				invalidate();
 			},  function onAlbumsFault(info:FaultEvent):void {
@@ -215,6 +216,11 @@ package cz.hotmusic
 			
 			pageJumper.validate();
 			pageJumper.y = actualHeight - pageJumper.height;
+		}
+		
+		private function refreshLastNumbers():void {
+			lastMonthVal.text = Model.getInstance().albumsLastMonth.toString();
+			totalVal.text = Model.getInstance().albumsTotal.toString();
 		}
 		
 	}

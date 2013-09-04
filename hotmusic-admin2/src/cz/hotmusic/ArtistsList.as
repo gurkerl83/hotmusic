@@ -167,6 +167,7 @@ package cz.hotmusic
 			DataHelper.getInstance().getArtists(function onArtists():void {
 				list.selectedIndex = -1;
 				list.dataProvider = new ListCollection(Model.getInstance().artists);
+				refreshLastNumbers();
 				pageJumper.actualPage = 0;
 				invalidate();
 			},  function onArtistsFault(info:FaultEvent):void {
@@ -207,6 +208,11 @@ package cz.hotmusic
 			
 			pageJumper.validate();
 			pageJumper.y = actualHeight - pageJumper.height;
+		}
+		
+		private function refreshLastNumbers():void {
+			lastMonthVal.text = Model.getInstance().artistsLastMonth.toString();
+			totalVal.text = Model.getInstance().artistsTotal.toString();
 		}
 		
 	}
