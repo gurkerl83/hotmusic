@@ -120,7 +120,9 @@ package cz.hotmusic
 				var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.REMOVE, removeResult, removeFault);
 				se.sid = Model.getInstance().user.sid;
 				se.user = User(UserRenderer(event.target).data);
-				CairngormEventDispatcher.getInstance().dispatchEvent(se);
+				Alert.show("Do you really want to delete the item?", Alert.WARN, function onYes():void {
+					CairngormEventDispatcher.getInstance().dispatchEvent(se);
+				});
 			});
 			list.addEventListener(starling.events.Event.CHANGE, function onChange(event:Event):void {
 				if (!skipOpenDetail && list.selectedIndex >= 0)

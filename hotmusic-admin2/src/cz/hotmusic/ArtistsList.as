@@ -138,7 +138,9 @@ package cz.hotmusic
 				var se:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.REMOVE, removeResult, removeFault);
 				se.sid = Model.getInstance().user.sid;
 				se.artist = Artist(ArtistRenderer(event.target).data);
-				CairngormEventDispatcher.getInstance().dispatchEvent(se);
+				Alert.show("Do you really want to delete the item?", Alert.WARN, function onYes():void {
+					CairngormEventDispatcher.getInstance().dispatchEvent(se);
+				});
 			});
 			list.addEventListener(starling.events.Event.CHANGE, function onChange(event:Event):void {
 				if (!skipOpenDetail && list.selectedIndex >= 0)

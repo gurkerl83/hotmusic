@@ -117,7 +117,9 @@ package cz.hotmusic
 				var se:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.REMOVE, removeResult, removeFault);
 				se.sid = Model.getInstance().user.sid;
 				se.genre = Genre(GenreRenderer(event.target).data);
-				CairngormEventDispatcher.getInstance().dispatchEvent(se);
+				Alert.show("Do you really want to delete the item?", Alert.WARN, function onYes():void {
+					CairngormEventDispatcher.getInstance().dispatchEvent(se);
+				});
 			});
 			list.addEventListener(starling.events.Event.CHANGE, function onChange(event:Event):void {
 				if (!skipOpenDetail && list.selectedIndex >= 0)
