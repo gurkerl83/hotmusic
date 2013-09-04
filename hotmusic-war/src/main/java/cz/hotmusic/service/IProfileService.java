@@ -19,4 +19,6 @@ public interface IProfileService {
 	void resetPassword(String sid, User user) throws Throwable;
 	List<User> list(String sid, int page, String search, String sort)
 			throws Throwable;
+	int listLastMonthAddedSongs(String sid) throws Throwable;
+	int listTotalAddedSongs(String sid) throws Throwable;
 }

@@ -51,8 +51,11 @@ public class SongService implements ISongService{
 		
 		Session session = sessionFactory.getCurrentSession();
 		
+		cz.hotmusic.model.Session sess = (cz.hotmusic.model.Session)session.createQuery("from Session where sid = :sid").setParameter("sid", sid).list().get(0);
 		song.addedBySession = sid;
 		song.addedDate = new Date();
+		song.addedByUser = sess.user;
+		
 		if (song.artist != null && song.artist.id == null && song.artist.addedDate == null) {
 			song.artist.addedBySession = sid;
 			song.artist.addedDate = new Date();

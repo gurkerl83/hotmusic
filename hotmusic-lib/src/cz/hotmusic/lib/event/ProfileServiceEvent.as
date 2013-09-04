@@ -19,6 +19,8 @@ package cz.hotmusic.lib.event
 		public static const AUTOCOMPLETE	:String = "AUTOCOMPLETE_USER";
 		public static const FEEDBACK		:String = "FEEDBACK_USER";
 		public static const RESET_PASSWORD	:String = "RESET_PASSWORD_USER";
+		public static const LAST_MONTH_SONGS:String = "LAST_MONTH_SONGS_USER";
+		public static const TOTAL_SONGS		:String = "TOTAL_SONGS_USER";
 		
 		// login types
 		public static const MOBILE_TYPE		:String = "MOBILE_TYPE";

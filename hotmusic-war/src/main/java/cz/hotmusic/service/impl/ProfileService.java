@@ -180,10 +180,13 @@ public class ProfileService implements IProfileService{
 		logger.debug("Login success");
 		
 		// create and save new user session
-		if (type.equals(MOBILE_TYPE))
+		if (type.equals(MOBILE_TYPE)) {
 			foundUser.sessionMobile = UUID.randomUUID().toString();
-		else
+			saveSession(foundUser, foundUser.sessionMobile);
+		} else {
 			foundUser.sessionAdmin = UUID.randomUUID().toString();
+			saveSession(foundUser, foundUser.sessionAdmin);
+		}
 		
 		session = sessionFactory.openSession();
 		Transaction tr = session.beginTransaction();
@@ -211,6 +214,42 @@ public class ProfileService implements IProfileService{
 	    returnUser.sessionMobile = type.equals(MOBILE_TYPE) ? foundUser.sessionMobile:null;
 		
 		return returnUser;
+	}
+	
+	private void saveSession(User user, String sid) {
+		cz.hotmusic.model.Session session = new cz.hotmusic.model.Session();
+		session.user = user;
+		session.sid = sid;
+		session.addedDate = new Date();
+		sessionFactory.getCurrentSession().save(session);
+	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
+	public int listLastMonthAddedSongs(String sid) throws Throwable {
+		Assert.assertNotNull(sid);
+		sessionHelper.checkSession(sid);
+		Session session = sessionFactory.getCurrentSession();
+		cz.hotmusic.model.Session sess = (cz.hotmusic.model.Session)session.createQuery("from Session where sid = :sid").setParameter("sid", sid).list().get(0);
+		Date now = new Date();
+		Long nowMs = now.getTime();
+		Long monthMs = 1000L*60L*60L*24L*30L;
+		Date monthBefore = new Date(nowMs - monthMs);
+		int count = ((Long)session.createQuery("select count(*) from Song where addedDate > :monthbefore and addedByUser = :user").setParameter("monthbefore", monthBefore).setParameter("user", sess.user).uniqueResult()).intValue();;
+		return count;
+	}
+
+	@Override
+	@RemotingInclude
+	@Transactional
+	public int listTotalAddedSongs(String sid) throws Throwable {
+		Assert.assertNotNull(sid);
+		sessionHelper.checkSession(sid);
+		Session session = sessionFactory.getCurrentSession();
+		cz.hotmusic.model.Session sess = (cz.hotmusic.model.Session)session.createQuery("from Session where sid = :sid").setParameter("sid", sid).list().get(0);
+		int count = ((Long)session.createQuery("select count(*) from Song where addedByUser = :user").setParameter("user", sess.user).uniqueResult()).intValue();;
+		return count;
 	}
 	
 	@Override

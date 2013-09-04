@@ -6,6 +6,7 @@ package cz.hotmusic
 	import cz.hotmusic.component.FormItem;
 	import cz.hotmusic.helper.ButtonHelper;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
+	import cz.hotmusic.lib.event.ServiceEvent;
 	import cz.hotmusic.lib.model.User;
 	import cz.hotmusic.model.Model;
 	
@@ -25,6 +26,12 @@ package cz.hotmusic
 		public function UserDetail()
 		{
 			super();
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+		
+		private function onAddedToStage(event:Event):void
+		{
+			downloadLastMonthAndTotalSongs();
 		}
 		
 		private var _actionButtons:Array;
@@ -142,6 +149,11 @@ package cz.hotmusic
 		private var addArtistCB:Check;
 		private var resetPassword:Button;
 		
+		private var lastMonthLbl:Label;
+		private var lastMonthVal:Label;
+		private var totalLbl:Label;
+		private var totalVal:Label;
+		
 		override protected function initialize():void
 		{
 			super.initialize();
@@ -159,6 +171,22 @@ package cz.hotmusic
 			email.orderNumber = "3.";
 			email.label = "E-mail";
 //			email.value = "thomas90@seznam.cz";
+			
+			lastMonthLbl = new Label();
+			lastMonthLbl.text = "Last month added albums:";
+			lastMonthLbl.name = Theme.SMALL_NORMAL_ORANGE;
+			
+			lastMonthVal = new Label();
+//			lastMonthVal.text = Model.getInstance().albumsLastMonth.toString();
+			lastMonthVal.name = Theme.LARGE_BOLD_WHITE;
+			
+			totalLbl = new Label();
+			totalLbl.text = "Total added albums:";
+			totalLbl.name = Theme.SMALL_NORMAL_ORANGE;
+			
+			totalVal = new Label();
+//			totalVal.text = Model.getInstance().albumsTotal.toString();
+			totalVal.name = Theme.LARGE_BOLD_WHITE;
 			
 			adminRightCB = new Check();
 			adminRightCB.label = "Admin";
@@ -211,6 +239,10 @@ package cz.hotmusic
 			addChild(firstname);
 			addChild(surname);
 			addChild(email);
+			addChild(lastMonthLbl);
+			addChild(lastMonthVal);
+			addChild(totalLbl);
+			addChild(totalVal);
 			addChild(adminRightCB);
 			addChild(userRightCB);
 			addChild(genresCB);
@@ -223,6 +255,30 @@ package cz.hotmusic
 //			firstname.nextTabFocus = surname.textinput;
 		}
 		
+		private function downloadLastMonthAndTotalSongs():void 
+		{
+			var se:ServiceEvent 
+			se = new ProfileServiceEvent(ProfileServiceEvent.LAST_MONTH_SONGS, onLastMonthSongs, Alert.showError);
+			se.sid = Model.getInstance().user.sid;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+			
+			se = new ProfileServiceEvent(ProfileServiceEvent.TOTAL_SONGS, onTotalSongs, Alert.showError);
+			se.sid = Model.getInstance().user.sid;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+		}
+		
+		private function onTotalSongs(event:ResultEvent):void 
+		{
+			totalVal.text = String(event.result);
+			invalidate();
+		}
+
+		private function onLastMonthSongs(event:ResultEvent):void 
+		{
+			lastMonthVal.text = String(event.result);
+			invalidate();
+		}
+		
 		override protected function draw():void
 		{
 			super.draw();
@@ -230,6 +286,7 @@ package cz.hotmusic
 			var padding:int = 0;
 			var formgap:int = 4;
 			var gap:int = 20;
+			var baseline:int = 4;
 	
 			firstname.x = padding;
 			firstname.y = padding;
@@ -243,8 +300,24 @@ package cz.hotmusic
 			email.y = surname.y + surname.height + formgap;
 			email.width = actualWidth - 2*padding;
 			
+			lastMonthLbl.validate();
+			lastMonthLbl.x = padding;
+			lastMonthLbl.y = email.y + email.height + gap;
+			
+			lastMonthVal.validate();
+			lastMonthVal.x = lastMonthLbl.width;
+			lastMonthVal.y = lastMonthLbl.y + baseline - lastMonthVal.height + lastMonthLbl.height;
+			
+			totalLbl.x = lastMonthVal.x + lastMonthVal.width + gap;
+			totalLbl.y = lastMonthLbl.y;
+			totalLbl.validate();
+			
+			totalVal.validate();
+			totalVal.x = totalLbl.x + totalLbl.width;
+			totalVal.y = lastMonthLbl.y + baseline - totalVal.height + totalLbl.height;
+			
 			adminRightCB.x = padding;
-			adminRightCB.y = email.y + email.height + gap;
+			adminRightCB.y = totalLbl.y + totalLbl.height + gap;
 			adminRightCB.validate();
 			
 			userRightCB.x = adminRightCB.x + adminRightCB.width + gap;

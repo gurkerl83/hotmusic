@@ -23,12 +23,14 @@ package cz.hotmusic.lib.controller
 	import cz.hotmusic.lib.command.genre.RemoveGenreCommand;
 	import cz.hotmusic.lib.command.genre.UpdateGenreCommand;
 	import cz.hotmusic.lib.command.profile.FeedbackUserCommand;
+	import cz.hotmusic.lib.command.profile.LastMonthSongsUserCommand;
 	import cz.hotmusic.lib.command.profile.ListCountUserCommand;
 	import cz.hotmusic.lib.command.profile.ListUserCommand;
 	import cz.hotmusic.lib.command.profile.LoginUserCommand;
 	import cz.hotmusic.lib.command.profile.RegisterUserCommand;
 	import cz.hotmusic.lib.command.profile.RemoveUserCommand;
 	import cz.hotmusic.lib.command.profile.ResetPasswordUserCommand;
+	import cz.hotmusic.lib.command.profile.TotalSongsUserCommand;
 	import cz.hotmusic.lib.command.profile.UpdateUserCommand;
 	import cz.hotmusic.lib.command.song.AutocompleteSongCommand;
 	import cz.hotmusic.lib.command.song.CreateSongCommand;
@@ -80,6 +82,8 @@ package cz.hotmusic.lib.controller
 			addCommand(ProfileServiceEvent.UPDATE, UpdateUserCommand);
 			addCommand(ProfileServiceEvent.FEEDBACK, FeedbackUserCommand);
 			addCommand(ProfileServiceEvent.RESET_PASSWORD, ResetPasswordUserCommand);
+			addCommand(ProfileServiceEvent.LAST_MONTH_SONGS, LastMonthSongsUserCommand);
+			addCommand(ProfileServiceEvent.TOTAL_SONGS, TotalSongsUserCommand);
 //			addCommand(ProfileServiceEvent.UPDATE, GetScoreCommand);
 //			addCommand(ProfileServiceEvent.LIST_COUNT, UpdateProfileCommand);
 //			addCommand(ProfileServiceEvent.DELETE, ValidatePromoCodeCommand);
