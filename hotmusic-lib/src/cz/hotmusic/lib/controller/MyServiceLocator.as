@@ -17,13 +17,14 @@ package cz.hotmusic.lib.controller
 		
 //		public static const AMF_ENDPOINT				:String = "http://www.hotmusic-app.com:8080/hotmusic-war/messagebroker/amf";
 		public static const AMF_ENDPOINT				:String = "http://localhost:8080/hotmusic-war/messagebroker/amf";
-		public static const version						:String = "0.0.23";
+		public static const version						:String = "0.0.24";
 
 		public static const PROFILE_SERVICE				:String = "profileService";
 		public static const GENRE_SERVICE				:String = "genreService";
 		public static const SONG_SERVICE				:String = "songService";
 		public static const ARTIST_SERVICE				:String = "artistService";
 		public static const ALBUM_SERVICE				:String = "albumService";
+		public static const ADDARTIST_SERVICE			:String = "addArtistService";
 		
 		public static function getInstance() : MyServiceLocator 
 		{
@@ -40,6 +41,7 @@ package cz.hotmusic.lib.controller
 				case SONG_SERVICE:
 				case ARTIST_SERVICE:
 				case ALBUM_SERVICE:
+				case ADDARTIST_SERVICE:
 					break;
 				default:
 					throw new Error("nemohu nalezt sluzbu '" + value + "'");

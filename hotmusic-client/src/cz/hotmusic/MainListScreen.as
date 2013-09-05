@@ -3,9 +3,12 @@ package cz.hotmusic
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	import com.thejustinwalsh.ane.TestFlight;
 	
+	import cz.hotmusic.components.Alert;
 	import cz.hotmusic.components.SendDialog;
 	import cz.hotmusic.helper.SortHelper;
+	import cz.hotmusic.lib.event.AddArtistServiceEvent;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
+	import cz.hotmusic.lib.model.AddArtist;
 	import cz.hotmusic.lib.model.Genre;
 	import cz.hotmusic.lib.model.Song;
 	import cz.hotmusic.model.Model;
@@ -651,10 +654,11 @@ package cz.hotmusic
 					CairngormEventDispatcher.getInstance().dispatchEvent(se);
 					
 				} else if (sendDialog.currentState == SendDialog.ADD_ARTIST_STATE) {
-//					var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.FEEDBACK);
-//					se.sid = Model.getInstance().user.session;
-//					se.sedata = sendDialog.textinput.text;
-//					CairngormEventDispatcher.getInstance().dispatchEvent(se);
+					var se2:AddArtistServiceEvent = new AddArtistServiceEvent(AddArtistServiceEvent.CREATE, function onResult():void {}, function onFault():void {});
+					se2.sid = Model.getInstance().user.sid;
+					se2.addArtist = new AddArtist();
+					se2.addArtist.name = sendDialog.textinput.text;
+					CairngormEventDispatcher.getInstance().dispatchEvent(se2);
 				}
 			});
 		}

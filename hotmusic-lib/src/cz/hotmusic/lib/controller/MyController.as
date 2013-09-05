@@ -2,6 +2,10 @@ package cz.hotmusic.lib.controller
 {
 	import com.adobe.cairngorm.control.FrontController;
 	
+	import cz.hotmusic.lib.command.addartist.ChangeStateAddArtistCommand;
+	import cz.hotmusic.lib.command.addartist.CreateAddArtistCommand;
+	import cz.hotmusic.lib.command.addartist.ListAddArtistCommand;
+	import cz.hotmusic.lib.command.addartist.ListCountAddArtistCommand;
 	import cz.hotmusic.lib.command.album.AutocompleteAlbumCommand;
 	import cz.hotmusic.lib.command.album.CreateAlbumCommand;
 	import cz.hotmusic.lib.command.album.ListAlbumCommand;
@@ -40,11 +44,13 @@ package cz.hotmusic.lib.controller
 	import cz.hotmusic.lib.command.song.RemoveSongCommand;
 	import cz.hotmusic.lib.command.song.UpdateSongCommand;
 	import cz.hotmusic.lib.command.song.VoteSongCommand;
+	import cz.hotmusic.lib.event.AddArtistServiceEvent;
 	import cz.hotmusic.lib.event.AlbumServiceEvent;
 	import cz.hotmusic.lib.event.ArtistServiceEvent;
 	import cz.hotmusic.lib.event.GenreServiceEvent;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
 	import cz.hotmusic.lib.event.SongServiceEvent;
+	import cz.hotmusic.lib.model.AddArtist;
 	import cz.hotmusic.lib.model.Album;
 	import cz.hotmusic.lib.model.Artist;
 	import cz.hotmusic.lib.model.Genre;
@@ -72,6 +78,7 @@ package cz.hotmusic.lib.controller
 			registerClassAlias("cz.hotmusic.model.Song", Song);
 			registerClassAlias("cz.hotmusic.model.User", User);
 			registerClassAlias("cz.hotmusic.model.Vote", Vote);
+			registerClassAlias("cz.hotmusic.model.AddArtist", AddArtist);
 			
 			// RPC PROFIL SERVICE
 			addCommand(ProfileServiceEvent.REGISTER, RegisterUserCommand);
@@ -121,6 +128,10 @@ package cz.hotmusic.lib.controller
 			addCommand(GenreServiceEvent.REMOVE, RemoveGenreCommand);
 			addCommand(GenreServiceEvent.UPDATE, UpdateGenreCommand);
 			
+			addCommand(AddArtistServiceEvent.CREATE, CreateAddArtistCommand);
+			addCommand(AddArtistServiceEvent.LIST, ListAddArtistCommand);
+			addCommand(AddArtistServiceEvent.LIST_COUNT, ListCountAddArtistCommand);
+			addCommand(AddArtistServiceEvent.CHANGE_STATE, ChangeStateAddArtistCommand);
 		}
 	}
 }
