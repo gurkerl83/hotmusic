@@ -2,11 +2,13 @@ package cz.hotmusic.lib.data
 {
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
+	import cz.hotmusic.lib.event.AddArtistServiceEvent;
 	import cz.hotmusic.lib.event.AlbumServiceEvent;
 	import cz.hotmusic.lib.event.ArtistServiceEvent;
 	import cz.hotmusic.lib.event.GenreServiceEvent;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
 	import cz.hotmusic.lib.event.SongServiceEvent;
+	import cz.hotmusic.lib.model.AddArtist;
 	import cz.hotmusic.lib.model.Album;
 	import cz.hotmusic.lib.model.Artist;
 	import cz.hotmusic.lib.model.Genre;
@@ -16,6 +18,7 @@ package cz.hotmusic.lib.data
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
+	import mx.collections.ArrayCollection;
 	import mx.controls.Menu;
 	import mx.rpc.events.ResultEvent;
 
@@ -44,6 +47,8 @@ package cz.hotmusic.lib.data
 			getAlbums(cb, cbf, skipCounts, null);
 			getGenres(cb, cbf, skipCounts, null);
 			getUsers(cb, cbf, skipCounts, null);
+			if (model.hasOwnProperty("addArtistsTotal"))
+				getAddArtists(cb, cbf, skipCounts, null);
 		}
 		
 		private var _songsComplete:Boolean;
@@ -59,6 +64,8 @@ package cz.hotmusic.lib.data
 		private var _genresTotalComplete:Boolean;
 		private var _usersComplete:Boolean;
 		private var _usersTotalComplete:Boolean;
+		private var _addArtistsComplete:Boolean;
+		private var _addArtistsTotalComplete:Boolean;
 		
 		public static const INIT_COMPLETE		:String = "INIT_COMPLETE";
 		public static const SONGS_COMPLETE		:String = "SONGS_COMPLETE";
@@ -66,6 +73,7 @@ package cz.hotmusic.lib.data
 		public static const ALBUMS_COMPLETE		:String = "ALBUMS_COMPLETE";
 		public static const GENRES_COMPLETE		:String = "GENRES_COMPLETE";
 		public static const USERS_COMPLETE		:String = "USERS_COMPLETE";
+		public static const ADDARTISTS_COMPLETE		:String = "ADDARTISTS_COMPLETE";
 		
 		private function dispatchInitComplete():void
 		{
@@ -73,7 +81,8 @@ package cz.hotmusic.lib.data
 				_albumsComplete && _albumsLastMonthComplete && _albumsTotalComplete && 
 				_artistsComplete && _artistsLastMonthComplete && _artistsTotalComplete && 
 				_genresComplete && _genresTotalComplete && 
-				_usersComplete && _usersTotalComplete)
+				_usersComplete && _usersTotalComplete &&
+				_artistsComplete && _artistsTotalComplete )
 				dispatchEvent(new Event(INIT_COMPLETE));
 		}
 		
@@ -105,6 +114,11 @@ package cz.hotmusic.lib.data
 		{
 			if (_usersComplete && _usersTotalComplete)
 				dispatchEvent(new Event(USERS_COMPLETE));
+		}
+		private function dispatchAddArtistsComplete():void
+		{
+			if (_addArtistsComplete && _addArtistsTotalComplete)
+				dispatchEvent(new Event(ADDARTISTS_COMPLETE));
 		}
 		
 		//-------------------------------
@@ -519,6 +533,87 @@ package cz.hotmusic.lib.data
 			}
 		}
 		
+		//-------------------------------
+		//
+		// ADD ARTISTS
+		//
+		//-------------------------------
+		
+		private var addArtistsCallback:Function;
+		private var addArtistsCallbackFault:Function;
+		public function getAddArtists(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false, paging:Object=null):void
+		{
+			_addArtistsComplete = _addArtistsTotalComplete = false;
+			
+			addArtistsCallback = null;
+			addArtistsCallbackFault = null;
+			if (callback != null)
+				addArtistsCallback = callback;
+			if (callbackFault != null)
+				addArtistsCallbackFault = callbackFault;
+			
+			var se:AddArtistServiceEvent = new AddArtistServiceEvent(AddArtistServiceEvent.LIST,addArtistResult,addArtistFault);
+			se.sid = model.user.sid;
+			if (paging != null)
+				se.data = paging;
+			CairngormEventDispatcher.getInstance().dispatchEvent(se);
+			
+			//			if (skipCounts) {
+			//				_addArtistsLastMonthComplete = true;
+			//				_addArtistsTotalComplete = true;
+			//				return;
+			//			}
+			
+			// Total
+			var ssecount:AddArtistServiceEvent = new AddArtistServiceEvent(AddArtistServiceEvent.LIST_COUNT,function listCount(result:ResultEvent):void {
+				if (result && result.result is ArrayCollection) {
+					if (model.hasOwnProperty("addArtistsTotal")) {
+						var resArr:Array = result.result;
+						model.addArtistsTotal = resArr[0]; 
+						model.addArtistsWaiting = resArr[1]; 
+						model.addArtistsAdded = resArr[2]; 
+						model.addArtistsRejected = resArr[3]; 
+					}
+					_addArtistsTotalComplete = true;
+					dispatchAddArtistsComplete();
+					dispatchInitComplete();
+				}
+			},function listCountFault(info:Object):void {
+				if (addArtistsCallbackFault != null) {
+					addArtistsCallbackFault.call(this, info);
+					addArtistsCallbackFault = null; // not call others fault callbacks
+				}
+			});
+			ssecount.sid = model.user.sid;
+			CairngormEventDispatcher.getInstance().dispatchEvent(ssecount);
+			
+			
+		}
+		
+		private function addArtistResult(result:ResultEvent):void
+		{
+			var addArtists:Array = model.addArtists;
+			addArtists.splice(0, addArtists.length);
+			for each (var addArtist:AddArtist in result.result)
+			{
+				addArtists.push(addArtist);
+			}
+			dispatchEvent(new Event(ADDARTISTS_COMPLETE));
+			_addArtistsComplete = true;
+			dispatchInitComplete();
+			if (addArtistsCallback != null)
+				addArtistsCallback.call();
+		}
+		
+		private function addArtistFault(info:Object):void
+		{
+			if (addArtistsCallbackFault != null) {
+				addArtistsCallbackFault.call(this, info);
+				addArtistsCallbackFault = null; // not call others fault callbacks
+			}
+		}
+
+		
 		public function getData(type:String, cb:Function=null, cbf:Function=null):void
 		{
 			if (type == "Songs")
@@ -532,7 +627,7 @@ package cz.hotmusic.lib.data
 			else if (type == "Users")
 				getUsers(cb, cbf);
 			else if (type == "+Artists")
-				getArtists(cb, cbf);
+				getAddArtists(cb, cbf);
 		}
 		
 		public static function al2a(al:Object):Array 

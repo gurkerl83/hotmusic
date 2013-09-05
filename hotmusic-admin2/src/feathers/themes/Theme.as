@@ -27,6 +27,7 @@ package feathers.themes
 	import cz.hotmusic.FontAssets;
 	import cz.hotmusic.component.ActionButton;
 	import cz.hotmusic.component.ChangePasswordPanel;
+	import cz.hotmusic.renderer.AddArtistRenderer;
 	import cz.hotmusic.renderer.AlbumRenderer;
 	import cz.hotmusic.renderer.ArtistRenderer;
 	import cz.hotmusic.renderer.GenreRenderer;
@@ -581,6 +582,7 @@ package feathers.themes
 			this.setInitializerForClass(AlbumRenderer, itemRendererMainInitializer);
 			this.setInitializerForClass(SongRenderer, itemRendererMainInitializer);
 			this.setInitializerForClass(UserRenderer, itemRendererMainInitializer);
+			this.setInitializerForClass(AddArtistRenderer, itemRendererMainInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, itemRendererInitializer);
 			this.setInitializerForClass(DefaultListItemRenderer, pickerListItemRendererInitializer, COMPONENT_NAME_PICKER_LIST_ITEM_RENDERER);
 			this.setInitializerForClass(DefaultGroupedListItemRenderer, itemRendererInitializer);

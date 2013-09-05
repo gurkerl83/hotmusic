@@ -28,6 +28,7 @@ package cz.hotmusic.model
 		public var albums:Array;
 		public var genres:Array;
 		public var users:Array;
+		public var addArtists:Array;
 		
 		public var songsLastMonth:int;
 		public var songsTotal:int;
@@ -37,6 +38,10 @@ package cz.hotmusic.model
 		public var artistsTotal:int;
 		public var genresTotal:int;
 		public var usersTotal:int;
+		public var addArtistsTotal:int;
+		public var addArtistsAdded:int;
+		public var addArtistsRejected:int;
+		public var addArtistsWaiting:int;
 		
 		public function resetModel():void
 		{
@@ -46,6 +51,7 @@ package cz.hotmusic.model
 			albums = [];
 			genres = [];
 			users = [];
+			addArtists = [];
 		}
 	}
 }

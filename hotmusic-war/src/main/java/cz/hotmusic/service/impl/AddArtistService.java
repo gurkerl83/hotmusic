@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.flex.remoting.RemotingDestination;
 import org.springframework.flex.remoting.RemotingInclude;
 import org.springframework.stereotype.Repository;
@@ -26,11 +27,13 @@ import cz.hotmusic.service.IArtistService;
 
 @Repository
 @RemotingDestination
+//@DependsOn("artistService")
 public class AddArtistService implements IAddArtistService{
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private SessionFactory sessionFactory;
 	private SessionHelper sessionHelper;
+	private IArtistService artistService;
 	private final int count = 10; // velikost stranky
 	
 	//------------------------------------------------------
@@ -70,9 +73,19 @@ public class AddArtistService implements IAddArtistService{
 		sessionHelper.checkSession(sid);
 		
 		Session session = sessionFactory.getCurrentSession();
-		AddArtist foundAddArtist = (AddArtist) session.load(AddArtist.class, addArtist.id);
+		AddArtist foundAddArtist = (AddArtist) session.createQuery("from AddArtist where id = :id").setParameter("id", addArtist.id).list().get(0);
 		foundAddArtist.state = addArtist.state;
+
 		session.update(foundAddArtist);
+		
+		if (addArtist.state.equals(AddArtist.ADDED_STATE)) {
+			Artist artist = new Artist();
+			artist.name = addArtist.name;
+			artistService.create(sid, artist);
+		} else if (addArtist.state.equals(AddArtist.REJECTED_STATE)) {
+			Artist foundArtist = (Artist) session.createQuery("from Artist where name = :name").setParameter("name", addArtist.name).list().get(0);
+			artistService.remove(sid, foundArtist);
+		}
 	}
 
 	@Override
@@ -263,6 +276,15 @@ public class AddArtistService implements IAddArtistService{
 	@Autowired
 	public void setSessionHelper(SessionHelper sessionHelper) {
 		this.sessionHelper = sessionHelper;
+	}
+
+	public IArtistService getArtistService() {
+		return artistService;
+	}
+
+	@Autowired
+	public void setArtistService(IArtistService artistService) {
+		this.artistService = artistService;
 	}
 
 }
