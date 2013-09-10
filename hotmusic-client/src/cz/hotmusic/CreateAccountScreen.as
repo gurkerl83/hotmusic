@@ -11,6 +11,7 @@ package cz.hotmusic
 	import cz.hotmusic.model.Model;
 	
 	import feathers.controls.Button;
+	import feathers.controls.Header;
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
@@ -23,6 +24,7 @@ package cz.hotmusic
 	import mx.rpc.events.ResultEvent;
 	
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -35,6 +37,8 @@ package cz.hotmusic
 			super();
 		}
 		
+		private var _header:Header;
+		private var _backButton:starling.display.Button;
 		private var _logo:Image;
 		private var _firstnameTI:TextInput;
 		private var _surnameTI:TextInput;
@@ -46,8 +50,19 @@ package cz.hotmusic
 		override protected function initialize():void
 		{
 			
-			_logo = new Image(Texture.fromBitmap(new FontAssets.Logo()));
-
+			_backButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.Back()));
+			_backButton.addEventListener(starling.events.Event.TRIGGERED, backButton_triggeredHandler);
+			
+			this._header = new Header();
+			_logo = Image.fromBitmap(new FontAssets.HotMusic());
+			this._header.addChild(_logo);
+			//			this._header.title = "song detail";
+			this._header.leftItems = new <DisplayObject>
+				[
+					this._backButton
+				];
+			this.addChild(this._header);
+			
 			_firstnameTI = new TextInput();
 			_firstnameTI.prompt = "firstname";
 			_firstnameTI.name = "textinputblack";
@@ -104,17 +119,26 @@ package cz.hotmusic
 			addChild(_createAccountBtn);
 		}
 		
+		private function backButton_triggeredHandler(event:starling.events.Event):void 
+		{
+			dispatchEventWith("back");
+		}
+		
 		override protected function draw():void
 		{
 			var gap:int = 28;
 			var padding:int = 70;
 			var btnHeight:int = 70;
 			
-			_logo.x = actualWidth/2 - _logo.width/2;
-			_logo.y = padding;
+			this._header.paddingTop = this._header.paddingBottom = this._header.paddingLeft = this._header.paddingRight = 0;
+			this._header.width = this.actualWidth;
+			this._header.validate();
+			
+			_logo.x = this._header.width/2 - _logo.width/2;
+			_logo.y = this._header.height/2 - _logo.height/2;
 			
 			_firstnameTI.x = padding;
-			_firstnameTI.y = _logo.y + _logo.height + padding;
+			_firstnameTI.y = _header.y + _header.height + padding;
 			_firstnameTI.width = actualWidth - 2*padding;
 			_firstnameTI.validate();
 

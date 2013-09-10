@@ -59,7 +59,8 @@ package cz.hotmusic
 
 			this._navigator.addScreen(CREATE_ACCOUNT_SCREEN, new ScreenNavigatorItem(CreateAccountScreen,
 				{
-					login: MAIN_LIST
+					login: MAIN_LIST,
+					back: LOGIN_SCREEN
 				}));
 
 			autologin(mainScreen, loginScreen);
