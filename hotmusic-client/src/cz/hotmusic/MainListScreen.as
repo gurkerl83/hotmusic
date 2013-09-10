@@ -5,6 +5,7 @@ package cz.hotmusic
 	
 	import cz.hotmusic.components.Alert;
 	import cz.hotmusic.components.SendDialog;
+	import cz.hotmusic.components.hideBusy;
 	import cz.hotmusic.helper.SortHelper;
 	import cz.hotmusic.lib.event.AddArtistServiceEvent;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
@@ -167,6 +168,8 @@ package cz.hotmusic
 			this.addChild(this.debugPanel);
 			this.addChild(this.curtain);
 			this.addChild(this.sendDialog);
+			
+			hideBusy();
 		}
 		
 		override protected function draw():void

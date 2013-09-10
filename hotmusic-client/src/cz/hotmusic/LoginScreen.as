@@ -5,6 +5,9 @@ package cz.hotmusic
 	import com.facebook.graph.data.FacebookSession;
 	
 	import cz.hotmusic.components.Alert;
+	import cz.hotmusic.components.BusyIndicator;
+	import cz.hotmusic.components.hideBusy;
+	import cz.hotmusic.components.showBusy;
 	import cz.hotmusic.helper.LoginHelper;
 	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
@@ -16,12 +19,12 @@ package cz.hotmusic
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
-import feathers.core.FocusManager;
-import feathers.events.FeathersEventType;
-
-import flash.display.Stage;
-
-import flash.events.Event;
+	import feathers.core.FocusManager;
+	import feathers.core.PopUpManager;
+	import feathers.events.FeathersEventType;
+	
+	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
 	import flash.net.SharedObject;
@@ -106,6 +109,7 @@ import flash.events.Event;
 		}
 
 		private function onLoginBtn(event:starling.events.Event):void {
+			showBusy();
 			LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, null, function onLoginResult(result:ResultEvent):void
 			{
 				Model.getInstance().user = User(result.result);
@@ -116,12 +120,14 @@ import flash.events.Event;
 				});
 				DataHelper.getInstance().initModel(null, null, Model.getInstance(), true);
 			}, function onLoginFault(msg:String):void {
+				hideBusy();
 				Alert.show(ErrorHelper.getInstance().getMessage(msg), Alert.ERROR);
 			})
 		}
 		
 		private function loginFBBtn_triggeredHandler(event:starling.events.Event):void
 		{
+			showBusy();
 			LoginHelper.getInstance().facebook(actualWidth, actualHeight, function(result:ResultEvent):void
 			{
 				Model.getInstance().user = User(result.result);
@@ -131,6 +137,9 @@ import flash.events.Event;
 					dispatchEventWith("login");
 				});
 				DataHelper.getInstance().initModel(null, null, Model.getInstance(), true);
+			}, function onLoginFault(msg:String):void {
+				hideBusy();
+				Alert.show(ErrorHelper.getInstance().getMessage(msg), Alert.ERROR);
 			});
 		}
 		

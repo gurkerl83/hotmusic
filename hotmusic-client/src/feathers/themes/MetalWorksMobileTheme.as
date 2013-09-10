@@ -141,7 +141,8 @@ package feathers.themes
 		protected static function popUpOverlayFactory():DisplayObject
 		{
 			const quad:Quad = new Quad(100, 100, 0x1a1a1a);
-			quad.alpha = 0.85;
+//			quad.alpha = 0.85;
+			quad.alpha = 0;
 			return quad;
 		}
 

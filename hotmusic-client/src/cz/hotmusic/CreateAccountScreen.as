@@ -4,9 +4,13 @@ package cz.hotmusic
 	import com.facebook.graph.FacebookMobile;
 	import com.facebook.graph.data.FacebookSession;
 	
+	import cz.hotmusic.components.Alert;
+	import cz.hotmusic.components.hideBusy;
+	import cz.hotmusic.components.showBusy;
 	import cz.hotmusic.helper.LoginHelper;
 	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
+	import cz.hotmusic.lib.helper.ErrorHelper;
 	import cz.hotmusic.lib.model.User;
 	import cz.hotmusic.model.Model;
 	
@@ -94,7 +98,7 @@ package cz.hotmusic
 					_emailTI.text == null || _emailTI.text == "" 
 				)
 					return; //TODO chybova hlaska
-				
+				showBusy();
 				LoginHelper.getInstance().createAccount(_emailTI.text, _passwordTI.text, _firstnameTI.text, _surnameTI.text, function(res:ResultEvent):void
 				{
 					LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, null, function(result:ResultEvent):void
@@ -107,6 +111,9 @@ package cz.hotmusic
 						});
 						DataHelper.getInstance().initModel(null, null, Model.getInstance());
 					})
+				}, function onLoginFault(msg:String):void {
+					hideBusy();
+					Alert.show(ErrorHelper.getInstance().getMessage(msg), Alert.ERROR);
 				})
 			});
 			
