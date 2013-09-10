@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="Flex" version="4">
+  <component name="FlexBuildConfigurationManager" active="Hotmusic">
+    <configurations>
+      <configuration name="Hotmusic" target-platform="Mobile" pure-as="true" main-class="Hotmusic" output-file="Hotmusic.swf" output-folder="$MODULE_DIR$/bin-debug">
+        <dependencies>
+          <entries>
+            <entry library-id="07880bd6-f2ff-4c51-894a-5d7c89ac78ac">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="2ffb4556-6c92-4a7a-8d5a-56afc58dfb7c">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="6e054d3f-4ee4-4472-be32-371fbbabff49">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="59ed72bd-0229-4c91-b08e-cd5fac44e28b">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="feathers-1.1.0" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="5d296ca9-db67-4c60-a933-b3814d1045ac">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="hotmusic-lib" build-configuration-name="hotmusic-lib">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-id="d6aa8617-bf06-4084-bbe8-039aaf907841">
+              <dependency linkage="Merged" />
+            </entry>
+          </entries>
+          <sdk name="4.6.0_air3.5" />
+        </dependencies>
+        <compiler-options>
+          <map>
+            <entry key="compiler.locale" value="en_US" />
+          </map>
+        </compiler-options>
+        <packaging-air-desktop />
+        <packaging-android use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/Hotmusic-app.xml" package-file-name="Hotmusic">
+          <files-to-package>
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/cz/hotmusic/data" path-in-package="cz/hotmusic/data" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/Default-568h@2x.png" path-in-package="Default-568h@2x.png" />
+          </files-to-package>
+        </packaging-android>
+        <packaging-ios enabled="true" use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/Hotmusic-app.xml" package-file-name="Hotmusic">
+          <files-to-package>
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/cz/hotmusic/data" path-in-package="cz/hotmusic/data" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
+            <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/Default-568h@2x.png" path-in-package="Default-568h@2x.png" />
+          </files-to-package>
+          <AirSigningOptions keystore-path="$MODULE_DIR$/mk_zc_dev.p12" provisioning-profile-path="$MODULE_DIR$/hotmusic.mobileprovision" />
+        </packaging-ios>
+      </configuration>
+    </configurations>
+    <compiler-options />
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="4.6.0_air3.5" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="07880bd6-f2ff-4c51-894a-5d7c89ac78ac" />
+        <CLASSES>
+          <root url="jar://F:/Dokumenty/Downloads/PrimaryFeather-Starling-Framework-v1.3-0-g0ac3592/PrimaryFeather-Starling-Framework-0ac3592/starling/bin/starling.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="2ffb4556-6c92-4a7a-8d5a-56afc58dfb7c" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/feathers/bin/feathers.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="6e054d3f-4ee4-4472-be32-371fbbabff49" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="59ed72bd-0229-4c91-b08e-cd5fac44e28b" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../Gestouch/bin/gestouch-0.4.6.swc!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="feathers-1.1.0" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="5d296ca9-db67-4c60-a933-b3814d1045ac" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../myaslib/bin" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../myaslib/src" />
+        </SOURCES>
+        <jarDirectory url="file://$MODULE_DIR$/../../myaslib/bin" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="hotmusic-lib" exported="" />
+    <orderEntry type="module-library" exported="">
+      <library type="flex">
+        <properties id="d6aa8617-bf06-4084-bbe8-039aaf907841" />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/ane" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/ane" recursive="false" />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+

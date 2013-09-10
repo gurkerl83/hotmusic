@@ -7,7 +7,8 @@ package cz.hotmusic
 	
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
-	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
+import feathers.core.FocusManager;
+import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.themes.MetalWorksMobileTheme;
 	
 	import flash.events.Event;
@@ -36,6 +37,7 @@ package cz.hotmusic
 		
 		private function addedToStageHandler(event:starling.events.Event):void
 		{
+            FocusManager.isEnabled = true;
 			this._theme = new MetalWorksMobileTheme(this.stage);
 			
 			this._navigator = new ScreenNavigator();

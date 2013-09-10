@@ -16,9 +16,12 @@ package cz.hotmusic
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
-	import feathers.events.FeathersEventType;
-	
-	import flash.events.Event;
+import feathers.core.FocusManager;
+import feathers.events.FeathersEventType;
+
+import flash.display.Stage;
+
+import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
 	import flash.net.SharedObject;
@@ -47,6 +50,7 @@ package cz.hotmusic
 		private var _createAccountBtn:Button;
 		private var _forgottenPassword:Label;
 		private var _line:Quad;
+        private var _isJumpNext:Boolean;
 		
 		override protected function initialize():void
 		{
@@ -98,9 +102,9 @@ package cz.hotmusic
 		
 		private function emailNextHandler(event:starling.events.Event):void 
 		{
-			_passwordTI.focusManager.focus = _passwordTI;
+            _passwordTI.focusManager.focus = _passwordTI;
 		}
-		
+
 		private function onLoginBtn(event:starling.events.Event):void {
 			LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, null, function onLoginResult(result:ResultEvent):void
 			{
@@ -135,7 +139,7 @@ package cz.hotmusic
 			var gap:int = 28;
 			var padding:int = 70;
 			var btnHeight:int = 70;
-			
+
 			_logo.x = actualWidth/2 - _logo.width/2;
 			_logo.y = padding;
 			
@@ -172,7 +176,7 @@ package cz.hotmusic
 			_createAccountBtn.x = padding;
 			_createAccountBtn.height = btnHeight;
 		}
-		
+
 		
 	}
 }
