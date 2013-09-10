@@ -16,11 +16,13 @@ package cz.hotmusic
 	import feathers.controls.Label;
 	import feathers.controls.Screen;
 	import feathers.controls.TextInput;
+	import feathers.events.FeathersEventType;
 	
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.media.StageWebView;
 	import flash.net.SharedObject;
+	import flash.text.ReturnKeyLabel;
 	
 	import mx.rpc.events.ResultEvent;
 	
@@ -54,27 +56,18 @@ package cz.hotmusic
 			_emailTI = new TextInput();
 			_emailTI.prompt = "e-mail";
 			_emailTI.name = "textinputblack";
+			_emailTI.textEditorProperties.returnKeyLabel = ReturnKeyLabel.NEXT;
+			_emailTI.addEventListener(FeathersEventType.ENTER, emailNextHandler);
 			
 			_passwordTI = new TextInput();
 			_passwordTI.prompt = "password";
 			_passwordTI.name = "textinputblack";
 			_passwordTI.displayAsPassword = true;
+			_passwordTI.textEditorProperties.returnKeyLabel = ReturnKeyLabel.GO;
+			_passwordTI.addEventListener(FeathersEventType.ENTER, onLoginBtn);
 			
 			_loginBtn = new Button();
-			_loginBtn.addEventListener(starling.events.Event.TRIGGERED, function (event:starling.events.Event):void {
-				LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, null, function onLoginResult(result:ResultEvent):void
-				{
-					Model.getInstance().user = User(result.result);
-					
-					DataHelper.getInstance().addEventListener(DataHelper.INIT_COMPLETE, function ich(e:flash.events.Event):void {
-						removeEventListener(DataHelper.INIT_COMPLETE, ich);
-						dispatchEventWith("login");
-					});
-					DataHelper.getInstance().initModel(null, null, Model.getInstance(), true);
-				}, function onLoginFault(msg:String):void {
-					Alert.show(ErrorHelper.getInstance().getMessage(msg), Alert.ERROR);
-				})
-			});
+			_loginBtn.addEventListener(starling.events.Event.TRIGGERED, onLoginBtn);
 			_loginBtn.label = "Sign in";
 			
 			_forgottenPassword = new Label();
@@ -101,6 +94,26 @@ package cz.hotmusic
 			addChild(_line);
 			addChild(_loginFBBtn);
 			addChild(_createAccountBtn);
+		}
+		
+		private function emailNextHandler(event:starling.events.Event):void 
+		{
+			_passwordTI.focusManager.focus = _passwordTI;
+		}
+		
+		private function onLoginBtn(event:starling.events.Event):void {
+			LoginHelper.getInstance().login(_emailTI.text, _passwordTI.text, null, function onLoginResult(result:ResultEvent):void
+			{
+				Model.getInstance().user = User(result.result);
+				
+				DataHelper.getInstance().addEventListener(DataHelper.INIT_COMPLETE, function ich(e:flash.events.Event):void {
+					removeEventListener(DataHelper.INIT_COMPLETE, ich);
+					dispatchEventWith("login");
+				});
+				DataHelper.getInstance().initModel(null, null, Model.getInstance(), true);
+			}, function onLoginFault(msg:String):void {
+				Alert.show(ErrorHelper.getInstance().getMessage(msg), Alert.ERROR);
+			})
 		}
 		
 		private function loginFBBtn_triggeredHandler(event:starling.events.Event):void
