@@ -51,6 +51,17 @@ package cz.hotmusic.lib.data
 				getAddArtists(cb, cbf, skipCounts, null);
 		}
 		
+		public function initModelMobile(cb:Function, cbf:Function, model:Object):void
+		{
+			this.model = model;
+			//			_songsComplete = _artistsComplete = _albumsComplete = _genresComplete = _usersComplete = false;
+			getSongs(cb, cbf, true, null, true);
+			getArtists(cb, cbf, true, null);
+			getAlbums(cb, cbf, true, null);
+			getGenres(cb, cbf, true, null);
+			getUsers(cb, cbf, true, null);
+		}
+		
 		private var _songsComplete:Boolean;
 		private var _songsTotalComplete:Boolean;
 		private var _songsLastMonthComplete:Boolean;
@@ -129,7 +140,7 @@ package cz.hotmusic.lib.data
 		
 		private var songsCallback:Function;
 		private var songsCallbackFault:Function;
-		public function getSongs(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false,paging:Object=null):void
+		public function getSongs(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false,paging:Object=null, releaseDate:Boolean=false):void
 		{
 			_songsComplete = _songsTotalComplete = _songsLastMonthComplete = false;
 			
@@ -141,7 +152,7 @@ package cz.hotmusic.lib.data
 				songsCallbackFault = callbackFault;
 			
 			// List
-			var sse:SongServiceEvent = new SongServiceEvent(SongServiceEvent.LIST,songResult,songFault);
+			var sse:SongServiceEvent = new SongServiceEvent(releaseDate?SongServiceEvent.LIST_RELEASED:SongServiceEvent.LIST,songResult,songFault);
 			sse.sid = model.user.sid;
 			if (paging != null)
 				sse.data = paging;

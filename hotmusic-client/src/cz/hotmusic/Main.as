@@ -1,5 +1,6 @@
 package cz.hotmusic
 {
+	import cz.hotmusic.components.Alert;
 	import cz.hotmusic.helper.LoginHelper;
 	import cz.hotmusic.lib.data.DataHelper;
 	import cz.hotmusic.lib.model.User;
@@ -7,8 +8,8 @@ package cz.hotmusic
 	
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
-import feathers.core.FocusManager;
-import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
+	import feathers.core.FocusManager;
+	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.themes.MetalWorksMobileTheme;
 	
 	import flash.events.Event;
@@ -84,7 +85,7 @@ import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 				removeEventListener(DataHelper.INIT_COMPLETE, ich);
 				_navigator.showScreen(MAIN_LIST);
 			});
-			DataHelper.getInstance().initModel(null, null, Model.getInstance(), true);
+			DataHelper.getInstance().initModelMobile(null, Alert.showError, Model.getInstance());
 		}
 		
 		private function autologin(successCall:Function, failCall:Function):void {

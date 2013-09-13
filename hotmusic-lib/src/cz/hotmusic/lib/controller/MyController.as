@@ -40,6 +40,7 @@ package cz.hotmusic.lib.controller
 	import cz.hotmusic.lib.command.song.CreateSongCommand;
 	import cz.hotmusic.lib.command.song.ListCountSongCommand;
 	import cz.hotmusic.lib.command.song.ListLastMonthSongCommand;
+	import cz.hotmusic.lib.command.song.ListReleasedSongCommand;
 	import cz.hotmusic.lib.command.song.ListSongCommand;
 	import cz.hotmusic.lib.command.song.RemoveSongCommand;
 	import cz.hotmusic.lib.command.song.UpdateSongCommand;
@@ -99,6 +100,7 @@ package cz.hotmusic.lib.controller
 			addCommand(SongServiceEvent.AUTOCOMPLETE, AutocompleteSongCommand);
 			addCommand(SongServiceEvent.CREATE, CreateSongCommand);
 			addCommand(SongServiceEvent.LIST, ListSongCommand);
+			addCommand(SongServiceEvent.LIST_RELEASED, ListReleasedSongCommand);
 			addCommand(SongServiceEvent.LIST_COUNT, ListCountSongCommand);
 			addCommand(SongServiceEvent.LIST_LAST_MONTH, ListLastMonthSongCommand);
 			addCommand(SongServiceEvent.REMOVE, RemoveSongCommand);

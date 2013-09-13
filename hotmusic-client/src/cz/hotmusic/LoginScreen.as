@@ -118,7 +118,7 @@ package cz.hotmusic
 					removeEventListener(DataHelper.INIT_COMPLETE, ich);
 					dispatchEventWith("login");
 				});
-				DataHelper.getInstance().initModel(null, null, Model.getInstance(), true);
+				DataHelper.getInstance().initModelMobile(null, Alert.showError, Model.getInstance());
 			}, function onLoginFault(msg:String):void {
 				hideBusy();
 				Alert.show(ErrorHelper.getInstance().getMessage(msg), Alert.ERROR);
@@ -136,7 +136,7 @@ package cz.hotmusic
 					removeEventListener(DataHelper.INIT_COMPLETE, ich);
 					dispatchEventWith("login");
 				});
-				DataHelper.getInstance().initModel(null, null, Model.getInstance(), true);
+				DataHelper.getInstance().initModelMobile(null, Alert.showError, Model.getInstance());
 			}, function onLoginFault(msg:String):void {
 				hideBusy();
 				Alert.show(ErrorHelper.getInstance().getMessage(msg), Alert.ERROR);

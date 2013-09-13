@@ -110,6 +110,31 @@ public class SongService implements ISongService{
 	@Override
 	@RemotingInclude
 	@Transactional
+	public List<Song> listReleased(String sid, int page) throws Throwable {
+		Assert.assertNotNull(sid);
+		sessionHelper.checkSession(sid);
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = null;
+		
+		// seznam songu
+		
+		query = session.createQuery("from Song where releaseDate <= :releaseDate").setParameter("releaseDate", new Date());
+		
+		query.setFirstResult(page * 100);
+		query.setMaxResults(count);
+		
+		@SuppressWarnings("unchecked")
+		List<Song> listSong = query.list();
+		
+		setCanVote(sid, listSong, session);
+		
+		return listSong;
+	}
+	
+	@Override
+	@RemotingInclude
+	@Transactional
 	public List<Song> list(String sid, int page, String search, String sort) throws Throwable {
 		Assert.assertNotNull(sid);
 		sessionHelper.checkSession(sid);
@@ -166,6 +191,13 @@ public class SongService implements ISongService{
 	@Transactional
 	public List<Song> list(String sid) throws Throwable {
 		return list(sid, 0);
+	}
+
+	@Override
+	@RemotingInclude
+	@Transactional
+	public List<Song> listReleased(String sid) throws Throwable {
+		return listReleased(sid, 0);
 	}
 
 	@Override

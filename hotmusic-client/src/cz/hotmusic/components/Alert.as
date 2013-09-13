@@ -1,11 +1,15 @@
 package cz.hotmusic.components
 {
+	import cz.hotmusic.lib.helper.ErrorHelper;
+	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.Panel;
 	import feathers.core.PopUpManager;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
+	
+	import mx.rpc.events.FaultEvent;
 	
 	import org.osmf.layout.HorizontalAlign;
 	
@@ -26,7 +30,26 @@ package cz.hotmusic.components
 		private static var okButton:Button;
 		private static var label:Label;
 		
+		public static function showError(error:Object):void 
+		{
+			hideBusy();
+			var msg:String;
+			if (error is FaultEvent) {
+				msg = FaultEvent(error).fault.faultString;
+			} else if (error is String) {
+				msg = String(error);
+			} else {
+				throw new Error("Unknown error object");
+			}
+			
+			//			if (msg && msg.length > 200)
+			//				msg = msg.substr(0, 200);
+			
+			show(ErrorHelper.getInstance().getMessage(msg), ERROR);
+		}
+		
 		public static function show(msg:String, title:String):void {
+			hideBusy();
 			if (panel == null)
 				initPanel();
 			

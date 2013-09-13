@@ -17,4 +17,6 @@ public interface ISongService {
 	List<Song> list(String sid, int page) throws Throwable;
 	List<Song> list(String sid, int page, String search, String sort)
 			throws Throwable;
+	List<Song> listReleased(String sid, int page) throws Throwable;
+	List<Song> listReleased(String sid) throws Throwable;
 }
