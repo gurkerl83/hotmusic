@@ -21,7 +21,7 @@ package cz.hotmusic.components
 		}
 		
 		private var bg:RoundedRectangle;
-		private var loading:Label;
+		public var loading:Label;
 		
 		override protected function initialize():void
 		{

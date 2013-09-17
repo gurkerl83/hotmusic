@@ -103,12 +103,19 @@ package cz.hotmusic.components
 //			});
 //			artistTI.prompt = "artist name";
 			sendBtn = new feathers.controls.Button();
+			sendBtn.isEnabled = false;
 			sendBtn.label = "Send";
 			sendBtn.addEventListener(Event.TRIGGERED, function onClose(event:Event):void {
 //				shiftDown();
 				enterHandler(null);
 				dispatchEventWith(Event.CLOSE);
 				textinput.text = null;
+			});
+			textinput.addEventListener(Event.CHANGE, function onChange(event:Event):void {
+				if (textinput.text && textinput.text.length > 0)
+					sendBtn.isEnabled = true;
+				else
+					sendBtn.isEnabled = false;
 			});
 			
 			state(ADD_ARTIST_STATE);

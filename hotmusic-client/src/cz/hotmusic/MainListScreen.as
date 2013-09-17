@@ -6,6 +6,7 @@ package cz.hotmusic
 	import cz.hotmusic.components.Alert;
 	import cz.hotmusic.components.SendDialog;
 	import cz.hotmusic.components.hideBusy;
+	import cz.hotmusic.components.showBusy;
 	import cz.hotmusic.helper.SortHelper;
 	import cz.hotmusic.lib.event.AddArtistServiceEvent;
 	import cz.hotmusic.lib.event.ProfileServiceEvent;
@@ -651,16 +652,18 @@ package cz.hotmusic
 				curtain.visible = false;
 				
 				if (sendDialog.currentState == SendDialog.FEEDBACK_STATE) {
-					var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.FEEDBACK);
+					var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.FEEDBACK,hideBusy, Alert.showError);
 					se.sid = Model.getInstance().user.sid;
 					se.sedata = sendDialog.textinput.text;
+					showBusy("Sending...");
 					CairngormEventDispatcher.getInstance().dispatchEvent(se);
 					
 				} else if (sendDialog.currentState == SendDialog.ADD_ARTIST_STATE) {
-					var se2:AddArtistServiceEvent = new AddArtistServiceEvent(AddArtistServiceEvent.CREATE, function onResult():void {}, function onFault():void {});
+					var se2:AddArtistServiceEvent = new AddArtistServiceEvent(AddArtistServiceEvent.CREATE, hideBusy, Alert.showError);
 					se2.sid = Model.getInstance().user.sid;
 					se2.addArtist = new AddArtist();
 					se2.addArtist.name = sendDialog.textinput.text;
+					showBusy("Sending...");
 					CairngormEventDispatcher.getInstance().dispatchEvent(se2);
 				}
 			});
