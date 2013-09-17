@@ -83,8 +83,12 @@ public class AddArtistService implements IAddArtistService{
 			artist.name = addArtist.name;
 			artistService.create(sid, artist);
 		} else if (addArtist.state.equals(AddArtist.REJECTED_STATE)) {
-			Artist foundArtist = (Artist) session.createQuery("from Artist where name = :name").setParameter("name", addArtist.name).list().get(0);
-			artistService.remove(sid, foundArtist);
+			@SuppressWarnings("unchecked")
+			List<Artist> resultList = session.createQuery("from Artist where name = :name").setParameter("name", addArtist.name).list();
+			if (resultList != null && resultList.size() > 0) {
+				Artist foundArtist = (Artist) resultList.get(0);
+				artistService.remove(sid, foundArtist);
+			}
 		}
 	}
 
