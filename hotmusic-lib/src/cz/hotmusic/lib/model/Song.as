@@ -29,10 +29,10 @@ package cz.hotmusic.lib.model
 		
 		public function get hotstatus():int
 		{
-			if (!addedDate)
+			if (!releaseDate)
 				return 0;
 			var now:Date = new Date();
-			var dif:Number = now.time - addedDate.time;
+			var dif:Number = now.time - releaseDate.time;
 			var days:Number = dif/(60*60*24*1000);
 			if (days < 2)
 				return 3;
