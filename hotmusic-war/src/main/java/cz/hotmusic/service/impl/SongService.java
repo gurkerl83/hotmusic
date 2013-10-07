@@ -259,11 +259,10 @@ public class SongService implements ISongService{
 		Assert.assertNotNull(song.id);
 		sessionHelper.checkSession(sid);
 		Session session = sessionFactory.getCurrentSession();
-		Query query = null;
+//		Query query = null;
 		
-		query = session.createQuery("delete from Song where id = :id");
-		query.setParameter("id", song.id);
-		query.executeUpdate();
+		session.createQuery("delete from Vote where song = :song").setParameter("song", song).executeUpdate();
+		session.createQuery("delete from Song where id = :id").setParameter("id", song.id).executeUpdate();
 	}
 
 	@Override
