@@ -132,7 +132,10 @@ package cz.hotmusic
 			pageJumper = new PageJumper(new GenreServiceEvent(GenreServiceEvent.LIST,null, null),list, this);
 			pageJumper.totalItems = Model.getInstance().genresTotal;
 			
-			searchSort = new SearchSort(new GenreServiceEvent(GenreServiceEvent.LIST, null, null),list, this);
+			searchSort = new SearchSort(new GenreServiceEvent(GenreServiceEvent.LIST, null, null),list, this, DataHelper.getInstance().genresSortBy);
+			searchSort.addEventListener("sortChange", function onSortChange(event:Event):void {
+				DataHelper.getInstance().genresSortBy = searchSort.sortBy;
+			});
 			
 			addChild(list);
 			addChild(pageJumper);

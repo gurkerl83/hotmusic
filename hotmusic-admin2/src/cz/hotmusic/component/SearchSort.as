@@ -26,18 +26,21 @@ package cz.hotmusic.component
 	
 	public class SearchSort extends FeathersControl
 	{
-		public function SearchSort(se:ServiceEvent, list:List, screen:ISearchSort)
+		public function SearchSort(se:ServiceEvent, list:List, screen:ISearchSort, sortBy:String=AZ)
 		{
 			super();
 			this.se = se;
 			this.list = list;
 			this.screen = screen;
+			this.sortBy = sortBy;
 		}
 		
-		private const AZ:String = "A-Z";
-		private const ZA:String = "Z-A";
-		private const NEWEST:String = "Newest";
-		private const OLDEST:String = "Oldest";
+		public static const AZ:String = "A-Z";
+		public static const ZA:String = "Z-A";
+		public static const NEWEST:String = "Newest";
+		public static const OLDEST:String = "Oldest";
+		
+		public var sortBy:String = AZ;
 		
 		private var se:ServiceEvent;
 		private var list:List;
@@ -51,8 +54,8 @@ package cz.hotmusic.component
 		{
 			if (searchTI)
 				searchTI.text = "";
-			if (sortPicker)
-				sortPicker.selectedIndex = 0;
+//			if (sortPicker)
+//				sortPicker.selectedIndex = 0;
 		}
 		
 		override protected function initialize():void
@@ -71,12 +74,18 @@ package cz.hotmusic.component
 			searchTI.height = 40;
 			
 			searchButton = new Button(Texture.fromBitmap(new FontAssets.LupaUp()),"",Texture.fromBitmap(new FontAssets.LupaDown()));
-			searchButton.addEventListener(Event.TRIGGERED, onList);
+			searchButton.addEventListener(Event.TRIGGERED, onSearch);
 			
 			sortPicker = new PickerList();
 			sortPicker.dataProvider = new ListCollection([AZ, ZA, NEWEST, OLDEST]);;
 			sortPicker.width = 200;
-			sortPicker.addEventListener(Event.CHANGE, onList);
+			sortPicker.addEventListener(Event.CHANGE, onSort);
+			
+			if (sortBy != null && sortBy != "" && sortBy != AZ) {
+				sortPicker.selectedItem = sortBy;
+			}
+//			
+//			onList(null);
 			
 			addChild(searchTI);
 			addChild(searchButton);
@@ -95,10 +104,21 @@ package cz.hotmusic.component
 			setSize(sortPicker.x + sortPicker.width, 40);
 		}
 		
-		private function onList(event:Event):void 
+		private function onSort(event:Event):void 
+		{
+			sortBy = screen.sort = String(sortPicker.selectedItem);
+			dispatchEventWith("sortChange");
+			onList(event);
+		}
+		
+		private function onSearch(event:Event):void 
 		{
 			screen.search = searchTI.text;
-			screen.sort = String(sortPicker.selectedItem);
+			onList(event);
+		}
+		
+		private function onList(event:Event):void 
+		{
 			se.sedata = screen;
 			se.sid = Model.getInstance().user.sid;
 			se.resultCallback = function onResult(result:ResultEvent):void 

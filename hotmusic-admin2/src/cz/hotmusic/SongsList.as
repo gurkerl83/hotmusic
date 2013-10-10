@@ -161,7 +161,10 @@ package cz.hotmusic
 			pageJumper = new PageJumper(new SongServiceEvent(SongServiceEvent.LIST,null, null),list, this);
 			pageJumper.totalItems = Model.getInstance().songsTotal;
 			
-			searchSort = new SearchSort(new SongServiceEvent(SongServiceEvent.LIST, null, null),list, this);
+			searchSort = new SearchSort(new SongServiceEvent(SongServiceEvent.LIST, null, null),list, this, DataHelper.getInstance().songsSortBy);
+			searchSort.addEventListener("sortChange", function onSortChange(event:Event):void {
+				DataHelper.getInstance().songsSortBy = searchSort.sortBy;
+			});
 			
 			addChild(lastMonthLbl);
 			addChild(lastMonthVal);

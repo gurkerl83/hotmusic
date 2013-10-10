@@ -362,9 +362,9 @@ public class ProfileService implements IProfileService{
 		if (sort != null && sort.equals("Z-A"))
 			sort = " order by surname,firstname desc";
 		else if (sort != null && sort.equals("Newest"))
-			sort = " order by addedDate";
-		else if (sort != null && sort.equals("Oldesd"))
 			sort = " order by addedDate desc";
+		else if (sort != null && sort.equals("Oldest"))
+			sort = " order by addedDate ";
 		else 
 			sort = " order by surname,firstname";
 		

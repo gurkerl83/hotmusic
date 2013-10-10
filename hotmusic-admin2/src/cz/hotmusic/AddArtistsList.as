@@ -175,7 +175,10 @@ package cz.hotmusic
 			pageJumper = new PageJumper(new AddArtistServiceEvent(AddArtistServiceEvent.LIST,null, null),list, this);
 			pageJumper.totalItems = Model.getInstance().artistsTotal;
 			
-			searchSort = new SearchSort(new AddArtistServiceEvent(AddArtistServiceEvent.LIST, null, null),list, this);
+			searchSort = new SearchSort(new AddArtistServiceEvent(AddArtistServiceEvent.LIST, null, null),list, this, DataHelper.getInstance().addArtistsSortBy);
+			searchSort.addEventListener("sortChange", function onSortChange(event:Event):void {
+				DataHelper.getInstance().addArtistsSortBy = searchSort.sortBy;
+			});
 			
 			addChild(totalLbl);
 			addChild(totalVal);

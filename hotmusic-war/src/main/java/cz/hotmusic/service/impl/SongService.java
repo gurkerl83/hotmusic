@@ -119,7 +119,7 @@ public class SongService implements ISongService{
 		
 		// seznam songu
 		
-		query = session.createQuery("from Song where releaseDate <= :releaseDate").setParameter("releaseDate", new Date());
+		query = session.createQuery("from Song where releaseDate <= :releaseDate order by releaseDate desc").setParameter("releaseDate", new Date());
 		
 		query.setFirstResult(page * 100);
 		query.setMaxResults(count);
@@ -145,9 +145,9 @@ public class SongService implements ISongService{
 		if (sort != null && sort.equals("Z-A"))
 			sort = " order by name desc";
 		else if (sort != null && sort.equals("Newest"))
-			sort = " order by addedDate";
-		else if (sort != null && sort.equals("Oldesd"))
 			sort = " order by addedDate desc";
+		else if (sort != null && sort.equals("Oldest"))
+			sort = " order by addedDate";
 		else 
 			sort = " order by name";
 		

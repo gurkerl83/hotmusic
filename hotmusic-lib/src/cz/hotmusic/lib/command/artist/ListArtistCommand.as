@@ -26,7 +26,10 @@ package cz.hotmusic.lib.command.artist
 			var service:RemoteObject = MyServiceLocator.getInstance().getService(MyServiceLocator.ARTIST_SERVICE);
 			var call:AsyncToken;
 			if (se.sedata != null) {
-				call = service.list(se.sid, se.sedata.page, se.sedata.search, se.sedata.sort);
+				var page:int = se.sedata.page;
+				var search:String = se.sedata.search;
+				var sort:String = se.sedata.sort;
+				call = service.list(se.sid, page, search, sort);
 			} else {
 				call = service.list(se.sid);
 			}

@@ -134,7 +134,7 @@ public class AddArtistService implements IAddArtistService{
 			sort = " order by name desc";
 		else if (sort != null && sort.equals("Newest"))
 			sort = " order by addedDate";
-		else if (sort != null && sort.equals("Oldesd"))
+		else if (sort != null && sort.equals("Oldest"))
 			sort = " order by addedDate desc";
 		else 
 			sort = " order by name";

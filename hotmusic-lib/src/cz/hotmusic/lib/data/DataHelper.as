@@ -38,6 +38,8 @@ package cz.hotmusic.lib.data
 			return _instance;
 		}
 		
+//		private static const DEFAULT_SORT:String = "A-Z";
+		
 		public function initModel(cb:Function, cbf:Function, model:Object, skipCounts:Boolean=false):void
 		{
 			this.model = model;
@@ -54,6 +56,7 @@ package cz.hotmusic.lib.data
 		public function initModelMobile(cb:Function, cbf:Function, model:Object):void
 		{
 			this.model = model;
+			songsSortBy = "Newest";
 			//			_songsComplete = _artistsComplete = _albumsComplete = _genresComplete = _usersComplete = false;
 			getSongs(cb, cbf, true, null, true);
 			getArtists(cb, cbf, true, null);
@@ -140,6 +143,7 @@ package cz.hotmusic.lib.data
 		
 		private var songsCallback:Function;
 		private var songsCallbackFault:Function;
+		public var songsSortBy:String;//=DEFAULT_SORT;
 		public function getSongs(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false,paging:Object=null, releaseDate:Boolean=false):void
 		{
 			_songsComplete = _songsTotalComplete = _songsLastMonthComplete = false;
@@ -153,6 +157,10 @@ package cz.hotmusic.lib.data
 			
 			// List
 			var sse:SongServiceEvent = new SongServiceEvent(releaseDate?SongServiceEvent.LIST_RELEASED:SongServiceEvent.LIST,songResult,songFault);
+			if (songsSortBy != null) {
+				sse.sedata = new Object();
+				sse.sedata.sort = songsSortBy;
+			}
 			sse.sid = model.user.sid;
 			if (paging != null)
 				sse.data = paging;
@@ -231,6 +239,7 @@ package cz.hotmusic.lib.data
 		
 		private var artistsCallback:Function;
 		private var artistsCallbackFault:Function;
+		public var artistsSortBy:String;//=DEFAULT_SORT;
 		public function getArtists(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_artistsComplete = _artistsTotalComplete = _artistsLastMonthComplete = false;
@@ -243,6 +252,10 @@ package cz.hotmusic.lib.data
 				artistsCallbackFault = callbackFault;
 			
 			var se:ArtistServiceEvent = new ArtistServiceEvent(ArtistServiceEvent.LIST,artistResult,artistFault);
+			if (artistsSortBy != null) {
+				se.sedata = new Object();
+				se.sedata.sort = artistsSortBy;
+			}
 			se.sid = model.user.sid;
 			if (paging != null)
 				se.data = paging;
@@ -320,6 +333,7 @@ package cz.hotmusic.lib.data
 		
 		private var albumsCallback:Function;
 		private var albumsCallbackFault:Function;
+		public var albumsSortBy:String;//=DEFAULT_SORT;
 		public function getAlbums(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_albumsComplete = _albumsTotalComplete = _albumsLastMonthComplete = false;
@@ -332,6 +346,10 @@ package cz.hotmusic.lib.data
 				albumsCallbackFault = callbackFault;
 			
 			var se:AlbumServiceEvent = new AlbumServiceEvent(AlbumServiceEvent.LIST,albumResult,albumFault);
+			if (albumsSortBy != null) {
+				se.sedata = new Object();
+				se.sedata.sort = albumsSortBy;
+			}
 			se.sid = model.user.sid;
 			if (paging != null)
 				se.data = paging;
@@ -408,6 +426,7 @@ package cz.hotmusic.lib.data
 		
 		private var genresCallback:Function;
 		private var genresCallbackFault:Function;
+		public var genresSortBy:String;
 		public function getGenres(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_genresComplete = _genresTotalComplete = false;
@@ -420,6 +439,10 @@ package cz.hotmusic.lib.data
 				genresCallbackFault = callbackFault;
 			
 			var se:GenreServiceEvent = new GenreServiceEvent(GenreServiceEvent.LIST,genreResult,genreFault);
+			if (genresSortBy != null) {
+				se.sedata = new Object();
+				se.sedata.sort = genresSortBy;
+			}
 			se.sid = model.user.sid;
 			if (paging != null)
 				se.data = paging;
@@ -480,6 +503,7 @@ package cz.hotmusic.lib.data
 		
 		private var usersCallback:Function;
 		private var usersCallbackFault:Function;
+		public var usersSortBy:String;//=DEFAULT_SORT;
 		public function getUsers(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_usersComplete = _usersTotalComplete = false;
@@ -492,6 +516,10 @@ package cz.hotmusic.lib.data
 				usersCallbackFault = callbackFault;
 			
 			var se:ProfileServiceEvent = new ProfileServiceEvent(ProfileServiceEvent.LIST,userResult,userFault);
+			if (usersSortBy != null) {
+				se.sedata = new Object();
+				se.sedata.sort = usersSortBy;
+			}
 			se.sid = model.user.sid;
 			if (paging != null)
 				se.data = paging;
@@ -552,6 +580,7 @@ package cz.hotmusic.lib.data
 		
 		private var addArtistsCallback:Function;
 		private var addArtistsCallbackFault:Function;
+		public var addArtistsSortBy:String;//=DEFAULT_SORT;
 		public function getAddArtists(callback:Function=null, callbackFault:Function=null, skipCounts:Boolean=false, paging:Object=null):void
 		{
 			_addArtistsComplete = _addArtistsTotalComplete = false;
@@ -564,6 +593,10 @@ package cz.hotmusic.lib.data
 				addArtistsCallbackFault = callbackFault;
 			
 			var se:AddArtistServiceEvent = new AddArtistServiceEvent(AddArtistServiceEvent.LIST,addArtistResult,addArtistFault);
+			if (addArtistsSortBy != null) {
+				se.sedata = new Object();
+				se.sedata.sort = addArtistsSortBy;
+			}
 			se.sid = model.user.sid;
 			if (paging != null)
 				se.data = paging;
