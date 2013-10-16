@@ -6,7 +6,7 @@
         <dependencies target-player="11.1" framework-linkage="Merged">
           <entries>
             <entry library-id="84040953-7850-4c12-8bec-a587cce5e9e3">
-              <dependency linkage="Merged" />
+              <dependency linkage="Include" />
             </entry>
           </entries>
           <sdk name="4.6.0_air3.5" />

@@ -5,20 +5,20 @@
       <configuration name="HotmusicAdmin2" pure-as="true" main-class="HotmusicAdmin2" output-file="HotmusicAdmin2.swf" output-folder="$MODULE_DIR$/../hotmusic-war/src/main/webapp" use-html-wrapper="true" wrapper-template-path="$MODULE_DIR$/html-template">
         <dependencies target-player="11.1">
           <entries>
-            <entry library-id="f9f4ea28-ae59-452e-914a-f8e956343697">
+            <entry library-name="feathers-1.1.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="9b6edb8a-6c7b-47f9-9103-fe4029204396">
+            <entry library-name="starling" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="a6161a09-227b-44fa-8fad-97aa75aacd7c">
+            <entry module-name="myaslib" build-configuration-name="myaslib">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="1f7a3d7c-1340-4a9a-aa78-60b5d65065c6">
-              <dependency linkage="Merged" />
+            <entry module-name="hotmusic-lib" build-configuration-name="hotmusic-lib">
+              <dependency linkage="Include" />
             </entry>
           </entries>
-          <sdk name="4.6.0" />
+          <sdk name="4.6.0_air3.5" />
         </dependencies>
         <compiler-options>
           <map>
@@ -37,48 +37,12 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="4.6.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="4.6.0_air3.5" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="f9f4ea28-ae59-452e-914a-f8e956343697" />
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/feathers/bin/feathers.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="9b6edb8a-6c7b-47f9-9103-fe4029204396" />
-        <CLASSES>
-          <root url="jar://F:/Dokumenty/Downloads/PrimaryFeather-Starling-Framework-v1.3-0-g0ac3592/PrimaryFeather-Starling-Framework-0ac3592/starling/bin/starling.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="a6161a09-227b-44fa-8fad-97aa75aacd7c" />
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/hotmusic-lib/bin/hotmusic-lib.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="1f7a3d7c-1340-4a9a-aa78-60b5d65065c6" />
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/myaslib/bin/myaslib.swc!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" exported="" name="feathers-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="starling" level="project" />
+    <orderEntry type="module" module-name="myaslib" exported="" />
+    <orderEntry type="module" module-name="hotmusic-lib" exported="" />
   </component>
 </module>
 

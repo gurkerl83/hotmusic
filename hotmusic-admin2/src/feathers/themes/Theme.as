@@ -133,10 +133,10 @@ package feathers.themes
 		public static const BLUE_TEXT_COLOR			:uint = 0x005BAA;
 		
 		
-		[Embed(source="/../assets/theme/metalworks.png")]
+		[Embed(source="/assets/theme/metalworks.png")]
 		protected static const ATLAS_IMAGE:Class;
 
-		[Embed(source="/../assets/theme/metalworks.xml",mimeType="application/octet-stream")]
+		[Embed(source="/assets/theme/metalworks.xml",mimeType="application/octet-stream")]
 		protected static const ATLAS_XML:Class;
 
 //		protected static const LIGHT_TEXT_COLOR:uint = 0xe5e5e5;
