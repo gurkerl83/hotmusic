@@ -308,6 +308,8 @@ package cz.hotmusic
 			
 			_artistValue.x = _space;
 			_artistValue.y = _line1.y + _lineHeight + _linePadding;
+            _artistValue.width = actualWidth - _space - _leftPadding;
+            _artistValue.textRendererProperties.wordWrap = true;
 			_artistValue.validate();
 			
 			_artistLabel.validate();
@@ -322,6 +324,8 @@ package cz.hotmusic
 			
 			_albumValue.x = _space;
 			_albumValue.y = _line2.y + _lineHeight + _linePadding;
+            _albumValue.width = actualWidth - _space - _leftPadding;
+            _albumValue.textRendererProperties.wordWrap = true;
 			_albumValue.validate();
 			
 			_albumLabel.validate();
@@ -336,6 +340,8 @@ package cz.hotmusic
 			
 			_genreValue.x = _space;
 			_genreValue.y = _line3.y + _lineHeight + _linePadding;
+            _genreValue.width = actualWidth - _space - _leftPadding;
+            _genreValue.textRendererProperties.wordWrap = true;
 			_genreValue.validate();
 			
 			_genreLabel.validate();

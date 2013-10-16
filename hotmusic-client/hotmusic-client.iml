@@ -20,13 +20,13 @@
             <entry library-name="feathers-1.1.0" library-level="project">
               <dependency linkage="Merged" />
             </entry>
-            <entry library-id="5d296ca9-db67-4c60-a933-b3814d1045ac">
-              <dependency linkage="Merged" />
-            </entry>
             <entry module-name="hotmusic-lib" build-configuration-name="hotmusic-lib">
               <dependency linkage="Merged" />
             </entry>
             <entry library-id="d6aa8617-bf06-4084-bbe8-039aaf907841">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry module-name="myaslib" build-configuration-name="myaslib">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -106,19 +106,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" exported="" name="feathers-1.1.0" level="project" />
-    <orderEntry type="module-library" exported="">
-      <library type="flex">
-        <properties id="5d296ca9-db67-4c60-a933-b3814d1045ac" />
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../../myaslib/bin" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../../myaslib/src" />
-        </SOURCES>
-        <jarDirectory url="file://$MODULE_DIR$/../../myaslib/bin" recursive="false" />
-      </library>
-    </orderEntry>
     <orderEntry type="module" module-name="hotmusic-lib" exported="" />
     <orderEntry type="module-library" exported="">
       <library type="flex">
@@ -131,6 +118,7 @@
         <jarDirectory url="file://$MODULE_DIR$/ane" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="myaslib" exported="" />
   </component>
 </module>
 
