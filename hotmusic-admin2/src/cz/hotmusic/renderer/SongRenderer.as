@@ -37,7 +37,7 @@ package cz.hotmusic.renderer
 			
 			song = Song(value);
 			if (_dateField && song)
-				_dateField.date = song.addedDate;
+				_dateField.date = song.releaseDate;
 			
 			if (_artistValue && song && song.artist)
 				_artistValue.text = song.artist.name;

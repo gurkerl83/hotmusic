@@ -145,9 +145,9 @@ public class SongService implements ISongService{
 		if (sort != null && sort.equals("Z-A"))
 			sort = " order by name desc";
 		else if (sort != null && sort.equals("Newest"))
-			sort = " order by addedDate desc";
+			sort = " order by releaseDate desc";
 		else if (sort != null && sort.equals("Oldest"))
-			sort = " order by addedDate";
+			sort = " order by releaseDate";
 		else 
 			sort = " order by name";
 		

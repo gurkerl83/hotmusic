@@ -34,7 +34,7 @@ package cz.hotmusic.renderer
 			
 			album = Album(value);
 			if (_dateField && album)
-				_dateField.date = album.addedDate;
+				_dateField.date = album.releaseDate;
 			
 			if (_artistValue && album && album.artist)
 				_artistValue.text = album.artist.name;
