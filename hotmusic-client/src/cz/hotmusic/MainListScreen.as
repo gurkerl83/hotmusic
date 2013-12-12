@@ -1,7 +1,7 @@
 package cz.hotmusic
 {
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
-	import com.thejustinwalsh.ane.TestFlight;
+//	import com.thejustinwalsh.ane.TestFlight;
 	
 	import cz.hotmusic.components.Alert;
 	import cz.hotmusic.components.SendDialog;
@@ -293,7 +293,7 @@ package cz.hotmusic
 //			Model.getInstance().selectedSong.soundcloud = Song(_list.selectedItem).soundcloud;
 //			Model.getInstance().selectedSong.youtube = Song(_list.selectedItem).youtube;
 			
-			TestFlight.passCheckpoint("Song Selected: " + Song(_list.selectedItem).name);
+//			TestFlight.passCheckpoint("Song Selected: " + Song(_list.selectedItem).name);
 			
 			dispatchEventWith("showDetail");
 			
@@ -331,7 +331,7 @@ package cz.hotmusic
 		
 		private function leftButton_triggeredHandler(event:Event):void
 		{
-			TestFlight.passCheckpoint("Genres Button");
+//			TestFlight.passCheckpoint("Genres Button");
 			this.dispatchEventWith("leftMenu");
 
 			if (!_leftActive)
@@ -373,7 +373,7 @@ package cz.hotmusic
 		
 		private function rightButton_triggeredHandler(event:Event):void
 		{
-			TestFlight.passCheckpoint("Filter Button");
+//			TestFlight.passCheckpoint("Filter Button");
 			this.dispatchEventWith("rightMenu");
 			
 			if (!_rightActive)
@@ -408,7 +408,7 @@ package cz.hotmusic
 				_rightHeader.visible = false;
 			}
 			_rightActive = !_rightActive;	
-			TestFlight.passCheckpoint("Filters are " + _rightActive ? "open":"closed");
+//			TestFlight.passCheckpoint("Filters are " + _rightActive ? "open":"closed");
 		}
 		private function myTweenLeft_onComplete():void
 		{
@@ -417,7 +417,7 @@ package cz.hotmusic
 				_leftList.visible = false;
 			}
 			_leftActive = !_leftActive;	
-			TestFlight.passCheckpoint("Genres are " + _leftActive ? "open":"closed");
+//			TestFlight.passCheckpoint("Genres are " + _leftActive ? "open":"closed");
 		}
 
 		private function filterLeftButton_triggeredHandler(event:Event):void
@@ -593,7 +593,7 @@ package cz.hotmusic
 				checkpointText += ", Sort: " + _rightList.selectedItem.sortbykey;
 			}
 			
-			TestFlight.passCheckpoint(checkpointText);
+//			TestFlight.passCheckpoint(checkpointText);
 			
 			this._list.dataProvider = new ListCollection(filteredArr);
 			rightButton_triggeredHandler(null);
@@ -617,7 +617,7 @@ package cz.hotmusic
 			_bottomBg = new Scale9Image(new Scale9Textures(MetalWorksMobileTheme.atlas.getTexture("list-inset-item-single-selected-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID)); //new Quad(300, 70, 0);
 			_addArtistButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddArtist()));
 			_addArtistButton.addEventListener(Event.TRIGGERED, function onAddArtist(event:Event):void {
-				TestFlight.passCheckpoint("AddArtist Button");
+//				TestFlight.passCheckpoint("AddArtist Button");
 				sendDialog.state(SendDialog.ADD_ARTIST_STATE);
 				sendDialog.validate();
 				sendDialog.visible = true;
@@ -627,7 +627,7 @@ package cz.hotmusic
 			});
 			_feedbackButton = new starling.display.Button(Texture.fromBitmap(new FontAssets.AddFeedback()));
 			_feedbackButton.addEventListener(Event.TRIGGERED, function onFeedback(event:Event):void {
-				TestFlight.passCheckpoint("Feedback Button");
+//				TestFlight.passCheckpoint("Feedback Button");
 //				TestFlightSDK.service.openFeedbackView();
 				try {
 					sendDialog.state(SendDialog.FEEDBACK_STATE);

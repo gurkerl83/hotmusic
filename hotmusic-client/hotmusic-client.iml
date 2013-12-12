@@ -51,7 +51,7 @@
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/assets" path-in-package="assets" />
             <FilePathAndPathInPackage file-path="$MODULE_DIR$/src/Default-568h@2x.png" path-in-package="Default-568h@2x.png" />
           </files-to-package>
-          <AirSigningOptions keystore-path="$MODULE_DIR$/mk_zc_dev.p12" provisioning-profile-path="$MODULE_DIR$/hotmusic.mobileprovision" />
+          <AirSigningOptions keystore-path="F:/Dokumenty/My Dropbox/S/iOS Mobile/hotmusic/ios_distribution.p12" provisioning-profile-path="F:/Dokumenty/My Dropbox/S/iOS Mobile/hotmusic/hotmusic-dist.mobileprovision" />
         </packaging-ios>
       </configuration>
     </configurations>

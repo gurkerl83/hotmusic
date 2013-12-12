@@ -1,6 +1,6 @@
 package
 {
-	import com.thejustinwalsh.ane.TestFlight;
+//	import com.thejustinwalsh.ane.TestFlight;
 	
 	import cz.hotmusic.Main;
 	import cz.hotmusic.lib.controller.MyController;
@@ -61,20 +61,20 @@ package
 		
 		private function startTestFlight():void
 		{
-			try {
-				LogHelper.getInstance(this).log("TestFlight.setDeviceIdentifier() starting");
-				TestFlight.setDeviceIdentifier();
-				LogHelper.getInstance(this).log("TestFlight.setDeviceIdentifier() ended");
-			} catch (err:Error) {
-				LogHelper.getInstance(this).log(err.getStackTrace());
-			}
-			try {
-				LogHelper.getInstance(this).log("TestFlight.takeOff() starting");
-				var takeOffRes:Boolean = TestFlight.takeOff('b16b34e9-e1bb-46d6-a0e0-afc27f2d134c');
-				LogHelper.getInstance(this).log("TestFlight.takeOff() ended with result: " + takeOffRes);
-			} catch (err:Error) {
-				LogHelper.getInstance(this).log(err.getStackTrace());
-			}
+//			try {
+//				LogHelper.getInstance(this).log("TestFlight.setDeviceIdentifier() starting");
+//				TestFlight.setDeviceIdentifier();
+//				LogHelper.getInstance(this).log("TestFlight.setDeviceIdentifier() ended");
+//			} catch (err:Error) {
+//				LogHelper.getInstance(this).log(err.getStackTrace());
+//			}
+//			try {
+//				LogHelper.getInstance(this).log("TestFlight.takeOff() starting");
+//				var takeOffRes:Boolean = TestFlight.takeOff('b16b34e9-e1bb-46d6-a0e0-afc27f2d134c');
+//				LogHelper.getInstance(this).log("TestFlight.takeOff() ended with result: " + takeOffRes);
+//			} catch (err:Error) {
+//				LogHelper.getInstance(this).log(err.getStackTrace());
+//			}
 		}
 		
 		//Call this once your first Starling view has rendered
@@ -109,8 +109,8 @@ package
 
 			_starling = new Starling(cz.hotmusic.Main, stage);
 			_starling.enableErrorChecking = false;
-			_starling.showStats = true;
-			_starling.showStatsAt(HAlign.LEFT, VAlign.BOTTOM);
+//			_starling.showStats = true;
+//			_starling.showStatsAt(HAlign.LEFT, VAlign.BOTTOM);
 			_starling.antiAliasing = 1;
 			_starling.addEventListener("rootCreated", removeSplash);
 			_starling.start();

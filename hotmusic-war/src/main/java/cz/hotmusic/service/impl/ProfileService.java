@@ -11,6 +11,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.google.gson.Gson;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,7 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.flex.remoting.RemotingDestination;
+import org.springframework.flex.remoting.RemotingExclude;
 import org.springframework.flex.remoting.RemotingInclude;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +31,12 @@ import cz.hotmusic.model.Feedback;
 import cz.hotmusic.model.Song;
 import cz.hotmusic.model.User;
 import cz.hotmusic.service.IProfileService;
+import org.springframework.web.bind.annotation.*;
 
 @Repository
 @RemotingDestination
+@RequestMapping("profile")
+@Controller
 public class ProfileService implements IProfileService{
 	
 	private static final String DEFAULT_PASSWORD = "hotmusic";
@@ -117,10 +123,24 @@ public class ProfileService implements IProfileService{
 				return user.id;
 	}
 
+    // call url http://localhost:8080/hotmusic-war/sample/profile/test/blabla
+    @RequestMapping(value="test/{s}")
+    @RemotingExclude
+    @ResponseBody
+    public String testJSON(@PathVariable String s) {
+        return toJson(s);
+    }
+
+    private String toJson(Object o) {
+        Gson gson = new Gson();
+        return gson.toJson(o);
+    }
+
 	@SuppressWarnings("unchecked")
 	@Override
 	@RemotingInclude
 	@Transactional
+    @RequestMapping(value="login", method=RequestMethod.POST)
 	public User login(User user, String type) throws Exception {
 		// check inputs
 		Assert.assertNotNull(user);

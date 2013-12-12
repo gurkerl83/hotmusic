@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <application xmlns="http://ns.adobe.com/air/application/3.5">
 <!-- 	<id>com.feathersui.examples.ComponentsExplorer</id> -->
-	<id>cz.zc.hotmusic</id>
+	<id>com.hotmusic</id>
 	<filename>Hotmusic</filename>
 	<name>hotmusic</name>
-	<versionNumber>0.0.30</versionNumber>
+	<versionNumber>1.0.0</versionNumber>
 	<description>Hot Music</description>
 	<copyright>2013 Michal Kolesar</copyright>
 
@@ -54,7 +54,7 @@
 	</iPhone>
 <extensions>
         <extensionID>com.sticksports.nativeExtensions.Social</extensionID>
-    <extensionID>com.thejustinwalsh.TestFlight</extensionID>
+    <!--<extensionID>com.thejustinwalsh.TestFlight</extensionID>-->
     
     </extensions>
 </application>
